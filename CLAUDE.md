@@ -46,4 +46,4 @@ true speed · Web Inspector over USB shows no errors. LAN (`http://<mac-ip>:8765
 
 ## Open
 - Confirm on site: rooms and levels in tour.js; which 540 K is shown (Cabriolet B photo vs the 1938 Streamliner in the research).
-- `museum-tour-poc/` is the original PoC, kept until the baseline commit; remove afterwards (history stays in git).
+- The original single-file PoC pages are in git history at commit 468cc29 (`museum-tour-poc/`).
