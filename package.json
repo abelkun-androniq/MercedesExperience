@@ -1,0 +1,16 @@
+{
+  "name": "mercedes-museum-tour",
+  "private": true,
+  "type": "module",
+  "description": "Static technical tour of the Mercedes-Benz Museum, Stuttgart: one interactive page per stop, offline after one visit.",
+  "scripts": {
+    "test": "node --test \"tests/unit/*.test.mjs\"",
+    "e2e": "playwright test",
+    "build": "node tools/build.mjs",
+    "serve": "python3 -m http.server 8765",
+    "vendor": "node tools/vendor-three.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1"
+  }
+}

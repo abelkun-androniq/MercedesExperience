@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Museum tour stop</title>
+<meta name="description" content="Interactive technical stop of a private Mercedes-Benz Museum tour.">
+<meta name="theme-color" content="#eef1f3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#10161b" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="stylesheet" href="lib/app/theme.css">
+<script type="importmap">
+{ "imports": { "three": "./vendor/three/three.module.min.js", "three/addons/": "./vendor/three/addons/" } }
+</script>
+</head>
+<body>
+<main class="wrap" id="app"><p class="note">Loading…</p></main>
+<noscript><p class="fail">This tour needs JavaScript.</p></noscript>
+<script>
+  // Import maps need iOS / Safari 16.4 or newer.
+  if (!(window.HTMLScriptElement && HTMLScriptElement.supports && HTMLScriptElement.supports("importmap")))
+    document.getElementById("app").innerHTML = '<p class="fail">This tour needs a newer browser: iOS 16.4 / Safari 16.4 or later.</p>';
+</script>
+<script type="module" src="lib/app/shell.js"></script>
+</body>
+</html>
