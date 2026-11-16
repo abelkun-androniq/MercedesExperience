@@ -1,0 +1,24 @@
+{
+  "photo": "poc/photo-190e.jpg",
+  "image": { "width": 1200, "height": 803 },
+  "frame": "mm; x forward, y left, z up; origin = rear axle centre at wheel-centre height",
+  "aimAt": [1300, 300, 0],
+  "seeds": [[5500, 5000, 1200], [6000, 3500, 800], [4500, 6000, 1500], [7000, 5000, 600]],
+  "focalSeeds": [900, 1200, 1600],
+  "rollPenalty": 0,
+  "groundZ": -292,
+  "points": [
+    { "name": "LR wheel centre",          "X": [0, 775, 0],        "px": [898, 448], "w": 1 },
+    { "name": "LF wheel centre",          "X": [2665, 780, 0],     "px": [430, 592], "w": 1 },
+    { "name": "LR tyre bottom",           "X": [0, 740, -292],     "px": [878, 507], "w": 1 },
+    { "name": "LF tyre bottom",           "X": [2665, 745, -292],  "px": [402, 680], "w": 1 },
+    { "name": "LR tyre top",              "X": [0, 740, 292],      "px": [910, 390], "w": 1 },
+    { "name": "LF tyre top",              "X": [2665, 745, 292],   "px": [447, 498], "w": 1 },
+    { "name": "Bonnet star",              "X": [3430, 0, 520],     "px": [113, 375], "w": 1 },
+    { "name": "Roof, front left corner",  "X": [1300, 640, 1098],  "px": [658, 218], "w": 1 },
+    { "name": "Roof, rear left corner",   "X": [180, 640, 1098],   "px": [875, 240], "w": 1 },
+    { "name": "Rear lamp, upper outer",   "X": [-990, 800, 640],   "px": [977, 312], "w": 1 },
+    { "name": "A-pillar base",            "X": [1980, 720, 560],   "px": [602, 330], "w": 1 },
+    { "name": "Front bumper corner",      "X": [3400, 790, 200],   "px": [292, 478], "w": 1 }
+  ]
+}

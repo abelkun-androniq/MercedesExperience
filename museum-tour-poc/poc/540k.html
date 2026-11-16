@@ -1,0 +1,820 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>540 K Kompressor Teaser</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a workshop-manual page. One large live viewer with component and view switches, instrument readouts beside it, the tour workflow below. */
+:root {
+  --bg: #eef1f3;
+  --panel: #ffffff;
+  --fg: #16202a;
+  --muted: #5a6875;
+  --rule: #d3dae0;
+  --accent: #0a6e8a;
+  --stage: #e3e8ec;
+  --l1: #d9480f; --l2: #e8a317; --l3: #2b8a3e; --l4: #1c64c4; --l5: #8e44ad;
+  --metal: #8a96a1;
+  --warn: #c92a2a;
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #10161b; --panel: #172028; --fg: #e4eaef; --muted: #93a2ae; --rule: #2a3742;
+    --accent: #4fb8d6; --stage: #0c1115;
+    --l1: #ff7a45; --l2: #f5c242; --l3: #5cc46f; --l4: #5b9bf0; --l5: #b77fd6; --metal: #6f7c87; --warn: #ff6b6b;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #10161b; --panel: #172028; --fg: #e4eaef; --muted: #93a2ae; --rule: #2a3742;
+  --accent: #4fb8d6; --stage: #0c1115;
+  --l1: #ff7a45; --l2: #f5c242; --l3: #5cc46f; --l4: #5b9bf0; --l5: #b77fd6; --metal: #6f7c87; --warn: #ff6b6b;
+  color-scheme: dark;
+}
+[hidden] { display: none !important; }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 15px; line-height: 1.55; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-block: 28px 56px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 28px; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+h1 { font-family: var(--display); font-weight: 800; font-size: clamp(28px, 4.6vw, 42px); line-height: 1.05; margin: 6px 0 8px; text-wrap: balance; letter-spacing: -.01em; }
+h2 { font-family: var(--display); font-weight: 700; font-size: 22px; margin: 0 0 14px; text-wrap: balance; }
+.lede { max-width: 70ch; color: var(--muted); margin: 0; }
+
+.toolbar { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; }
+.seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; background: var(--panel); }
+.seg button { border: 0; border-radius: 0; padding: 8px 14px; }
+.seg button + button { border-left: 1px solid var(--rule); }
+.seg-label { font-family: var(--mono); font-size: 11px; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); margin-right: 8px; }
+
+.viewer { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 16px; }
+@media (max-width: 860px) { .viewer { grid-template-columns: minmax(0, 1fr); } }
+.stage { position: relative; background: var(--stage); border: 1px solid var(--rule); border-radius: 6px; aspect-ratio: 1200 / 803; max-width: 100%; overflow: hidden; touch-action: none; }
+.stage img, .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.stage img { filter: brightness(.72) saturate(.85); }
+.stage .hint { position: absolute; left: 10px; bottom: 8px; font-family: var(--mono); font-size: 11px; color: var(--muted); pointer-events: none; }
+.stage .credit { position: absolute; right: 8px; bottom: 6px; font-family: var(--mono); font-size: 10px; color: #f1f3f5; background: rgba(0,0,0,.55); padding: 2px 6px; border-radius: 3px; }
+.stage .credit a { color: inherit; }
+.side { display: grid; gap: 14px; align-content: start; min-width: 0; }
+.panel { background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 14px; display: grid; gap: 10px; min-width: 0; }
+.label { font-family: var(--mono); font-size: 11px; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
+.readouts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 8px; }
+.readouts div { display: grid; gap: 1px; }
+.readouts output { font-family: var(--mono); font-size: 19px; font-variant-numeric: tabular-nums; }
+.readouts small { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+button { font: 500 13px var(--body); color: var(--fg); background: transparent; border: 1px solid var(--rule); border-radius: 4px; padding: 6px 10px; cursor: pointer; }
+button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--panel); }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+input[type=range] { width: 100%; accent-color: var(--accent); }
+.trace svg { width: 100%; height: auto; display: block; }
+.trace text { font-family: var(--mono); font-size: 9px; fill: var(--muted); }
+.key { display: flex; gap: 14px; flex-wrap: wrap; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.key i { display: inline-block; width: 14px; height: 3px; vertical-align: middle; margin-right: 5px; }
+.legend { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: 13px; }
+.legend li { display: grid; grid-template-columns: 12px 1fr; gap: 10px; align-items: center; }
+.legend .sw { width: 12px; height: 12px; border-radius: 2px; }
+.cyls { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.cyl { border: 1px solid var(--rule); border-radius: 4px; padding: 6px; display: grid; gap: 2px; text-align: center; }
+.cyl b { font-family: var(--mono); font-size: 11px; color: var(--muted); font-weight: 500; }
+.cyl span { font-size: 12px; font-weight: 600; }
+.cyl.power { border-color: var(--l1); box-shadow: inset 0 -3px 0 var(--l1); }
+.talk { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 14px; }
+.note { font-size: 12px; color: var(--muted); margin: 0; }
+
+.flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; list-style: none; padding: 0; margin: 0; counter-reset: s; }
+@media (max-width: 820px) { .flow { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+@media (max-width: 480px) { .flow { grid-template-columns: minmax(0, 1fr); } }
+.flow li { border-top: 2px solid var(--fg); padding-top: 10px; display: grid; gap: 6px; align-content: start; counter-increment: s; min-width: 0; }
+.flow li::before { content: "Step " counter(s); font-family: var(--mono); font-size: 11px; letter-spacing: .07em; text-transform: uppercase; color: var(--accent); }
+.flow h3 { font-family: var(--display); font-size: 17px; margin: 0; }
+.flow p { margin: 0; font-size: 14px; color: var(--muted); }
+.flow code { font-family: var(--mono); font-size: 12.5px; color: var(--fg); }
+</style>
+
+<style>
+.badge { display: inline-block; font-family: var(--mono); font-size: 12px; padding: 2px 8px; border-radius: 3px; border: 1px solid var(--rule); color: var(--muted); }
+.badge.on { background: var(--l1); border-color: var(--l1); color: var(--panel); }
+.meter { height: 8px; background: var(--rule); border-radius: 4px; overflow: hidden; }
+.meter i { display: block; height: 100%; width: 0; background: var(--accent); }
+.meter.hot i { background: var(--l1); }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Tour kit teaser · Mercedes-Benz 540 K (W 29), 1936–1940 · Mercedes-Benz Museum</div>
+    <h1>Under the skin of the 540 K</h1>
+    <p class="lede">Two mechanisms of the supercharged 540 K, each shown working: the independent front suspension meeting a bump and a pothole, and the Roots blower that only joins in when the driver floors the pedal. Switch to the museum photo to see them in place on the real car.</p>
+  </header>
+
+  <div class="toolbar">
+    <div><span class="seg-label">Component</span><span class="seg" id="segComp"><button data-v="susp" aria-pressed="true">Front suspension</button><button data-v="blower" aria-pressed="false">Supercharger</button></span></div>
+    <div><span class="seg-label">View</span><span class="seg" id="segView"><button data-v="model" aria-pressed="true">3D model</button><button data-v="photo" aria-pressed="false">Museum photo</button></span></div>
+  </div>
+
+  <section class="viewer" aria-label="Interactive component viewer">
+    <div class="stage" id="stage">
+      <img id="photo" src="photo-540k.jpg" alt="Black and white 1937 Mercedes-Benz 540 K Cabriolet B on display in the Mercedes-Benz Museum, seen from the front left" hidden>
+      <div class="hint" id="hint">drag to orbit · pinch or scroll to zoom</div>
+      <div class="credit" id="credit" hidden>Photo: <a href="https://commons.wikimedia.org/wiki/File:Mercedes-Benz_540K_1937_Cabriolet_B_LSideFront_MBMuse_9June2013_(14796944000).jpg" target="_blank" rel="noopener">Valder137</a>, CC BY 2.0</div>
+    </div>
+
+    <div class="side">
+      <!-- Suspension panel -->
+      <div class="panel" data-comp="susp">
+        <div class="label">Left front wheel · 25 km/h, shown 5× slower</div>
+        <div class="readouts">
+          <div><small>Wheel travel</small><output id="oTravel">0</output><small>mm, + = bump</small></div>
+          <div><small>Tyre load</small><output id="oLoad">100</output><small>% of static</small></div>
+          <div><small>Camber</small><output id="oCamber">0.00</output><small>deg</small></div>
+          <div><small>Track change</small><output id="oTrack">0.0</output><small>mm at the tyre</small></div>
+        </div>
+        <div class="trace" data-only="model">
+          <svg id="trace" viewBox="0 0 280 110" role="img" aria-label="Wheel travel and tyre load over the last six seconds"></svg>
+          <div class="key"><span><i style="background:var(--accent)"></i>travel (±60 mm)</span><span><i style="background:var(--l1)"></i>tyre load (0–200 %)</span></div>
+        </div>
+        <div class="row"><button id="playSusp" aria-pressed="true">Pause</button><button class="outlineBtn" aria-pressed="false" data-only="photo">Car outline</button></div>
+      </div>
+      <div class="panel" data-comp="susp">
+        <div class="label">Parts</div>
+        <ul class="legend" id="legend"></ul>
+      </div>
+      <div class="panel" data-comp="susp">
+        <div class="label">What to say at the car</div>
+        <ul class="talk">
+          <li>Most cars of the 1930s still had a rigid beam axle on leaf springs at the front. Mercedes gave the 380 of 1933 parallel wishbones and coil springs, and the 500 K and 540 K kept them.</li>
+          <li>Each front wheel now moves on its own: a bump under one wheel no longer tilts the other. Watch the orange trace spike over the bump and fall away in the pothole.</li>
+          <li>With near-parallel arms the wheel stays almost upright, but the tyre slides sideways a few millimetres as it rises. See the track change readout.</li>
+        </ul>
+      </div>
+
+      <!-- Supercharger panel -->
+      <div class="panel" data-comp="blower" hidden>
+        <div class="label">Accelerator · <span id="clutchBadge" class="badge">Clutch open</span></div>
+        <label class="label" for="throttle">Pedal position</label>
+        <input id="throttle" type="range" min="0" max="100" step="1" value="30">
+        <div class="readouts">
+          <div><small>Pedal</small><output id="oPedal">30</output><small>%</small></div>
+          <div><small>Rotor speed</small><output id="oRotor">0.0</output><small>× crank</small></div>
+          <div><small>Boost</small><output id="oBoost">0.00</output><small>bar, illustrative</small></div>
+          <div><small>Full-load power</small><output id="oPower">115</output><small>PS</small></div>
+        </div>
+        <div class="meter" id="boostMeter"><i></i></div>
+        <div class="row"><button id="autoDemo" aria-pressed="true">Auto demo on</button><button id="floorIt">Floor it</button><button class="outlineBtn" aria-pressed="false" data-only="photo">Car outline</button></div>
+        <div class="key"><span><i style="background:var(--l4)"></i>air, blower bypassed</span><span><i style="background:var(--l1)"></i>air, pressurised by blower</span></div>
+      </div>
+      <div class="panel" data-comp="blower" hidden>
+        <div class="label">End view of the rotors</div>
+        <svg id="rotorSvg" viewBox="-140 -95 280 190" role="img" aria-label="End view of the two-lobe Roots rotors turning in opposite directions, carrying pockets of air from the inlet at the bottom to the outlet at the top"></svg>
+      </div>
+      <div class="panel" data-comp="blower" hidden>
+        <div class="label">What to say at the car</div>
+        <ul class="talk">
+          <li>K stands for Kompressor. The 5.4-litre straight-eight makes 115 PS on its own and 180 PS with the blower working.</li>
+          <li>The blower is not always on. Push the pedal through to the floor and a multi-plate clutch on the nose of the crankshaft couples it in; the engine's normal air inlet closes at the same moment. It was meant for short bursts.</li>
+          <li>Mercedes blew the air through the carburettor instead of sucking mixture through the blower. A Roots blower does not squeeze air inside itself: the lobes carry pockets of air round the outside of the casing and push them into the outlet.</li>
+        </ul>
+      </div>
+      <p class="note">Geometry is illustrative: suspension hardpoints, blower layout, drive ratio, boost and spring rates are plausible values, not factory data.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Proposed tour workflow</h2>
+    <ol class="flow">
+      <li><h3>Source the model</h3><p>Download a CC model from Sketchfab as <code>.glb</code>, or a GrabCAD <code>STEP</code> and tessellate it in FreeCAD or Fusion. Build the missing ones, like this axle, from hardpoints.</p></li>
+      <li><h3>Prepare in Blender</h3><p>Decimate to under 50k faces, colour the parts by function, keyframe the motion. Export <code>.glb</code> and <code>.usdz</code>.</p></li>
+      <li><h3>One page per stop</h3><p>A static page per car with Google's <code>&lt;model-viewer&gt;</code>: orbit in the browser, and on iPhone an AR button opens Quick Look. Host free on GitHub Pages.</p></li>
+      <li><h3>Print the cards</h3><p>Front: the car and three talking points. Back: a QR code to that stop's page. Scan, look, no app to install.</p></li>
+    </ol>
+  </section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+// SOLVER START — vehicle coords in mm: x forward, y left (outboard), z up, origin at front axle centre, wheel-centre height. Left front wheel.
+// Two wishbones (two legs each) and the track rod: five fixed-length links, the same 6-DOF closure as any multi-link.
+const W0 = [0, 757, 0];
+const WHEEL_R = 380;
+const LINKS = [
+  { name: "Lower wishbone, front leg", tok: "--l1", b: [170, 330, -140], c: [0, 640, -150] },
+  { name: "Lower wishbone, rear leg", tok: "--l1", b: [-170, 330, -140], c: [0, 640, -150] },
+  { name: "Upper wishbone, front leg", tok: "--l2", b: [150, 345, 160], c: [0, 630, 165] },
+  { name: "Upper wishbone, rear leg", tok: "--l2", b: [-150, 345, 160], c: [0, 630, 165] },
+  { name: "Track rod", tok: "--l5", b: [-160, 335, -30], c: [-150, 640, -35] },
+];
+for (const L of LINKS) {
+  L.cl = [L.c[0] - W0[0], L.c[1] - W0[1], L.c[2] - W0[2]];
+  const d = [L.c[0] - L.b[0], L.c[1] - L.b[1], L.c[2] - L.b[2]];
+  L.len2 = d[0] * d[0] + d[1] * d[1] + d[2] * d[2];
+}
+function rotm(v) {
+  const th = Math.hypot(v[0], v[1], v[2]);
+  if (th < 1e-12) return [1, 0, 0, 0, 1, 0, 0, 0, 1];
+  const x = v[0] / th, y = v[1] / th, z = v[2] / th, c = Math.cos(th), s = Math.sin(th), C = 1 - c;
+  return [c + x * x * C, x * y * C - z * s, x * z * C + y * s,
+          y * x * C + z * s, c + y * y * C, y * z * C - x * s,
+          z * x * C - y * s, z * y * C + x * s, c + z * z * C];
+}
+const mul = (R, v) => [R[0] * v[0] + R[1] * v[1] + R[2] * v[2], R[3] * v[0] + R[4] * v[1] + R[5] * v[2], R[6] * v[0] + R[7] * v[1] + R[8] * v[2]];
+function carrierPoint(q, local, R = rotm(q.slice(3))) {
+  const p = mul(R, local);
+  return [p[0] + q[0] + W0[0], p[1] + q[1] + W0[1], p[2] + q[2] + W0[2]];
+}
+function residual(q, s) {
+  const R = rotm(q.slice(3));
+  const r = LINKS.map(L => {
+    const p = carrierPoint(q, L.cl, R);
+    const d = [p[0] - L.b[0], p[1] - L.b[1], p[2] - L.b[2]];
+    return (d[0] * d[0] + d[1] * d[1] + d[2] * d[2] - L.len2) / 1000;
+  });
+  r.push(q[2] - s);
+  return r;
+}
+function gauss(A, b) {
+  const n = b.length, M = A.map((row, i) => [...row, b[i]]);
+  for (let k = 0; k < n; k++) {
+    let p = k;
+    for (let i = k + 1; i < n; i++) if (Math.abs(M[i][k]) > Math.abs(M[p][k])) p = i;
+    [M[k], M[p]] = [M[p], M[k]];
+    for (let i = k + 1; i < n; i++) {
+      const f = M[i][k] / M[k][k];
+      for (let j = k; j <= n; j++) M[i][j] -= f * M[k][j];
+    }
+  }
+  const x = new Array(n).fill(0);
+  for (let i = n - 1; i >= 0; i--) {
+    let s = M[i][n];
+    for (let j = i + 1; j < n; j++) s -= M[i][j] * x[j];
+    x[i] = s / M[i][i];
+  }
+  return x;
+}
+function solve(q0, s) {
+  const q = q0.slice();
+  for (let it = 0; it < 30; it++) {
+    const r = residual(q, s);
+    if (Math.max(...r.map(Math.abs)) < 1e-10) break;
+    const J = r.map(() => new Array(6));
+    for (let j = 0; j < 6; j++) {
+      const h = j < 3 ? 1e-4 : 1e-7, qh = q.slice();
+      qh[j] += h;
+      const rh = residual(qh, s);
+      for (let i = 0; i < 6; i++) J[i][j] = (rh[i] - r[i]) / h;
+    }
+    const dq = gauss(J, r.map(v => -v));
+    for (let j = 0; j < 6; j++) q[j] += dq[j];
+  }
+  return q;
+}
+// Camber: negative = top of wheel inboard. Track change: sideways shift of the contact point, + = outward.
+function angles(q) {
+  const R = rotm(q.slice(3)), a = mul(R, [0, 1, 0]);
+  return { camber: -Math.atan2(a[2], a[1]) * 180 / Math.PI, track: carrierPoint(q, [0, 0, -WHEEL_R], R)[1] - W0[1] };
+}
+// SOLVER END
+
+// QUARTER-CAR START — one corner per axle, SI units, displacements from static equilibrium.
+const QC = { ms: 450, mu: 65, ks: 30000, cs: 2000, kt: 200000, g: 9.81 };
+QC.fStatic = (QC.ms + QC.mu) * QC.g;
+const ROAD_PERIOD = 24;
+function roadProfile(s) {
+  s = ((s % ROAD_PERIOD) + ROAD_PERIOD) % ROAD_PERIOD;
+  if (s > 4 && s < 4.5) return 0.02 * (1 - Math.cos(2 * Math.PI * (s - 4) / 0.5));
+  if (s > 14 && s < 14.7) return -0.015 * (1 - Math.cos(2 * Math.PI * (s - 14) / 0.7));
+  return 0;
+}
+function corner() { return { zs: 0, vs: 0, zu: 0, vu: 0, zr: 0, load: QC.fStatic }; }
+function stepCorner(c, zr, dt) {
+  const fs = QC.ks * (c.zs - c.zu) + QC.cs * (c.vs - c.vu);
+  const ft = Math.max(QC.kt * (zr - c.zu), -QC.fStatic);
+  c.vs += (-fs / QC.ms) * dt;
+  c.vu += ((fs + ft) / QC.mu) * dt;
+  c.zs += c.vs * dt; c.zu += c.vu * dt;
+  c.zr = zr; c.load = QC.fStatic + ft;
+}
+// QUARTER-CAR END
+
+// BLOWER START — clutch and boost model. Pedal 0..1; the clutch closes only in the last 2 % of travel.
+const BLOWER = { ratio: 2.6, engageAt: 0.98, tauUp: 0.25, tauDown: 0.7, boostMax: 0.5, psAtmo: 115, psBoost: 180 };
+function stepBlower(b, pedal, dt) {
+  b.engaged = pedal >= BLOWER.engageAt;
+  const target = b.engaged ? 1 : 0, tau = b.engaged ? BLOWER.tauUp : BLOWER.tauDown;
+  b.spin += (target - b.spin) * (1 - Math.exp(-dt / tau));
+  b.boost = BLOWER.boostMax * b.spin * b.spin;
+  b.power = BLOWER.psAtmo + (BLOWER.psBoost - BLOWER.psAtmo) * b.spin * b.spin;
+}
+// BLOWER END
+</script>
+<script>
+(() => {
+  const stage = document.getElementById("stage");
+  const photo = document.getElementById("photo");
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const mm = v => new THREE.Vector3(v[0] / 1000, v[1] / 1000, v[2] / 1000);
+  const V = (x, y, z) => new THREE.Vector3(x, y, z);
+  if (!window.THREE) { stage.insertAdjacentHTML("beforeend", "<p style='position:absolute;padding:16px'>The 3D library did not load. Check your connection and reload the page.</p>"); return; }
+
+  const state = { comp: "susp", view: "model", playSusp: true, auto: true, outline: false, pedal: 0.3 };
+  const WB = 3.29, GROUND = -WHEEL_R / 1000;
+
+  // ---------- renderer, cameras ----------
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  stage.insertBefore(renderer.domElement, document.getElementById("hint"));
+  const scene = new THREE.Scene();
+  const cam = new THREE.PerspectiveCamera(32, 1200 / 803, 0.05, 60);
+  cam.up.set(0, 0, 1);
+  const controls = new THREE.OrbitControls(cam, renderer.domElement);
+  controls.enableDamping = true; controls.minDistance = 0.8; controls.maxDistance = 16;
+  const VIEWS = {
+    susp: { pos: [2.0, 2.5, 0.75], target: [-0.3, 0.25, -0.12] },
+    blower: { pos: [1.35, 0.75, 1.05], target: [-0.38, 0.02, 0.28] },
+  };
+  // Camera fitted to the museum photo from wheel, tyre, mascot, windscreen and bumper correspondences.
+  const PHOTO_CAM = { c: [3037.2, 3487.3, 1696.0], yaw: -2.4279, pitch: -0.2495, roll: -0.0171, f: 1320.9 };
+  const photoCam = new THREE.PerspectiveCamera(2 * Math.atan(401.5 / PHOTO_CAM.f) * 180 / Math.PI, 1200 / 803, 0.05, 60);
+  function aimPhotoCam() {
+    const { yaw, pitch, roll } = PHOTO_CAM;
+    const f = V(Math.cos(pitch) * Math.cos(yaw), Math.cos(pitch) * Math.sin(yaw), Math.sin(pitch));
+    const r = new THREE.Vector3().crossVectors(f, V(0, 0, 1)).normalize();
+    const u = new THREE.Vector3().crossVectors(r, f);
+    photoCam.position.copy(mm(PHOTO_CAM.c));
+    photoCam.up.copy(u.clone().multiplyScalar(Math.cos(roll)).addScaledVector(r, -Math.sin(roll)));
+    photoCam.lookAt(photoCam.position.clone().add(f));
+    photoCam.fov = 2 * Math.atan(401.5 / PHOTO_CAM.f) * 180 / Math.PI; photoCam.updateProjectionMatrix();
+  }
+  aimPhotoCam();
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x445566, 0.95));
+  const sun = new THREE.DirectionalLight(0xffffff, 0.65); sun.position.set(3, 4, 6); scene.add(sun);
+
+  // ---------- helpers ----------
+  const mat = (c = 0xffffff, o = {}) => new THREE.MeshStandardMaterial({ color: c, roughness: 0.5, metalness: 0.15, ...o });
+  const metal = mat(), dark = mat(0x343b42);
+  const cylGeo = new THREE.CylinderGeometry(1, 1, 1, 16), sphGeo = new THREE.SphereGeometry(1, 16, 12);
+  const Y = V(0, 1, 0);
+  function rod(m, r) { const o = new THREE.Mesh(cylGeo, m); o.userData.r = r; return o; }
+  function place(o, a, b) {
+    const d = new THREE.Vector3().subVectors(b, a), len = d.length();
+    o.position.copy(a).addScaledVector(d, 0.5);
+    if (len > 1e-9) o.quaternion.setFromUnitVectors(Y, d.multiplyScalar(1 / len));
+    o.scale.set(o.userData.r, Math.max(len, 1e-6), o.userData.r);
+  }
+  function ball(m, r, p) { const o = new THREE.Mesh(sphGeo, m); o.scale.setScalar(r); if (p) o.position.copy(p); return o; }
+  // 7.00-17 tyre on a wire wheel, axis along y.
+  function wireWheel(tyreMat, spokeMat) {
+    const g = new THREE.Group();
+    const t = new THREE.Mesh(new THREE.TorusGeometry(0.295, 0.085, 14, 56), tyreMat); t.rotation.x = Math.PI / 2; g.add(t);
+    if (spokeMat) {
+      const pts = [];
+      for (let i = 0; i < 32; i++) {
+        const a = i / 32 * Math.PI * 2, side = i % 2 ? 0.035 : -0.035;
+        pts.push(0, side, 0, 0.215 * Math.cos(a), 0, 0.215 * Math.sin(a));
+      }
+      const sg = new THREE.BufferGeometry(); sg.setAttribute("position", new THREE.Float32BufferAttribute(pts, 3));
+      const spokes = new THREE.LineSegments(sg, spokeMat); g.add(spokes);
+      const rim = new THREE.Mesh(new THREE.TorusGeometry(0.215, 0.008, 6, 48), spokeMat.userData.solid); rim.rotation.x = Math.PI / 2; g.add(rim);
+    }
+    return g;
+  }
+  function edgesOf(geo, group, fillMat, lineMat) { group.add(new THREE.Mesh(geo, fillMat)); group.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo, 25), lineMat)); }
+  // Side-profile shape (x, z in mm) extruded across y from y0 to y1 (mm).
+  function profileExtrude(pts, y0, y1, curve = 12) {
+    const s = new THREE.Shape(); s.moveTo(pts[0][0], pts[0][1]); for (const p of pts.slice(1)) s.lineTo(p[0], p[1]);
+    const g = new THREE.ExtrudeGeometry(s, { depth: y1 - y0, bevelEnabled: false, curveSegments: curve });
+    g.rotateX(Math.PI / 2); g.translate(0, y1, 0); g.scale(0.001, 0.001, 0.001); return g;
+  }
+  const arc = (cx, cz, r, a0, a1, n = 14) => Array.from({ length: n + 1 }, (_, i) => { const a = (a0 + (a1 - a0) * i / n) * Math.PI / 180; return [cx + r * Math.cos(a), cz + r * Math.sin(a)]; });
+
+  // ---------- world: road, rear wheels ----------
+  const world = new THREE.Group(); scene.add(world);
+  const ROAD_X0 = -6.2, ROAD_X1 = 5, ROAD_SEG = 480;
+  const roadGeo = new THREE.PlaneGeometry(ROAD_X1 - ROAD_X0, 3.4, ROAD_SEG, 1);
+  roadGeo.translate((ROAD_X0 + ROAD_X1) / 2, 0, 0);
+  const roadTexCanvas = document.createElement("canvas"); roadTexCanvas.width = 512; roadTexCanvas.height = 128;
+  const roadTex = new THREE.CanvasTexture(roadTexCanvas); roadTex.wrapS = THREE.RepeatWrapping;
+  roadTex.repeat.set((ROAD_X1 - ROAD_X0) / 4, 1);
+  const isDark = () => document.documentElement.matches(":root[data-theme=dark]") || (matchMedia("(prefers-color-scheme: dark)").matches && !document.documentElement.matches(":root[data-theme=light]"));
+  function paintRoad() {
+    const g = roadTexCanvas.getContext("2d"), dk = isDark();
+    g.fillStyle = dk ? "#2a3138" : "#b9c0c6"; g.fillRect(0, 0, 512, 128);
+    for (let i = 0; i < 900; i++) { g.fillStyle = `rgba(${dk ? "255,255,255" : "0,0,0"},${Math.random() * 0.07})`; g.fillRect(Math.random() * 512, Math.random() * 128, 2, 2); }
+    g.fillStyle = dk ? "#d8dde2" : "#ffffff"; g.fillRect(0, 6, 512, 5); g.fillRect(0, 117, 512, 5); g.fillRect(40, 61, 200, 6);
+    roadTex.needsUpdate = true;
+  }
+  const road = new THREE.Mesh(roadGeo, new THREE.MeshStandardMaterial({ map: roadTex, roughness: 0.95 }));
+  world.add(road);
+  const roadPos = roadGeo.attributes.position;
+  function updateRoad(dist) {
+    for (let i = 0; i < roadPos.count; i++) roadPos.setZ(i, GROUND + roadProfile(roadPos.getX(i) + dist));
+    roadPos.needsUpdate = true; roadGeo.computeVertexNormals();
+    roadTex.offset.x = (dist / 4) % 1;
+  }
+  const patchGeo = new THREE.CircleGeometry(1, 28);
+  const patches = [[0, 0.757], [0, -0.757], [-WB, 0.751], [-WB, -0.751]].map(([x, y]) => {
+    const m = new THREE.Mesh(patchGeo, new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.9, depthTest: false }));
+    m.position.set(x, y, 0); m.renderOrder = 5; world.add(m); return m;
+  });
+  const ghostWheelMat = mat(0x22272b, { transparent: true, opacity: 0.5, depthWrite: false, roughness: 0.9 });
+  const rearWheels = [0.751, -0.751].map(y => { const w = wireWheel(ghostWheelMat); w.position.set(-WB, y, 0); world.add(w); return w; });
+
+  // ---------- car: sprung body ----------
+  const car = new THREE.Group(); scene.add(car);
+  // Ghost body of the 540 K Cabriolet B: 3290 wheelbase, about 5.25 m long, 1.88 m wide; separate wings and running boards.
+  const ghostMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.06, depthWrite: false, side: THREE.DoubleSide });
+  const edgeMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.5 });
+  const ghost = new THREE.Group(); car.add(ghost);
+  {
+    // Radiator shell and bonnet
+    edgesOf(profileExtrude([[230, -40], [250, 760], [170, 830], [-1720, 850], [-1720, -40]], -440, 440), ghost, ghostMat, edgeMat);
+    // Body tub with boot
+    edgesOf(profileExtrude([[-1720, -160], [-1720, 730], [-3950, 740], [-4420, 470], [-4480, 60], [-4300, -160]], -870, 870), ghost, ghostMat, edgeMat);
+    // Hood (soft top) and windscreen
+    edgesOf(profileExtrude([[-1760, 730], [-1900, 1200], [-3250, 1215], [-3850, 760]], -730, 730), ghost, ghostMat, edgeMat);
+    // Wings and running board, each side
+    const wing = [[600, -230], [430, 250], [180, 490], [-200, 500], [-620, 290], [-1250, -60], [-1500, -140], [-2830, -140],
+      [-2980, 170], [-3290, 510], [-3700, 390], [-4080, 30], [-4200, -170],
+      ...arc(-WB * 1000, 0, 420, 200, -20), [-2900, -190], [-1450, -190], [-700, -40],
+      ...arc(0, 0, 415, 195, -20), [560, -270]];
+    for (const s of [1, -1]) edgesOf(profileExtrude(wing, s > 0 ? 640 : -920, s > 0 ? 920 : -640), ghost, ghostMat, edgeMat);
+    // Spare wheel in the left front wing, headlamps
+    const spare = new THREE.Mesh(new THREE.TorusGeometry(0.29, 0.08, 8, 32), ghostMat); spare.position.set(-1.27, 0.86, 0.12); spare.rotation.set(Math.PI / 2, 0.25, 0); ghost.add(spare);
+    const spareEdge = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.TorusGeometry(0.29, 0.08, 6, 24), 30), edgeMat);
+    spareEdge.position.copy(spare.position); spareEdge.rotation.copy(spare.rotation); ghost.add(spareEdge);
+    for (const s of [1, -1]) {
+      const lamp = new THREE.CylinderGeometry(0.12, 0.1, 0.16, 20); lamp.rotateZ(Math.PI / 2); lamp.translate(0.42, s * 0.42, 0.43);
+      edgesOf(lamp, ghost, ghostMat, edgeMat);
+    }
+  }
+
+  // ---------- component 1: double-wishbone front suspension (left built once, right mirrored) ----------
+  const susp = new THREE.Group(); car.add(susp);
+  const linkMats = LINKS.map(() => mat());
+  const springMat = mat(), knuckleMat = mat(0x5b6670, { metalness: 0.4 });
+  const spokeMat = new THREE.LineBasicMaterial({ color: 0xc0c6cc, transparent: true, opacity: 0.8 });
+  spokeMat.userData.solid = mat(0xc0c6cc, { metalness: 0.6 });
+  const frontTyreMat = mat(0x22272b, { transparent: true, opacity: 0.5, depthWrite: false, roughness: 0.9 });
+  const lowerAxisMid = mm([0, 330, -140]);
+  const springTop = mm([0, 495, 330]);
+  function helix(a, b, turns = 7, r = 0.046) {
+    const d = new THREE.Vector3().subVectors(b, a), len = d.length(), n = d.clone().normalize();
+    const t1 = V(1, 0, 0).cross(n).normalize(), t2 = n.clone().cross(t1), pts = [];
+    for (let i = 0; i <= 200; i++) {
+      const u = i / 200, th = u * Math.PI * 2 * turns;
+      pts.push(a.clone().addScaledVector(n, u * len).addScaledVector(t1, Math.cos(th) * r).addScaledVector(t2, Math.sin(th) * r));
+    }
+    return new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 200, 0.007, 6, false);
+  }
+  function buildSide(mirror) {
+    const g = new THREE.Group(); if (mirror) g.scale.y = -1; susp.add(g);
+    // Frame side member and front crossmember carrying the inner pivots
+    const rail = rod(metal, 0.03); place(rail, V(0.38, 0.3, 0.02), V(-0.75, 0.3, 0.02)); g.add(rail);
+    const cross = rod(metal, 0.025); place(cross, V(0, 0, -0.14), V(0, 0.3, -0.14)); g.add(cross);
+    for (const L of LINKS) { const b = mm(L.b); const br = rod(metal, 0.009); place(br, b, V(b.x, 0.29, b.z)); g.add(br, ball(dark, 0.016, b)); }
+    const tower = rod(metal, 0.012); place(tower, springTop, V(0, 0.3, 0.33)); g.add(tower, ball(dark, 0.03, springTop));
+    // Steering knuckle (carrier frame, origin at wheel centre)
+    const carrier = new THREE.Group(); g.add(carrier);
+    const lbj = mm(LINKS[0].cl), ubj = mm(LINKS[2].cl), trp = mm(LINKS[4].cl);
+    const kingpin = rod(knuckleMat, 0.02); place(kingpin, lbj, ubj); carrier.add(kingpin);
+    const stub = rod(knuckleMat, 0.025); place(stub, V(0, lbj.y + 0.01, 0), V(0, 0.04, 0)); carrier.add(stub);
+    const arm = rod(knuckleMat, 0.012); place(arm, V(0, lbj.y, -0.05), trp); carrier.add(arm);
+    const drum = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.17, 0.07, 40), dark); drum.position.y = -0.03; carrier.add(drum);
+    const wheel = wireWheel(frontTyreMat, spokeMat); wheel.position.y = 0.02; carrier.add(wheel);
+    const links = LINKS.map((L, i) => { const o = { rod: rod(linkMats[i], 0.012), jb: ball(linkMats[i], 0.018), jc: ball(linkMats[i], 0.022) }; g.add(o.rod, o.jb, o.jc); return o; });
+    const spring = new THREE.Mesh(new THREE.BufferGeometry(), springMat); g.add(spring);
+    const seatPad = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.055, 0.012, 24), dark); g.add(seatPad);
+    return { carrier, wheel, links, spring, seatPad };
+  }
+  const sides = [buildSide(false), buildSide(true)];
+  const R4 = new THREE.Matrix4();
+  let q = [0, 0, 0, 0, 0, 0];
+  function poseSusp(travelMm) {
+    q = solve(q, travelMm);
+    const R = rotm(q.slice(3));
+    R4.set(R[0], R[1], R[2], 0, R[3], R[4], R[5], 0, R[6], R[7], R[8], 0, 0, 0, 0, 1);
+    const wc = mm([W0[0] + q[0], W0[1] + q[1], W0[2] + q[2]]);
+    const lowerBJ = mm(carrierPoint(q, LINKS[0].cl, R));
+    const seat = lowerAxisMid.clone().lerp(lowerBJ, 0.52);
+    const springGeo = helix(seat, springTop);
+    sides.forEach((s, k) => {
+      s.carrier.quaternion.setFromRotationMatrix(R4); s.carrier.position.copy(wc);
+      LINKS.forEach((L, i) => {
+        const b = mm(L.b), c = mm(carrierPoint(q, L.cl, R));
+        place(s.links[i].rod, b, c); s.links[i].jb.position.copy(b); s.links[i].jc.position.copy(c);
+      });
+      if (k === 0) s.spring.geometry.dispose();
+      s.spring.geometry = springGeo;
+      s.seatPad.position.copy(seat); s.seatPad.quaternion.setFromUnitVectors(Y, new THREE.Vector3().subVectors(springTop, seat).normalize());
+    });
+    return angles(q);
+  }
+
+  // ---------- component 2: Roots supercharger on the M 24 straight-eight ----------
+  // Layout (m, car coords): blower upright ahead of the block, rotor axes fore-aft, air in at the bottom and out at the top,
+  // then forward-to-back through the carburettor into the inlet manifold on the left of the block.
+  const blower = new THREE.Group(); car.add(blower);
+  blower.position.z = 0.12;   // crank about 0.5 m above the ground
+  const BL = { x0: -0.02, x1: -0.2, zc: 0.24, d: 0.1, rc: 0.08, crankZ: 0.0, blockX0: -0.3, blockX1: -1.22 };
+  const xb = (BL.x0 + BL.x1) / 2;
+  const caseMat = new THREE.MeshStandardMaterial({ color: 0x8fa3b3, transparent: true, opacity: 0.12, depthWrite: false, side: THREE.DoubleSide });
+  const caseEdge = new THREE.LineBasicMaterial({ color: 0x8fa3b3, transparent: true, opacity: 0.6 });
+  const rotorMat = mat(0xb8c0c8, { metalness: 0.55, roughness: 0.35 });
+  const gearMat = mat(0x9aa4ad, { metalness: 0.5 });
+  const pipeMat = new THREE.MeshStandardMaterial({ color: 0x8fa3b3, transparent: true, opacity: 0.2, depthWrite: false });
+  // Map an extruded 2-D shape (u, v, w) to car coords (x = w, y = u, z = v).
+  const UVW = new THREE.Matrix4().set(0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1);
+  // Two-lobe rotor: r(φ) = c + e·g(cos 2φ) with g odd, so the two rotors stay in contact on the line of centres.
+  function rotorGeo() {
+    const c = BL.d / 2, e = 0.024, s = new THREE.Shape();
+    for (let i = 0; i <= 160; i++) {
+      const p = i / 160 * Math.PI * 2, u = Math.cos(2 * p), r = c + e * Math.sign(u) * Math.pow(Math.abs(u), 0.55);
+      i ? s.lineTo(r * Math.cos(p), r * Math.sin(p)) : s.moveTo(r * Math.cos(p), r * Math.sin(p));
+    }
+    const g = new THREE.ExtrudeGeometry(s, { depth: BL.x0 - BL.x1 - 0.02, bevelEnabled: false });
+    g.applyMatrix4(UVW); return g;
+  }
+  const rotors = [-1, 1].map(side => {
+    const m = new THREE.Mesh(rotorGeo(), rotorMat); m.position.set(BL.x1 + 0.01, side * BL.d / 2, BL.zc); blower.add(m); return m;
+  });
+  {
+    // Figure-of-eight casing: left bore from the bottom neck round the outside to the top neck, then the right bore back down.
+    const R = BL.rc, h = BL.d / 2;
+    const outline = [[-0.035, -0.12], ...arc(-h, 0, R, -90, -270, 40), [-0.035, 0.12], [0.035, 0.12], ...arc(h, 0, R, 90, -90, 40), [0.035, -0.12]];
+    const sh = new THREE.Shape(); sh.moveTo(outline[0][0], outline[0][1]); for (const p of outline.slice(1)) sh.lineTo(p[0], p[1]);
+    const g = new THREE.ExtrudeGeometry(sh, { depth: BL.x0 - BL.x1, bevelEnabled: false }); g.applyMatrix4(UVW); g.translate(BL.x1, 0, BL.zc);
+    blower.add(new THREE.Mesh(g, caseMat), new THREE.LineSegments(new THREE.EdgesGeometry(g, 20), caseEdge));
+  }
+  // Crankshaft nose, multi-plate clutch, drive gears
+  const crank = new THREE.Group(); crank.position.set(0, 0, BL.crankZ); blower.add(crank);
+  { const shaft = rod(gearMat, 0.03); place(shaft, V(-0.24, 0, 0), V(BL.blockX1 - 0.05, 0, 0)); crank.add(shaft);
+    for (let i = 0; i < 8; i++) { const x = BL.blockX0 - 0.06 - i * 0.112, thr = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.03, 0.11), gearMat); thr.position.set(x, 0, 0.03 * ([1, -1, -1, 1, -1, 1, 1, -1][i])); crank.add(thr); } }
+  function gear(R, teeth, w) {
+    const g = new THREE.Group(), body = new THREE.Mesh(new THREE.CylinderGeometry(R - 0.006, R - 0.006, w, 48), gearMat); body.rotation.z = Math.PI / 2; g.add(body);
+    for (let i = 0; i < teeth; i++) { const a = i / teeth * Math.PI * 2, t = new THREE.Mesh(new THREE.BoxGeometry(w, 0.012, 0.008), gearMat); t.position.set(0, R * Math.cos(a), R * Math.sin(a)); t.rotation.x = a; g.add(t); }
+    return g;
+  }
+  const bigGear = gear(0.17, 44, 0.025); bigGear.position.set(-0.215, 0, BL.crankZ); blower.add(bigGear);
+  const pinion = gear(0.068, 18, 0.025); pinion.position.set(-0.215, 0, BL.zc); blower.add(pinion);
+  const pinShaft = rod(gearMat, 0.014); place(pinShaft, V(-0.23, -BL.d / 2, BL.zc), V(BL.x1, -BL.d / 2, BL.zc)); blower.add(pinShaft);
+  const plateMat = mat(0xd9480f), plateMat2 = mat(0x9aa4ad, { metalness: 0.5 });
+  const plates = [0, 1, 2, 3].map(i => { const p = new THREE.Mesh(new THREE.CylinderGeometry(0.075, 0.075, 0.006, 32), i % 2 ? plateMat : plateMat2); p.rotation.z = Math.PI / 2; blower.add(p); return p; });
+  // Engine block outline with eight bores
+  {
+    const blk = new THREE.BoxGeometry(BL.blockX0 - BL.blockX1, 0.26, 0.52); blk.translate((BL.blockX0 + BL.blockX1) / 2, 0, 0.17);
+    blower.add(new THREE.Mesh(blk, caseMat), new THREE.LineSegments(new THREE.EdgesGeometry(blk), caseEdge));
+    for (let i = 0; i < 8; i++) { const ring = new THREE.Mesh(new THREE.TorusGeometry(0.044, 0.003, 6, 28), new THREE.MeshBasicMaterial({ color: 0x8fa3b3 })); ring.position.set(BL.blockX0 - 0.06 - i * 0.112, 0, 0.432); blower.add(ring); }
+  }
+  // Air paths (m). Blower route: filter → bottom inlet → round both rotors → top outlet → carburettor → manifold → cylinder i.
+  const CARB = V(-0.5, 0.2, 0.47), PLENUM = V(-0.55, 0.19, 0.34);
+  const RUNNER = i => V(BL.blockX0 - 0.06 - i * 0.112, 0.13, 0.36);
+  const MANI_Z = 0.36;
+  const inletPath = [V(xb, 0, -0.16), V(xb, 0, BL.zc - 0.13)];
+  const aroundRotor = side => arc(side * BL.d / 2, 0, 0.066, side < 0 ? -90 : -90, side < 0 ? -270 : 90, 18).map(([u, v]) => V(xb, u, BL.zc + v));
+  const outletPath = [V(xb, 0, BL.zc + 0.13), V(xb, 0, 0.52), V(-0.2, 0.08, 0.6), V(-0.42, 0.18, 0.6), CARB];
+  const bypassPath = [V(-0.5, 0.42, 0.66), V(-0.5, 0.32, 0.6), CARB];
+  const tail = i => [CARB, PLENUM, V(RUNNER(i).x, 0.19, MANI_Z), RUNNER(i)];
+  function pipe(points, r) {
+    const curve = new THREE.CatmullRomCurve3(points, false, "catmullrom", 0.1);
+    blower.add(new THREE.Mesh(new THREE.TubeGeometry(curve, 48, r, 10, false), pipeMat));
+  }
+  pipe(inletPath, 0.03); pipe(outletPath, 0.03); pipe(bypassPath, 0.025);
+  pipe([V(BL.blockX0 + 0.02, 0.19, MANI_Z), V(BL.blockX1 + 0.04, 0.19, MANI_Z)], 0.028);
+  for (let i = 0; i < 8; i++) pipe([V(RUNNER(i).x, 0.19, MANI_Z), RUNNER(i)], 0.016);
+  const carbBody = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.09, 0.14), mat(0x8a96a1, { metalness: 0.4 })); carbBody.position.copy(CARB).add(V(0, 0, -0.06)); blower.add(carbBody);
+  const filter = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.07, 24), dark); filter.position.set(xb, 0, -0.18); blower.add(filter);
+  // Atmospheric inlet flap on the carburettor: open when the blower is out, shut when it is in.
+  const flapHinge = new THREE.Group(); flapHinge.position.set(-0.5, 0.42, 0.66); blower.add(flapHinge);
+  const flap = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.004, 0.05), mat(0x4a90d9)); flap.position.set(0, 0, 0); flapHinge.add(flap);
+
+  // Particles following polylines by arc length.
+  function polyline(points) { const segs = []; let tot = 0; for (let i = 1; i < points.length; i++) { const l = points[i].distanceTo(points[i - 1]); segs.push(l); tot += l; } return { points, segs, tot }; }
+  function at(pl, s, out) {
+    let d = s * pl.tot;
+    for (let i = 0; i < pl.segs.length; i++) { if (d <= pl.segs[i] || i === pl.segs.length - 1) return out.copy(pl.points[i]).lerp(pl.points[i + 1], Math.min(1, d / pl.segs[i])); d -= pl.segs[i]; }
+    return out.copy(pl.points[pl.points.length - 1]);
+  }
+  const ROUTES = { blower: [-1, 1].map(side => [...inletPath, ...aroundRotor(side), ...outletPath]), bypass: [bypassPath] };
+  const routeCache = {};
+  function routeFor(kind, branch, cylIdx) {
+    const key = kind + branch + "_" + cylIdx;
+    if (!routeCache[key]) { const head = ROUTES[kind][branch]; routeCache[key] = polyline([...head.slice(0, -1), ...tail(cylIdx)]); }
+    return routeCache[key];
+  }
+  const NP = 220, pPos = new Float32Array(NP * 3), pCol = new Float32Array(NP * 3);
+  const parts = Array.from({ length: NP }, (_, i) => ({ s: Math.random(), kind: "bypass", branch: 0, cyl: i % 8, on: false }));
+  const pGeo = new THREE.BufferGeometry();
+  pGeo.setAttribute("position", new THREE.BufferAttribute(pPos, 3)); pGeo.setAttribute("color", new THREE.BufferAttribute(pCol, 3));
+  const pMat = new THREE.PointsMaterial({ size: 0.026, vertexColors: true, transparent: true, opacity: 0.95, depthTest: false });
+  const pts = new THREE.Points(pGeo, pMat); pts.renderOrder = 6; blower.add(pts);
+  const colBypass = new THREE.Color(), colBoost = new THREE.Color(), tmp = new THREE.Vector3();
+  const bstate = { engaged: false, spin: 0, boost: 0, power: BLOWER.psAtmo };
+  let crankA = 0, rotorA = 0, clutchGap = 1;
+  function poseBlower(dt) {
+    stepBlower(bstate, state.pedal, dt);
+    const crankRate = 0.5 + 1.6 * state.pedal;                 // rev/s, slow motion
+    crankA += crankRate * 2 * Math.PI * dt;
+    rotorA += crankRate * BLOWER.ratio * bstate.spin * 2 * Math.PI * dt;
+    crank.rotation.x = crankA; bigGear.rotation.x = -rotorA / BLOWER.ratio;
+    pinion.rotation.x = rotorA;
+    rotors[0].rotation.x = -rotorA; rotors[1].rotation.x = Math.PI / 2 + rotorA;
+    clutchGap += ((bstate.engaged ? 0 : 1) - clutchGap) * Math.min(1, dt * 12);
+    plates.forEach((p, i) => { p.position.set(-0.25 + i * (0.008 + 0.006 * clutchGap), 0, BL.crankZ); p.rotation.x = i % 2 ? crankA : -rotorA / BLOWER.ratio; });
+    flapHinge.rotation.x = -(1 - bstate.spin) * 1.2;
+    // Air: flow rate grows with pedal; with the blower in, it is forced and faster.
+    const flow = 0.12 + 0.25 * state.pedal + 0.35 * bstate.spin;
+    for (let i = 0; i < NP; i++) {
+      const p = parts[i];
+      const pl = routeFor(p.kind, p.branch, p.cyl);
+      p.s += flow * dt / pl.tot * 0.35;
+      if (p.s >= 1) {
+        p.s -= 1; p.cyl = (Math.random() * 8) | 0;
+        p.kind = bstate.spin > 0.5 ? "blower" : "bypass"; p.branch = p.kind === "blower" ? (Math.random() < 0.5 ? 0 : 1) : 0;
+      }
+      at(routeFor(p.kind, p.branch, p.cyl), p.s, tmp);
+      pPos[i * 3] = tmp.x; pPos[i * 3 + 1] = tmp.y; pPos[i * 3 + 2] = tmp.z;
+      const c = p.kind === "blower" ? colBoost : colBypass;
+      pCol[i * 3] = c.r; pCol[i * 3 + 1] = c.g; pCol[i * 3 + 2] = c.b;
+    }
+    pGeo.attributes.position.needsUpdate = true; pGeo.attributes.color.needsUpdate = true;
+  }
+
+  // ---------- rotor end view (SVG, same profile and phasing as the 3-D rotors; y → right, z → up) ----------
+  const rotorSvg = document.getElementById("rotorSvg"), SV = 1000;   // 1 svg unit = 1 mm
+  {
+    const R = BL.rc * SV, h = BL.d / 2 * SV;
+    const nz = Math.sqrt(R * R - (h - 35) ** 2).toFixed(1);
+    rotorSvg.innerHTML = `<path fill="none" stroke="var(--muted)" stroke-width="2" d="M -35 92 L -35 ${nz} A ${R} ${R} 0 1 1 -35 -${nz} L -35 -92 M 35 -92 L 35 -${nz} A ${R} ${R} 0 1 1 35 ${nz} L 35 92"/>
+      <path id="rotL" fill="var(--metal)" stroke="var(--fg)" stroke-width="1"/><path id="rotR" fill="var(--metal)" stroke="var(--fg)" stroke-width="1"/>
+      <g id="pockets"></g>
+      <text x="0" y="90" text-anchor="middle" font-family="var(--mono)" font-size="10" fill="var(--muted)">in</text>
+      <text x="0" y="-80" text-anchor="middle" font-family="var(--mono)" font-size="10" fill="var(--muted)">out</text>`;
+  }
+  const rotL = rotorSvg.querySelector("#rotL"), rotR = rotorSvg.querySelector("#rotR"), pocketsG = rotorSvg.querySelector("#pockets");
+  pocketsG.innerHTML = [0, 1, 2, 3].map(() => `<circle r="9"/>`).join("");
+  function rotorPath(cy, ang) {
+    const c = BL.d / 2, e = 0.024; let d = "";
+    for (let i = 0; i <= 72; i++) {
+      const p = i / 72 * Math.PI * 2, u = Math.cos(2 * p), r = (c + e * Math.sign(u) * Math.pow(Math.abs(u), 0.55)) * SV;
+      const yy = cy + r * Math.cos(p + ang), zz = r * Math.sin(p + ang);
+      d += (i ? "L" : "M") + yy.toFixed(1) + " " + (-zz).toFixed(1);
+    }
+    return d + "Z";
+  }
+  function drawRotorSvg() {
+    const aL = -rotorA, aR = Math.PI / 2 + rotorA, h = BL.d / 2 * SV;
+    rotL.setAttribute("d", rotorPath(-h, aL)); rotR.setAttribute("d", rotorPath(h, aR));
+    // Air pockets sit in the gaps between lobe tips (local angle ±90°) and turn with the rotor; shown only on the casing side.
+    const col = bstate.spin > 0.5 ? "var(--l1)" : "var(--l4)";
+    [[-h, aL, Math.PI / 2], [-h, aL, -Math.PI / 2], [h, aR, Math.PI / 2], [h, aR, -Math.PI / 2]].forEach(([cy, a, off], i) => {
+      const t = a + off, yy = cy + 0.064 * SV * Math.cos(t), zz = 0.064 * SV * Math.sin(t), c = pocketsG.children[i];
+      c.setAttribute("cx", yy.toFixed(1)); c.setAttribute("cy", (-zz).toFixed(1));
+      c.setAttribute("fill", col); c.setAttribute("opacity", Math.sign(yy) === Math.sign(cy) && Math.abs(yy) > Math.abs(cy) * 0.6 ? 0.85 : 0);
+    });
+  }
+
+  // ---------- colours / theme ----------
+  function applyColors() {
+    paintRoad();
+    metal.color.set(css("--metal")); springMat.color.set(css("--l4"));
+    LINKS.forEach((L, i) => linkMats[i].color.set(css(L.tok)));
+    colBypass.set(css("--l4")); colBoost.set(css("--l1")); plateMat.color.set(css("--l1"));
+    const onPhoto = state.view === "photo";
+    const line = onPhoto ? "#ffffff" : css("--fg");
+    edgeMat.color.set(line); ghostMat.color.set(line);
+    scene.background = onPhoto ? null : new THREE.Color(css("--stage"));
+  }
+  const legend = document.getElementById("legend");
+  legend.innerHTML = [["--l1", "Lower wishbone (two legs)"], ["--l2", "Upper wishbone (two legs)"], ["--l5", "Track rod"], ["--l4", "Coil spring"], ["--metal", "Frame and knuckle"]]
+    .map(([t, n]) => `<li><span class="sw" style="background:var(${t})"></span>${n}</li>`).join("");
+
+  // ---------- trace ----------
+  const traceSvg = document.getElementById("trace"), trace = [];
+  const TW = 280, TSPAN = 6;
+  traceSvg.innerHTML = `<line x1="0" y1="55" x2="${TW}" y2="55" stroke="var(--rule)"/><line x1="0" y1="5" x2="${TW}" y2="5" stroke="var(--rule)" stroke-dasharray="2 3"/><line x1="0" y1="105" x2="${TW}" y2="105" stroke="var(--rule)" stroke-dasharray="2 3"/>
+    <polyline id="tTravel" fill="none" stroke="var(--accent)" stroke-width="1.6"/><polyline id="tLoad" fill="none" stroke="var(--l1)" stroke-width="1.6"/>
+    <text x="${TW - 2}" y="15" text-anchor="end">bump / 200 %</text><text x="${TW - 2}" y="101" text-anchor="end">rebound / 0 %</text>`;
+  const tTravel = traceSvg.querySelector("#tTravel"), tLoad = traceSvg.querySelector("#tLoad");
+  function drawTrace(t) {
+    while (trace.length && trace[0].t < t - TSPAN) trace.shift();
+    const X = tt => ((tt - (t - TSPAN)) / TSPAN * TW).toFixed(1);
+    tTravel.setAttribute("points", trace.map(p => `${X(p.t)},${(55 - Math.max(-60, Math.min(60, p.travel)) / 60 * 50).toFixed(1)}`).join(" "));
+    tLoad.setAttribute("points", trace.map(p => `${X(p.t)},${(105 - Math.min(200, p.load) / 200 * 100).toFixed(1)}`).join(" "));
+  }
+
+  // ---------- simulation ----------
+  const SPEED = 25 / 3.6, SLOWMO = 0.2, DT = 0.0005;
+  const front = corner(), rear = corner();
+  let dist = 0, simT = 0, photoT = 0, autoT = 0;
+  function stepRoad(realDt) {
+    let h = Math.min(realDt, 0.05) * SLOWMO;
+    while (h > 1e-9) {
+      const dt = Math.min(DT, h); h -= dt; simT += dt; dist += SPEED * dt;
+      stepCorner(front, roadProfile(dist), dt);
+      stepCorner(rear, roadProfile(dist - WB), dt);
+    }
+  }
+  // Auto demo pedal: cruise, part throttle, floor it (blower in), lift off.
+  function autoPedal(t) {
+    t %= 10;
+    if (t < 2) return 0.25 + 0.5 * t / 2;
+    if (t < 3.5) return 0.75;
+    if (t < 3.8) return 0.75 + 0.25 * (t - 3.5) / 0.3;
+    if (t < 7.5) return 1;
+    if (t < 8) return 1 - 0.75 * (t - 7.5) / 0.5;
+    return 0.25;
+  }
+
+  // ---------- UI wiring ----------
+  const $ = id => document.getElementById(id);
+  function setSeg(id, v) { $(id).querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.v === v))); }
+  function refreshLayout() {
+    const onPhoto = state.view === "photo", isSusp = state.comp === "susp";
+    document.querySelectorAll("[data-comp]").forEach(el => el.hidden = el.dataset.comp !== state.comp);
+    document.querySelectorAll("[data-only]").forEach(el => el.hidden = (el.dataset.only === "photo") !== onPhoto);
+    photo.hidden = !onPhoto; $("credit").hidden = !onPhoto; $("hint").hidden = onPhoto;
+    controls.enabled = !onPhoto;
+    susp.visible = isSusp; blower.visible = !isSusp;
+    world.visible = !onPhoto && isSusp;
+    ghost.visible = onPhoto ? state.outline : isSusp;
+    ghostMat.opacity = onPhoto ? 0.0 : (isSusp ? 0.06 : 0.035);
+    edgeMat.opacity = onPhoto ? 0.7 : (isSusp ? 0.5 : 0.25);
+    frontTyreMat.opacity = onPhoto ? 0.0 : 0.5;
+    spokeMat.opacity = onPhoto ? 0.0 : 0.8; spokeMat.userData.solid.visible = !onPhoto;
+    document.querySelectorAll(".outlineBtn").forEach(b => b.setAttribute("aria-pressed", String(state.outline)));
+    if (!onPhoto) { const v = VIEWS[state.comp]; cam.position.set(...v.pos); controls.target.set(...v.target); controls.update(); }
+    applyColors();
+  }
+  $("segComp").addEventListener("click", e => { const v = e.target.closest("button")?.dataset.v; if (v) { state.comp = v; setSeg("segComp", v); refreshLayout(); } });
+  $("segView").addEventListener("click", e => { const v = e.target.closest("button")?.dataset.v; if (v) { state.view = v; setSeg("segView", v); refreshLayout(); } });
+  $("playSusp").addEventListener("click", () => { state.playSusp = !state.playSusp; $("playSusp").setAttribute("aria-pressed", String(state.playSusp)); $("playSusp").textContent = state.playSusp ? "Pause" : "Play"; });
+  function setAuto(on) { state.auto = on; $("autoDemo").setAttribute("aria-pressed", String(on)); $("autoDemo").textContent = on ? "Auto demo on" : "Auto demo off"; }
+  $("autoDemo").addEventListener("click", () => { setAuto(!state.auto); autoT = 0; });
+  $("throttle").addEventListener("input", e => { setAuto(false); state.pedal = +e.target.value / 100; });
+  $("floorIt").addEventListener("click", () => { setAuto(false); state.pedal = 1; $("throttle").value = 100; });
+  document.querySelectorAll(".outlineBtn").forEach(b => b.addEventListener("click", () => { state.outline = !state.outline; refreshLayout(); }));
+
+  function resize() { const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); }
+  new ResizeObserver(resize).observe(stage);
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", applyColors);
+  new MutationObserver(applyColors).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) { state.playSusp = false; $("playSusp").setAttribute("aria-pressed", "false"); $("playSusp").textContent = "Play"; setAuto(false); }
+
+  // ---------- frame ----------
+  let last = performance.now(), frame = 0;
+  function frameUpdate(now) {
+    const dt = Math.min((now - last) / 1000, 0.05); last = now; frame++;
+    const onPhoto = state.view === "photo";
+    if (state.comp === "susp") {
+      let travel, load = 100;
+      if (onPhoto) {
+        if (state.playSusp) photoT += dt;
+        travel = Math.sin(photoT * 1.4) * 60;
+        car.position.set(0, 0, 0); car.rotation.set(0, 0, 0);
+      } else {
+        if (state.playSusp) stepRoad(dt);
+        travel = Math.max(-80, Math.min(80, (front.zu - front.zs) * 1000));
+        load = front.load / QC.fStatic * 100;
+        car.position.set(0, 0, front.zs);
+        car.rotation.set(0, Math.asin((rear.zs - front.zs) / WB), 0);
+        updateRoad(dist);
+        rearWheels.forEach(w => w.position.z = rear.zu);
+        [[front, 0], [front, 1], [rear, 2], [rear, 3]].forEach(([c, i]) => {
+          const p = patches[i], ratio = Math.max(0, c.load / QC.fStatic);
+          p.position.z = GROUND + c.zr + 0.002;
+          p.scale.set(0.02 + 0.075 * ratio, 0.07, 1);
+          p.material.color.set(css(ratio < 0.35 ? "--warn" : "--l1"));
+          p.material.opacity = ratio < 0.02 ? 0.25 : 0.9;
+        });
+        if (state.playSusp) { trace.push({ t: simT, travel, load }); if (frame % 2 === 0) drawTrace(simT); }
+      }
+      const a = poseSusp(travel);
+      $("oTravel").value = travel.toFixed(0); $("oCamber").value = a.camber.toFixed(2); $("oTrack").value = a.track.toFixed(1);
+      $("oLoad").value = onPhoto ? "–" : load.toFixed(0);
+    } else {
+      car.position.set(0, 0, 0); car.rotation.set(0, 0, 0);
+      if (state.auto) { autoT += dt; state.pedal = autoPedal(autoT); $("throttle").value = Math.round(state.pedal * 100); }
+      poseBlower(dt);
+      if (frame % 2 === 0) drawRotorSvg();
+      $("oPedal").value = Math.round(state.pedal * 100);
+      $("oRotor").value = (BLOWER.ratio * bstate.spin).toFixed(1);
+      $("oBoost").value = bstate.boost.toFixed(2);
+      $("oPower").value = Math.round(bstate.power);
+      const badge = $("clutchBadge"); badge.textContent = bstate.engaged ? "Clutch engaged" : "Clutch open"; badge.classList.toggle("on", bstate.engaged);
+      $("boostMeter").firstElementChild.style.width = (bstate.boost / BLOWER.boostMax * 100).toFixed(0) + "%";
+      $("boostMeter").classList.toggle("hot", bstate.spin > 0.5);
+    }
+  }
+
+  applyColors(); resize(); refreshLayout(); poseBlower(0); drawRotorSvg();
+  window.__k = { PHOTO_CAM, aimPhotoCam, state, refreshLayout };
+  (function loop(now) {
+    requestAnimationFrame(loop);
+    frameUpdate(now);
+    if (state.view === "model") controls.update();
+    renderer.render(scene, state.view === "photo" ? photoCam : cam);
+  })(performance.now());
+})();
+</script>

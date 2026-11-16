@@ -1,0 +1,21 @@
+{
+  "photo": "poc/photo-540k.jpg",
+  "image": { "width": 1200, "height": 803 },
+  "frame": "mm; x forward, y left, z up; origin = front axle centre at wheel-centre height",
+  "aimAt": [-1500, 300, 0],
+  "seeds": [[5000, 4500, 1200], [4000, 5500, 1300], [6000, 3500, 1000], [3000, 6000, 1500]],
+  "focalSeeds": [900, 1200, 1600],
+  "rollPenalty": 300,
+  "groundZ": -380,
+  "points": [
+    { "name": "LF wheel centre",        "X": [0, 800, 0],          "px": [593, 600],  "w": 3 },
+    { "name": "LF tyre bottom",         "X": [0, 757, -380],       "px": [575, 714],  "w": 2 },
+    { "name": "LR wheel centre",        "X": [-3290, 790, 0],      "px": [1012, 398], "w": 3 },
+    { "name": "LR tyre bottom",         "X": [-3290, 751, -380],   "px": [1000, 468], "w": 2 },
+    { "name": "Radiator mascot",        "X": [150, 0, 920],        "px": [408, 272],  "w": 1 },
+    { "name": "Windscreen top, left",   "X": [-1900, 720, 1200],   "px": [845, 190],  "w": 1 },
+    { "name": "Windscreen base, left",  "X": [-1800, 760, 720],    "px": [835, 270],  "w": 1 },
+    { "name": "Windscreen top, right",  "X": [-1900, -720, 1200],  "px": [622, 185],  "w": 1 },
+    { "name": "Front bumper, left end", "X": [600, 780, -250],     "px": [455, 660],  "w": 0.7 }
+  ]
+}
