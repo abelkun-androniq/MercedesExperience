@@ -1,0 +1,79 @@
+{
+  "cli_version": "0.13.4",
+  "checkpoint_id": "01M7KASWD243NK76P6AV8Y1QJ6",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 4,
+  "files_touched": [
+    "CLAUDE.md",
+    "lib/model/air-spring.js",
+    "lib/model/cooling.js",
+    "lib/model/differential.js",
+    "lib/model/engine.js",
+    "lib/model/gearbox.js",
+    "lib/model/truss.js",
+    "lib/model/wankel.js",
+    "stops/220s/car.js",
+    "stops/260d/car.js",
+    "stops/300sel63/car.js",
+    "stops/300sl/car.js",
+    "stops/540k/car.js",
+    "stops/blitzen-benz/car.js",
+    "stops/c111/car.js",
+    "stops/daimler-van/car.js",
+    "stops/papamobil/car.js",
+    "stops/patent-motorwagen/car.js",
+    "stops/simplex/car.js",
+    "stops/tour.js",
+    "subsystems/aero.js",
+    "subsystems/air-suspension.js",
+    "subsystems/crumple-zone.js",
+    "subsystems/differential.js",
+    "subsystems/gearbox.js",
+    "subsystems/inline-engine.js",
+    "subsystems/radiator.js",
+    "subsystems/space-frame.js",
+    "subsystems/wankel.js",
+    "tests/unit/body.test.mjs",
+    "tests/unit/drivetrain.test.mjs",
+    "tests/unit/engines2.test.mjs"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 202,
+    "cache_creation_tokens": 589045,
+    "cache_read_tokens": 23008753,
+    "output_tokens": 296514,
+    "api_call_count": 96,
+    "subagent_tokens": {
+      "input_tokens": 8,
+      "cache_creation_tokens": 40328,
+      "cache_read_tokens": 40685,
+      "output_tokens": 5586,
+      "api_call_count": 3
+    },
+    "subagent_tokens_complete": true
+  },
+  "redaction": {
+    "replacements": 43,
+    "layers": {
+      "betterleaks": 0,
+      "connection_string": 0,
+      "credential_key": 0,
+      "credential_value": 10,
+      "credentialed_uri": 0,
+      "entropy": 39,
+      "key_context": 0,
+      "provider_token": 0,
+      "shell_stdin": 0
+    }
+  }
+}
