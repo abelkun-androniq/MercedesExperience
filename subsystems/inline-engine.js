@@ -1,10 +1,14 @@
 // Inline piston engine turning over: crank, conrods, pistons, valves lifting in time, chambers coloured by stroke.
 // Params (mm, deg): label, order (firing order), bore, stroke, rod, xs (cylinder x positions, cyl 1 first), crankZ, lean
-// (+ = leans right), valvetrain "ohc" | "dohc" | "atmospheric", ignition "spark" | "hot-tube", fuel "carb" | "direct",
-// crankcase "open" | "flywheels", speed { min, max, value } (shown rpm, slow motion), realRpm? (readout note).
+// (+ = leans right), valvetrain "ohc" | "dohc" | "ohv" (pushrods) | "atmospheric", ignition "spark" | "hot-tube" |
+// "compression" (diesel), fuel "carb" | "direct" | "prechamber" (diesel), compression? { value, min, max } (adds the
+// compression-heat card),
+// crankcase "open" | "flywheels", speed { min, max, value } (shown rpm, slow motion), realRpm? (readout note),
+// valvetrain "none" (valve gear not drawn), flywheelR? (mm), rot? [x, y, z] (deg, turns the whole engine about the crank
+// centre: [0, 90, 0] lays it flat with the cylinder pointing forward and the crank vertical).
 import * as THREE from "three";
-import { V, Y, mat, rod, place, glass, line } from "../lib/scene/helpers.js";
-import { layout, phaseOf, strokeOf, valveLifts, flashOf, injecting } from "../lib/model/engine.js";
+import { V, Y, mat, rod, place, ball, glass, line } from "../lib/scene/helpers.js";
+import { layout, phaseOf, strokeOf, valveLifts, flashOf, injecting, injectingDiesel, compressionTemp } from "../lib/model/engine.js";
 
 const STROKE_TOKEN = { Power: "--l1", Exhaust: "--metal", Intake: "--l4", Compression: "--l2" };
 
@@ -19,7 +23,10 @@ export function create(ctx, p) {
   const axisQ = new THREE.Quaternion().setFromUnitVectors(V(0, 0, 1), dAx);
   const at = (x, along, side = 0) => V(x, 0, crankZ).addScaledVector(dAx, along).addScaledVector(nAx, side);
 
-  const group = new THREE.Group(); carRoot.add(group);
+  // root sits at the crank centre so `rot` turns the engine about it; group keeps vehicle-frame coordinates.
+  const root = new THREE.Group(), group = new THREE.Group();
+  root.position.set(xc, 0, crankZ); root.rotation.set(...(p.rot ?? [0, 0, 0]).map(d => d * Math.PI / 180));
+  group.position.set(-xc, 0, -crankZ); root.add(group); carRoot.add(root);
   const crankMat = mat(0x9aa4ad, { metalness: 0.5 }), rodMat = mat(0x6c7a86, { metalness: 0.4 }), pistonMat = mat(0xc9ced3, { metalness: 0.4 });
   const dark = mat(0x343b42), linerMat = glass(0x8fa3b3, 0.18), blockMat = glass(0x8fa3b3, 0.08), blockEdge = line(0x8fa3b3, 0.5);
   const intakeMat = stage.tokenMat("--l4"), exhaustMat = stage.tokenMat("--l1");
@@ -44,11 +51,16 @@ export function create(ctx, p) {
       const mark = new THREE.Mesh(new THREE.BoxGeometry(0.032, 0.02, r + 0.04), dark); mark.position.z = -(r + 0.04) / 2 - 0.02; fw.add(mark);
     }
   } else {
-    const fly = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.14, 0.03, 40), dark); fly.rotation.z = Math.PI / 2; fly.position.set(xMin - 0.09, 0, crankZ); group.add(fly);
+    const fR = (p.flywheelR ?? 140) / 1000, fw = new THREE.Group(); fw.position.set(xMin - 0.09, 0, crankZ); group.add(fw); flywheels.push(fw);
+    const disc = new THREE.Mesh(new THREE.CylinderGeometry(fR, fR, 0.03, 48), dark); disc.rotation.z = Math.PI / 2; fw.add(disc);
+    const mark = new THREE.Mesh(new THREE.BoxGeometry(0.034, 0.03, 0.6 * fR), crankMat); mark.position.z = 0.6 * fR; fw.add(mark);
     group.add(place(rod(crankMat, 0.026), V(xMin - 0.08, 0, crankZ), V(xMax + 0.08, 0, crankZ)));
   }
   const camSides = p.valvetrain === "dohc" ? [-1, 1] : p.valvetrain === "ohc" ? [0] : [];
   const camC = side => at(0, deck + 2.92 * bR, side * 0.45 * bR);
+  // Pushrod engine: one camshaft low in the block; each valve has a pushrod up to a rocker on the head.
+  const ohv = p.valvetrain === "ohv", camLow = x => at(x, r + 0.09, -1.9 * bR), pushDx = v => Math.sign(v.side || 1) * 0.3 * bR;
+  if (ohv) group.add(place(rod(crankMat, 0.014), camLow(xMin - 0.06), camLow(xMax + 0.06)), place(rod(dark, 0.006), V(xMax + 0.09, 0, crankZ), camLow(xMax + 0.09)));
   for (const s of camSides) {
     group.add(place(rod(crankMat, 0.014), camC(s).setX(xMin - 0.06), camC(s).setX(xMax + 0.06)));
     group.add(place(rod(dark, 0.006), V(xMax + 0.09, 0, crankZ), camC(s).setX(xMax + 0.09)));   // timing drive
@@ -64,9 +76,10 @@ export function create(ctx, p) {
     c.piston.quaternion.setFromUnitVectors(Y, dAx); c.chamber.quaternion.setFromUnitVectors(Y, dAx);
     group.add(c.pin, ...c.webs, c.conrod, c.piston, c.chamber);
     // Valves: intake (blue) on +n side, exhaust (red) on −n side; the atmospheric intake sits on top, on the axis.
-    c.valves = [["intake", intakeMat, p.valvetrain === "atmospheric" ? 0 : -0.45], ["exhaust", exhaustMat, 0.45]].map(([kind, m, side]) => {
+    c.valves = p.valvetrain === "none" ? [] : [["intake", intakeMat, p.valvetrain === "atmospheric" ? 0 : -0.45], ["exhaust", exhaustMat, 0.45]].map(([kind, m, side]) => {
       const v = { kind, side: side * bR, stem: rod(m, 0.006) }; group.add(v.stem);
-      if (camSides.length) { v.lobe = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.036, 0.02), crankMat); group.add(v.lobe); }
+      if (camSides.length || ohv) { v.lobe = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.036, 0.02), crankMat); group.add(v.lobe); }
+      if (ohv) { v.push = rod(rodMat, 0.005); v.rocker = rod(crankMat, 0.006); group.add(v.push, v.rocker); }
       return v;
     });
     if (p.valvetrain === "atmospheric") {   // exhaust pushrod from the crankcase cam groove
@@ -78,6 +91,14 @@ export function create(ctx, p) {
       c.flame = new THREE.Mesh(new THREE.ConeGeometry(0.014, 0.05, 12), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.8 }));
       c.flame.position.copy(at(x, deck - 0.03, -0.9 * bR - 0.07)); c.flame.quaternion.copy(axisQ); group.add(c.flame);
       stage.onTheme(() => { tubeMat.color.copy(stage.color("--l1")); c.flame.material.color.copy(stage.color("--l2")); });
+    }
+    if (p.fuel === "prechamber") {
+      // Diesel prechamber in the head between the valves: fuel is injected into it, burning starts there and jets out.
+      c.pre = ball(new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.75 }), 0.24 * bR, at(x, deck + 0.42 * bR));
+      c.injector = place(rod(dark, 0.006), at(x, deck + 0.66 * bR), at(x, deck + 1.5 * bR));
+      c.spray = new THREE.Mesh(new THREE.ConeGeometry(0.16 * bR, 0.36 * bR, 12, 1, true), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.8, depthWrite: false, side: THREE.DoubleSide }));
+      c.spray.position.copy(at(x, deck + 0.46 * bR)); c.spray.quaternion.copy(axisQ); group.add(c.pre, c.injector, c.spray);
+      stage.onTheme(() => c.spray.material.color.copy(stage.color("--l3")));
     }
     if (p.fuel === "direct") {
       c.spray = new THREE.Mesh(new THREE.ConeGeometry(0.4 * bR, 0.8 * bR, 16, 1, true), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.75, depthWrite: false, side: THREE.DoubleSide }));
@@ -116,16 +137,25 @@ export function create(ctx, p) {
         } else {
           // Poppet valves open into the chamber; the atmospheric intake is pulled open the same way by suction.
           const base = at(c.x, deck + 0.004 - lv, v.side);
-          place(v.stem, base, base.clone().addScaledVector(dAx, 0.1));
+          const tip = base.clone().addScaledVector(dAx, 0.1);
+          place(v.stem, base, tip);
+          if (v.push) {   // pushrod rises, the rocker tips over and presses the valve down
+            const P = at(c.x + pushDx(v), deck + 0.1 + lv, -1.9 * bR);
+            place(v.push, at(c.x + pushDx(v), r + 0.1 + lv, -1.9 * bR), P); place(v.rocker, P, tip);
+          }
         }
         if (v.lobe) {
           const camA = ph / 2 + (v.kind === "intake" ? -2.5 : -0.75) * Math.PI / 2;
-          v.lobe.position.copy(camC(camSides.length > 1 ? Math.sign(v.side) : 0)).setX(c.x + (camSides.length > 1 ? 0 : Math.sign(v.side) * 0.024));
+          if (ohv) v.lobe.position.copy(camLow(c.x + pushDx(v)));
+          else v.lobe.position.copy(camC(camSides.length > 1 ? Math.sign(v.side) : 0)).setX(c.x + (camSides.length > 1 ? 0 : Math.sign(v.side) * 0.024));
           v.lobe.quaternion.setFromAxisAngle(X, camA);
         }
       }
       if (c.tube) { c.tube.material.color.copy(stage.color(flash > 0.2 ? "--l2" : "--l1")); c.flame.scale.set(1, 0.85 + 0.25 * Math.sin(tPhoto * 23 + c.i), 1); }
-      if (c.spray) c.spray.visible = injecting(ph);
+      if (c.pre) {
+        c.spray.visible = injectingDiesel(ph);
+        c.pre.material.color.copy(stage.color(flash > 0.15 ? "--l1" : STROKE_TOKEN[stroke]));
+      } else if (c.spray) c.spray.visible = injecting(ph);
       ui.cells("cyls").set(c.i, stroke, stroke === "Power");
     }
     for (const fw of flywheels) fw.rotation.x = theta;
@@ -140,10 +170,24 @@ export function create(ctx, p) {
     { slider: { id: "rpm", label: "Speed (slow motion)", min: p.speed.min, max: p.speed.max, value: rpm, onInput: v => (rpm = v) } },
     { buttons: [{ id: "play", toggle: ["Pause", "Play"], pressed: playing, onClick: v => (playing = v) }] },
   ] }]);
+  if (p.compression) {
+    // Why a diesel needs no spark: squeezing air heats it. Self-ignition of diesel fuel taken as ≈ 250 °C (illustrative).
+    const IGNITE = 250, showCr = cr => {
+      const T = compressionTemp(cr);
+      ui.set("cr", cr.toFixed(1)); ui.set("hot", T.toFixed(0));
+      ui.badge("ignites").set(T > IGNITE + 100 ? "Fuel ignites by itself" : T > IGNITE ? "Only just (needs a hot engine)" : "Too cool: needs a spark", T > IGNITE);
+    };
+    ctx.panel([{ label: "Why no spark plug", badge: { id: "ignites", text: "" }, items: [
+      { slider: { id: "crs", label: "Compression ratio", min: p.compression.min, max: p.compression.max, step: 0.5, value: p.compression.value, onInput: showCr } },
+      { readouts: [{ id: "cr", label: "Ratio", unit: ": 1" }, { id: "hot", label: "Air after compression", unit: "°C, from 20 °C" }, { id: "ign", label: "Diesel self-ignites", unit: "°C, approx.", value: String(IGNITE) }] },
+      { text: "Petrol engines of the 1930s ran at about 6 : 1 and need a spark. At diesel ratios the air alone gets hot enough; glow plugs in the prechambers help a cold start." },
+    ] }]);
+    showCr(p.compression.value);
+  }
   pose();
 
   return {
-    layout({ active }) { group.visible = active; },
+    layout({ active }) { root.visible = active; },
     update(dt) {
       tPhoto += dt;
       if (playing) theta += dt * (rpm / 60) * 2 * Math.PI;

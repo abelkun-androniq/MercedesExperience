@@ -5,9 +5,9 @@ export default {
   title: "Under the skin of the 540 K",
   name: "Mercedes-Benz 540 K (W 29)",
   year: 1937,
-  summary: "Independent wishbone front suspension, and the Roots blower that only joins in at full pedal.",
+  summary: "Independent wishbone front suspension, the Roots blower that only joins in at full pedal, and the streamlined body.",
   eyebrow: "Mercedes-Benz 540 K (W 29), 1936–1940",
-  lede: "Two mechanisms of the supercharged 540 K, each shown working: the independent front suspension meeting a bump and a pothole, and the Roots blower that only joins in when the driver floors the pedal. Switch to the museum photo to see them in place on the real car.",
+  lede: "Three things about the supercharged 540 K, each shown working: the independent front suspension meeting a bump and a pothole, the Roots blower that only joins in when the driver floors the pedal, and what a streamlined body does for top speed. Switch to the museum photo to see the first two in place on the real car.",
   frame: { origin: "front", wheelbase: 3290, wheelR: 380, halfTrackFront: 757, halfTrackRear: 751 },
   ride: { ms: 450, mu: 65, ks: 30000, cs: 2000, kt: 200000 },
   orbit: { min: 0.8, max: 16 },
@@ -79,14 +79,35 @@ export default {
         "Mercedes blew the air through the carburettor instead of sucking mixture through the blower. A Roots blower does not squeeze air inside itself: the lobes carry pockets of air round the outside of the casing and push them into the outlet.",
       ],
     },
+    {
+      id: "aero", label: "Air drag", subsystem: "aero",
+      view: { pos: [3.4, -6.2, 2.4], target: [-1.9, 0, 0.1] },
+      ghost: { fill: 0.06, edge: 0.5 },
+      params: {
+        label: "Full power on the autobahn",
+        shapes: [                                              // area, mass, rolling resistance and efficiency illustrative
+          { id: "stream", label: "Streamliner (1938)", cd: 0.36, area: 2.3, mass: 2500, crr: 0.02, eta: 0.7, ps: 180, quoted: 185 },
+          { id: "cabrio", label: "Cabriolet B body", cd: 0.48, area: 2.3, mass: 2500, crr: 0.02, eta: 0.7, ps: 180, quoted: 170 },   // cd illustrative
+        ],
+        power: { min: 60, max: 360 }, vmax: 240,
+        nose: [250, 350], wheel: [-3290, -380], wind: { x0: 2500, x1: -6500, y: 1000, z0: -300, z1: 1300 }, ground: -380, time: 3,
+      },
+      talk: [
+        "In 1938 Mercedes built one 540 K with a closed, streamlined body so that Dunlop could test tyres at sustained high speed on the new autobahns.",
+        "Mercedes-Benz Classic measured the restored car in the wind tunnel in May 2014: a drag coefficient of 0.36, remarkable for its time.",
+        "With the same 180 PS it reaches about 185 km/h, against about 170 km/h for an open Cabriolet. Drag rises with the square of speed, so those 15 km/h take a lot of power: slide it and see.",
+      ],
+    },
   ],
   note: "Geometry is illustrative: suspension hardpoints, blower layout, drive ratio, boost and spring rates are plausible values, not factory data.",
-  unverified: ["Suspension hardpoints and rates", "Blower layout, 2.6 drive ratio, 0.5 bar boost, carburettor position", "Ghost-body outline", "Whether the Cabriolet B or the 1938 Streamliner is on display"],
+  unverified: ["Suspension hardpoints and rates", "Blower layout, 2.6 drive ratio, 0.5 bar boost, carburettor position", "Ghost-body outline", "Whether the Cabriolet B or the 1938 Streamliner is on display", "Cabriolet B drag coefficient 0.48; frontal area, mass, rolling resistance and driveline efficiency of both bodies"],
   sources: [
     { label: "Motor Sport, April 1937", url: "https://www.motorsportmagazine.com/archive/article/april-1937/5/the-worlds-fastest-touring-car-2/" },
     { label: "Classic & Sports Car", url: "https://classicandsportscar.com/node/94450" },
     { label: "Haynes Museum workshop news", url: "https://www.haynesmuseum.org/news/workshop-news" },
     { label: "Wikipedia: Mercedes-Benz 380 (1933)", url: "https://en.wikipedia.org/wiki/Mercedes-Benz_380_(1933)" },
+    { label: "Petersen Automotive Museum: 1938 Mercedes-Benz 540 K Stromlinienwagen", url: "https://petersen.org/pages/petersen-vehicle/1938-mercedes-benz-540-k-stromlinienwagen" },
+    { label: "kfz-tech.de: Mercedes Stromlinienwagen 1938", url: "https://kfz-tech.de/Engl/Hersteller/Mercedes/MercedesStromlinienwagen1938.htm" },
     { label: "Mercedes-Benz public archive: 380 (W 22)", url: "https://mercedes-benz-publicarchive.com/marsClassic/en/instance/ko/380-W-22-1933---1934.xhtml?oid=4148" },
   ],
 };
