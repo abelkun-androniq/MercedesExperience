@@ -1,0 +1,5 @@
+Lets re-structure the teaser page. I want the following animation: when I scroll in a car card, I want the museum photo/3D model view to stay on the screen once I scroll till that. After that, if I scroll further, only the right stretch should be scrolled so that the animation control, the labels and then the background information is all present alongside the photo/3D model, all controlled by scroll.
+
+---
+
+commit and push it and redeploy

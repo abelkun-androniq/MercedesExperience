@@ -3,9 +3,22 @@
   "checkpoint_id": "01M7NPSJMWX45EAK8P4B2XV30R",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 1,
+  "checkpoints_count": 2,
   "files_touched": [
-    "lib/scene/stage.js"
+    "CLAUDE.md",
+    "lib/app/dom.js",
+    "lib/app/i18n/hu.js",
+    "lib/app/index.js",
+    "lib/app/offline.js",
+    "lib/app/panel.js",
+    "lib/app/shell.js",
+    "lib/app/teaser.js",
+    "lib/app/theme.css",
+    "lib/app/viewer.js",
+    "lib/scene/stage.js",
+    "teaser.html",
+    "tests/e2e/hungarian.spec.mjs",
+    "tests/e2e/smoke.spec.mjs"
   ],
   "sessions": [
     {
@@ -14,14 +27,21 @@
       "compact_transcript": "/0/transcript.jsonl",
       "content_hash": "/0/content_hash.txt",
       "prompt": "/0/prompt.txt"
+    },
+    {
+      "metadata": "/1/metadata.json",
+      "transcript": "/1/full.jsonl",
+      "compact_transcript": "/1/transcript.jsonl",
+      "content_hash": "/1/content_hash.txt",
+      "prompt": "/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 16,
-    "cache_creation_tokens": 5772,
-    "cache_read_tokens": 2698470,
-    "output_tokens": 3796,
-    "api_call_count": 8
+    "input_tokens": 100,
+    "cache_creation_tokens": 158284,
+    "cache_read_tokens": 9185865,
+    "output_tokens": 74214,
+    "api_call_count": 48
   },
   "redaction": {
     "replacements": 13,
