@@ -5,16 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Museum tour stop</title>
 <meta name="description" content="Interactive technical stop of a private Mercedes-Benz Museum tour.">
-<meta name="theme-color" content="#eef1f3" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#10161b" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#000000">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="preload" href="lib/app/fonts/instrument-serif-latin-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="lib/app/theme.css">
 <script type="importmap">
 { "imports": { "three": "./vendor/three/three.module.min.js", "three/addons/": "./vendor/three/addons/" } }
 </script>
 </head>
 <body>
+<header class="bar"><nav class="crumbs" id="crumbs"><a href="./">← Tour route</a></nav></header>
 <main class="wrap" id="app"><p class="note">Loading…</p></main>
 <noscript><p class="fail">This tour needs JavaScript.</p></noscript>
 <script>

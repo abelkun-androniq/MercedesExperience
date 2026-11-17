@@ -11,7 +11,8 @@ iPhone/iPad Safari (iOS 16.4+, import maps). No bundler: native ES modules; `too
   gearbox (sliding gears), aero (drag, top speed), truss (space frame twist), crash, air-spring (levelling), wankel, cooling,
   belt (two-speed flat-belt drive, hill climbing), hoist (car-transporter deck: cylinder, pulley block, cables)
 - `lib/scene/` stage (renderer, cameras, lights, theme tokens, loop), helpers, ghost-body, road
-- `lib/app/` shell, panel (declarative widgets, API in its header), offline, index, theme.css
+- `lib/app/` shell, panel (declarative widgets, API in its header), offline, index, theme.css (look after
+  mercedes-benz.com: black bar/hero, white page, condensed serif, black photo cards, pills), fonts/ (Instrument Serif, OFL)
 - `subsystems/<id>.js` one mechanism each (params documented in each file's header): linkage-suspension, inline-engine,
   roots-blower, desmo-valvetrain, steering, differential, gearbox, radiator, aero, space-frame, crumple-zone,
   air-suspension, wankel, belt-drive, hoist. inline-engine also draws V engines (`leans`: one bank per lean angle,
@@ -24,6 +25,7 @@ iPhone/iPad Safari (iOS 16.4+, import maps). No bundler: native ES modules; `too
   axle height for the first six cars, the ground for the rest: each car.js header says which.
 - Camber − = top inboard · toe + = toe-in · travel + = bump · steer + = left.
 - Colours only through CSS tokens (`stage.bind`, `stage.tokenMat`, `var(--…)` in SVG): never hard-code theme colours.
+  `--band`/`--card` are the fixed-black areas (header bar, index hero, stop cards) and stay dark in both themes.
 - Illustrative numbers get a comment in car.js and a line in `unverified` (the page shows it). Sources go in `sources`.
 - Panel DOM is built with textContent only; widget ids must be unique within a component.
 
