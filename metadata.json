@@ -1,0 +1,83 @@
+{
+  "cli_version": "0.13.4",
+  "checkpoint_id": "01M7MG200TAWTAB4VJJ4ZAPQ0Q",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "CLAUDE.md",
+    "lib/model/engine.js",
+    "stops/190sl/car.js",
+    "stops/190sl/photo.jpg",
+    "stops/500slc/car.js",
+    "stops/500slc/photo.jpg",
+    "stops/blue-wonder/car.js",
+    "stops/blue-wonder/photo.jpg",
+    "stops/daimler-boat/car.js",
+    "stops/daimler-boat/photo.jpg",
+    "stops/l6500/car.js",
+    "stops/l6500/photo.jpg",
+    "stops/milnes-daimler/car.js",
+    "stops/milnes-daimler/photo.jpg",
+    "stops/reitwagen/car.js",
+    "stops/tour.js",
+    "stops/transporter-1624/car.js",
+    "stops/transporter-1624/photo.jpg",
+    "stops/velo/car.js",
+    "stops/velo/photo.jpg",
+    "stops/w196r/car.js",
+    "stops/w196r/photo.jpg",
+    "subsystems/belt-drive.js",
+    "subsystems/inline-engine.js",
+    "tests/unit/body.test.mjs",
+    "tests/unit/drivetrain.test.mjs",
+    "tests/unit/engine.test.mjs",
+    "tools/photo-fits/190sl.json",
+    "tools/photo-fits/500slc.json",
+    "tools/photo-fits/blue-wonder.json",
+    "tools/photo-fits/daimler-boat.json",
+    "tools/photo-fits/l6500.json",
+    "tools/photo-fits/milnes-daimler.json",
+    "tools/photo-fits/transporter-1624.json",
+    "tools/photo-fits/velo.json",
+    "tools/photo-fits/w196r.json"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 484,
+    "cache_creation_tokens": 948487,
+    "cache_read_tokens": 57666890,
+    "output_tokens": 311808,
+    "api_call_count": 241,
+    "subagent_tokens": {
+      "input_tokens": 28,
+      "cache_creation_tokens": 95106,
+      "cache_read_tokens": 48225,
+      "output_tokens": 18972,
+      "api_call_count": 13
+    },
+    "subagent_tokens_complete": true
+  },
+  "redaction": {
+    "replacements": 2324,
+    "layers": {
+      "betterleaks": 0,
+      "connection_string": 0,
+      "credential_key": 0,
+      "credential_value": 9,
+      "credentialed_uri": 0,
+      "entropy": 2321,
+      "key_context": 0,
+      "provider_token": 0,
+      "shell_stdin": 0
+    }
+  }
+}
