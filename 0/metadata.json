@@ -1,0 +1,72 @@
+{
+  "cli_version": "0.13.4",
+  "checkpoint_id": "01M7NF0ANA9M48RCY908N5KS9V",
+  "session_id": "27b41e01-de7d-4a6f-9e2b-b1fa8aa23d19",
+  "strategy": "manual-commit",
+  "created_at": "2026-11-17T19:16:11.619998Z",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "save_step_count": 2,
+  "files_touched": [
+    "CLAUDE.md",
+    "index.html",
+    "lib/app/fonts/OFL.txt",
+    "lib/app/fonts/instrument-serif-latin-400.woff2",
+    "lib/app/index.js",
+    "lib/app/shell.js",
+    "lib/app/theme.css",
+    "manifest.webmanifest",
+    "stop.html"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-5-5",
+  "turn_id": "cec345930271",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 102,
+    "cache_creation_tokens": 259213,
+    "cache_read_tokens": 9436066,
+    "output_tokens": 77816,
+    "api_call_count": 50,
+    "subagent_tokens": {
+      "input_tokens": 8,
+      "cache_creation_tokens": 11487,
+      "cache_read_tokens": 8840,
+      "output_tokens": 1510,
+      "api_call_count": 4
+    },
+    "subagent_tokens_complete": true
+  },
+  "session_token_usage": {
+    "input_tokens": 102,
+    "cache_creation_tokens": 259213,
+    "cache_read_tokens": 9436066,
+    "output_tokens": 77816,
+    "api_call_count": 50,
+    "subagent_tokens": {
+      "input_tokens": 8,
+      "cache_creation_tokens": 11487,
+      "cache_read_tokens": 8840,
+      "output_tokens": 1510,
+      "api_call_count": 4
+    },
+    "subagent_tokens_complete": true
+  },
+  "redaction": {
+    "replacements": 6,
+    "layers": {
+      "betterleaks": 0,
+      "connection_string": 0,
+      "credential_key": 0,
+      "credential_value": 0,
+      "credentialed_uri": 0,
+      "entropy": 6,
+      "key_context": 0,
+      "provider_token": 0,
+      "shell_stdin": 0
+    }
+  },
+  "session_metrics": {
+    "turn_count": 2
+  }
+}

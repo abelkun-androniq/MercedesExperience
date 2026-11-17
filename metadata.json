@@ -1,0 +1,56 @@
+{
+  "cli_version": "0.13.4",
+  "checkpoint_id": "01M7NF0ANA9M48RCY908N5KS9V",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "CLAUDE.md",
+    "index.html",
+    "lib/app/fonts/OFL.txt",
+    "lib/app/fonts/instrument-serif-latin-400.woff2",
+    "lib/app/index.js",
+    "lib/app/shell.js",
+    "lib/app/theme.css",
+    "manifest.webmanifest",
+    "stop.html"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 102,
+    "cache_creation_tokens": 259213,
+    "cache_read_tokens": 9436066,
+    "output_tokens": 77816,
+    "api_call_count": 50,
+    "subagent_tokens": {
+      "input_tokens": 8,
+      "cache_creation_tokens": 11487,
+      "cache_read_tokens": 8840,
+      "output_tokens": 1510,
+      "api_call_count": 4
+    },
+    "subagent_tokens_complete": true
+  },
+  "redaction": {
+    "replacements": 6,
+    "layers": {
+      "betterleaks": 0,
+      "connection_string": 0,
+      "credential_key": 0,
+      "credential_value": 0,
+      "credentialed_uri": 0,
+      "entropy": 6,
+      "key_context": 0,
+      "provider_token": 0,
+      "shell_stdin": 0
+    }
+  }
+}
