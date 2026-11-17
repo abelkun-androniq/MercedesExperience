@@ -13,10 +13,17 @@ export default {
   sun: [3, -3, 6],
   body: {
     ghost: [
-      { pts: [[700, 400], [700, 950], [-300, 1050], [-1300, 1080], [-1500, 1600], [-2900, 1620], [-3600, 1300], [-4000, 600], [-4000, 400]], y: [-830, 830] },
+      { pts: [[700, 400], [700, 950], [-300, 1050], [-1300, 1080], [-3700, 1100], [-4000, 600], [-4000, 400]], y: [-830, 830] },   // body
+      { pts: [[-1300, 1080], [-1500, 1600], [-2900, 1620], [-3600, 1300], [-3700, 1100]], y: [-700, 700] },                         // cabin
       { torus: { R: 330, r: 70, pos: [0, 730, 360], rot: [90, 0, 0] }, mirror: true },
       { torus: { R: 330, r: 70, pos: [-3050, 730, 360], rot: [90, 0, 0] }, mirror: true },
     ],
+  },
+  photo: {
+    src: "photo.jpg", w: 1200, h: 803,
+    alt: "Black 1938 Mercedes-Benz 260 D Pullman saloon on display in the Mercedes-Benz Museum, seen from the front right",
+    cam: { c: [3003, -3353.2, 1522.9], yaw: 2.4093, pitch: -0.142, roll: 0.0504, f: 1297.3 }, // tools/photo-fits/260d.json
+    credit: { author: "Valder137", license: "CC BY 2.0", url: "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_260D_1938_Pullman_Limousine_RSideFront_MBMuse_9June2013_(14796948249).jpg" },
   },
   components: [
     {
@@ -40,7 +47,7 @@ export default {
     },
   ],
   note: "Legend 3 is the room of diesel and supercharger: the 260 D and the SSK and 540 K blowers are two answers to the same question of more power and range.",
-  unverified: ["Compression ratio 20.5 : 1", "Valve gear drawn as pushrod overhead valves", "Conrod length, cylinder spacing, engine position", "Wheelbase and ghost-body outline", "One source gives 3,200 rpm for the rated speed"],
+  unverified: ["Compression ratio 20.5 : 1", "Valve gear drawn as pushrod overhead valves", "Conrod length, cylinder spacing, engine position", "Wheelbase and ghost-body outline", "Photo camera fitted from one wheel, the headlamps and the grille only, so the overlay is approximate", "One source gives 3,200 rpm for the rated speed"],
   sources: [
     { label: "Wikipedia: Mercedes-Benz OM 138", url: "https://en.wikipedia.org/wiki/Mercedes-Benz_OM_138" },
     { label: "Wikipedia: Mercedes-Benz 260 D", url: "https://en.wikipedia.org/wiki/Mercedes-Benz_260_D" },

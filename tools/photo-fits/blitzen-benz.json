@@ -1,0 +1,20 @@
+{
+  "photo": "stops/blitzen-benz/photo.jpg",
+  "image": { "width": 1200, "height": 803 },
+  "frame": "mm; x forward, y left, z up; origin = front axle centre on the ground",
+  "aimAt": [-1400, 0, 700],
+  "seeds": [[1500, 2500, 1300], [2000, 3000, 1500], [1000, 2000, 1200], [2500, 2000, 1600]],
+  "focalSeeds": [600, 900, 1300],
+  "rollPenalty": 300,
+  "groundZ": 0,
+  "points": [
+    { "name": "LF wheel centre", "X": [0, 650, 450],      "px": [596, 561], "w": 3 },
+    { "name": "LF tyre bottom",  "X": [0, 650, 0],        "px": [600, 712], "w": 2 },
+    { "name": "LF tyre top",     "X": [0, 650, 900],      "px": [590, 410], "w": 2 },
+    { "name": "RF wheel centre", "X": [0, -650, 450],     "px": [212, 468], "w": 2 },
+    { "name": "RF tyre bottom",  "X": [0, -650, 0],       "px": [215, 600], "w": 1 },
+    { "name": "RF tyre top",     "X": [0, -650, 900],     "px": [205, 337], "w": 1 },
+    { "name": "LR wheel centre", "X": [-2800, 650, 450],  "px": [878, 418], "w": 2 },
+    { "name": "LR tyre bottom",  "X": [-2800, 650, 0],    "px": [880, 495], "w": 1 }
+  ]
+}

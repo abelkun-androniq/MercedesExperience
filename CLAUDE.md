@@ -33,8 +33,10 @@ iPhone/iPad Safari (iOS 16.4+, import maps). No bundler: native ES modules; `too
   the loop, and resets carRoot's pose each frame before calling the active component's `update`.
 
 ## Recipes
-- Add a stop: entry in `stops/tour.js` + `stops/<slug>/car.js` (copy the closest sibling). Optional photo: 1200 px wide, CC
-  licence with credit, camera fitted with `node tools/fit-photo-camera.mjs tools/photo-fits/<slug>.json`. Tests find it via tour.js.
+- Add a stop: entry in `stops/tour.js` + `stops/<slug>/car.js` (copy the closest sibling). Photo (every stop has one): 1200 px
+  wide, CC licence with credit, camera fitted with `node tools/fit-photo-camera.mjs tools/photo-fits/<slug>.json` (wheel
+  centres and tyre bottoms first; `focalPrior` when the points are nearly flat). Trace `body.ghost` from the photo so Car
+  outline lines up. Subsystems fade their own opaque wheels and keep the body still when `onPhoto`. Tests find it via tour.js.
 - Add a mechanism: `lib/model/<x>.js` + `tests/unit/<x>.test.mjs` first, then `subsystems/<x>.js`.
 - Upgrade three.js: `npm run vendor -- <version>` (a release at least two weeks old), then `npm test && npm run e2e`.
 
@@ -50,6 +52,8 @@ true speed · Web Inspector over USB shows no errors. LAN (`http://<mac-ip>:8765
 
 ## Open
 - Confirm on site: rooms and levels in tour.js (Collection 4 on level 4 is a guess; 220 S may be in Legend 4); which 540 K
-  is shown (Cabriolet B photo vs the 1938 Streamliner); which W 111 variant; whether the Popemobile has diff locks.
+  is shown (Cabriolet B photo vs the 1938 Streamliner); which W 111 variant (the 2013 photo is a 1964 220 S); whether the
+  Victoria stop's car is the Vis-à-Vis of the photo; whether the Popemobile has diff locks.
+- The 260 D photo fit rests on one wheel and the lamps (approximate); a side view would fit better.
 - Still unsourced: 260 D compression ratio (20.5 : 1), Simplex gear count and ratios, Blitzen-Benz valve gear.
 - The original single-file PoC pages are in git history at commit 468cc29 (`museum-tour-poc/`).

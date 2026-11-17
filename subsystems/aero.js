@@ -70,7 +70,7 @@ export function create(ctx, p) {
   drawChart();
 
   return {
-    layout({ active }) { group.visible = active; },
+    layout({ active, onPhoto }) { group.visible = active; for (const d of dashes) d.visible = !onPhoto; },   // no road in the museum
     update(dt) {
       const P = ps * PS, vt = topSpeed(shape, P);
       if (v >= 0.995 * vt) { hold += dt; if (hold > 3) { v = 0; hold = 0; } }

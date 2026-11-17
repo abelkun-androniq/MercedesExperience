@@ -13,9 +13,16 @@ export default {
   sun: [2, 3, 8],
   body: {
     ghost: [
-      { pts: [[-250, 650], [1350, 650], [1400, 900], [1150, 950], [350, 950], [300, 1300], [-150, 1350], [-300, 950]], y: [-560, 560] },   // body and rear seat
-      { pts: [[1350, 650], [1560, 1050], [1530, 1080], [1320, 700]], y: [-480, 480] },                                                // splash board
+      { pts: [[-420, 880], [1950, 880], [2130, 1190], [-420, 1190]], y: [-560, 560] },                                    // body, traced from the photo
+      { pts: [[0, 1190], [40, 2040], [300, 2110], [700, 2080], [800, 1800], [700, 1450], [500, 1190]], y: [-560, 560] },             // hood over the rear seat
+      { pts: [[1550, 1190], [1550, 1450], [1980, 1450], [2050, 1700], [2120, 1700], [2100, 1190]], y: [-500, 500] },    // facing front seat
     ],
+  },
+  photo: {
+    src: "photo.jpg", w: 1200, h: 803,
+    alt: "1893 Benz Vis-à-Vis, a Victoria with a facing front seat, on display in the Mercedes-Benz Museum, seen from the front right",
+    cam: { c: [4278.7, -4540.6, 1498.2], yaw: 2.1978, pitch: -0.101, roll: -0.0394, f: 1377 }, // tools/photo-fits/victoria.json
+    credit: { author: "Valder137", license: "CC BY 2.0", url: "https://commons.wikimedia.org/wiki/File:Benz_Vis-%C3%A0-Vis_1893_RSideFront_MBMuse_9June2013_(14960657626).jpg" },
   },
   components: [
     {
@@ -37,7 +44,7 @@ export default {
     },
   ],
   note: "Geometry is illustrative: wheelbase, track, wheel sizes and steering-arm geometry are plausible values, not measurements of the car.",
-  unverified: ["Wheelbase, track, wheel sizes and steering-arm geometry", "Ghost-body outline", "Room and level"],
+  unverified: ["Wheelbase, track, wheel sizes and steering-arm geometry", "Ghost-body outline (traced from the photo)", "Which car is shown: the photo is the museum's 1893 Vis-à-Vis, the Victoria with a facing front seat", "Room and level"],
   sources: [
     { label: "mbpassion: 1893, Carl Benz und die Achsschenkel-Lenkung", url: "https://mbpassion.de/2018/02/1893-carl-benz-und-die-achsschenkel-lenkung/" },
     { label: "Benz Insider: Carl Benz and his double-pivot steering", url: "https://www.benzinsider.com/?p=1660" },

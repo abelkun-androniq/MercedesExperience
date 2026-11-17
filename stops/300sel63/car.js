@@ -17,6 +17,12 @@ export default {
         { arc: [-2850, 340, 400, 192, -12] }, [-400, 260], { arc: [0, 340, 400, 192, -12] }], y: [-900, 900] },
     ],
   },
+  photo: {
+    src: "photo.jpg", w: 1200, h: 803,
+    alt: "Champagne Mercedes-Benz 300 SEL 6.3 on display in the Mercedes-Benz Museum, seen from the front right",
+    cam: { c: [2436, -2855.9, 1169.8], yaw: 2.3971, pitch: -0.1677, roll: -0.0178, f: 1158 }, // tools/photo-fits/300sel63.json
+    credit: { author: "Valder137", license: "CC BY 2.0", url: "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_300SEL_1972_6.3_RSideFront_MBMuse_9June2013_(14960630026).jpg" },
+  },
   components: [
     {
       id: "air", label: "Air suspension", subsystem: "air-suspension",

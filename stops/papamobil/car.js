@@ -18,6 +18,12 @@ export default {
       { torus: { R: 260, r: 100, pos: [0, 712, 360], rot: [90, 0, 0] }, mirror: true },
     ],
   },
+  photo: {
+    src: "photo.jpg", w: 1200, h: 803,
+    alt: "White 1980 Mercedes-Benz 230 G Popemobile with its glass cabin, in the Mercedes-Benz Museum, seen from the front left",
+    cam: { c: [2128, 1391.8, 1209.5], yaw: -2.5841, pitch: 0.0035, roll: 0.0298, f: 716 }, // tools/photo-fits/papamobil.json
+    credit: { author: "Valder137", license: "CC BY 2.0", url: "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_230G_1980_Popemobile_LSideFront_MBMuse_9June2013_(14983627965).jpg" },
+  },
   components: [
     {
       id: "diff", label: "Differential lock", subsystem: "differential",

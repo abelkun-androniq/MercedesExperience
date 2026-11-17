@@ -4,7 +4,7 @@
 // "compression" (diesel), fuel "carb" | "direct" | "prechamber" (diesel), compression? { value, min, max } (adds the
 // compression-heat card),
 // crankcase "open" | "flywheels", speed { min, max, value } (shown rpm, slow motion), realRpm? (readout note),
-// valvetrain "none" (valve gear not drawn), flywheelR? (mm), rot? [x, y, z] (deg, turns the whole engine about the crank
+// valvetrain "none" (valve gear not drawn), flywheelR? (mm; with "flywheels" it also sizes the round case), rot? [x, y, z] (deg, turns the whole engine about the crank
 // centre: [0, 90, 0] lays it flat with the cylinder pointing forward and the crank vertical).
 import * as THREE from "three";
 import { V, Y, mat, rod, place, ball, glass, line } from "../lib/scene/helpers.js";
@@ -37,18 +37,21 @@ export function create(ctx, p) {
 
   // ---------- static parts ----------
   const len = xMax - xMin + 3.8 * bR;
-  const b0 = p.crankcase === "flywheels" ? r + 0.06 : -0.05, b1 = blockH - 0.05;   // block span along the cylinder axis
+  const fwR = p.flywheelR ? p.flywheelR / 1000 : r + 0.06;                          // enclosed flywheels (Daimler 1884)
+  const b0 = p.crankcase === "flywheels" ? fwR : -0.05, b1 = blockH - 0.05;   // block span along the cylinder axis
   box(len, 4.5 * bR, b1 - b0, at(xc, (b0 + b1) / 2), axisQ);
   box(len, 3.8 * bR, 2.5 * bR, at(xc, deck + 3.8 * bR), axisQ);
   const flywheels = [];
   if (p.crankcase === "flywheels") {
     // Daimler 1884: two flywheels inside a closed round crankcase, either side of the single throw.
-    const caseGeo = new THREE.CylinderGeometry(r + 0.075, r + 0.075, 0.2, 40); caseGeo.rotateZ(Math.PI / 2); caseGeo.translate(xc, 0, crankZ);
+    const caseGeo = new THREE.CylinderGeometry(fwR + 0.015, fwR + 0.015, 0.2, 40); caseGeo.rotateZ(Math.PI / 2); caseGeo.translate(xc, 0, crankZ);
     group.add(new THREE.Mesh(caseGeo, blockMat), new THREE.LineSegments(new THREE.EdgesGeometry(caseGeo, 30), blockEdge));
+    const fwMat = glass(0x9aa4ad, 0.3);
     for (const s of [-1, 1]) {
       const fw = new THREE.Group(); fw.position.set(xc + s * 0.05, 0, crankZ); group.add(fw); flywheels.push(fw);
-      const disc = new THREE.Mesh(new THREE.CylinderGeometry(r + 0.06, r + 0.06, 0.03, 48), crankMat); disc.rotation.z = Math.PI / 2; fw.add(disc);
-      const mark = new THREE.Mesh(new THREE.BoxGeometry(0.032, 0.02, r + 0.04), dark); mark.position.z = -(r + 0.04) / 2 - 0.02; fw.add(mark);
+      const discGeo = new THREE.CylinderGeometry(fwR, fwR, 0.03, 48).rotateZ(Math.PI / 2);   // see-through: the crank sits between
+      fw.add(new THREE.Mesh(discGeo, fwMat), new THREE.LineSegments(new THREE.EdgesGeometry(discGeo, 30), blockEdge));
+      const mark = new THREE.Mesh(new THREE.BoxGeometry(0.032, 0.02, fwR - 0.02), dark); mark.position.z = -(fwR - 0.02) / 2 - 0.02; fw.add(mark);
     }
   } else {
     const fR = (p.flywheelR ?? 140) / 1000, fw = new THREE.Group(); fw.position.set(xMin - 0.09, 0, crankZ); group.add(fw); flywheels.push(fw);

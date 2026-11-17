@@ -14,6 +14,7 @@ export function create(ctx, p) {
   const m = v => v / 1000, wb = m(p.wheelbase), k = m(p.kingpinHalf), zF = m(p.frontR), zR = m(p.rearR), stub = m(p.stub ?? 60);
   const group = new THREE.Group(); carRoot.add(group);
   const wood = mat(0x8a6a4a, { roughness: 0.8 }), iron = mat(0x4a5058, { metalness: 0.4 }), tyreMat = mat(0x2a2d31, { roughness: 0.9 });
+  for (const w of [wood, tyreMat]) w.transparent = true;   // wheels fade over the museum photo
   const armMat = stage.tokenMat("--l1"), tieMat = stage.tokenMat("--l2"), beamMat = stage.tokenMat("--metal");
 
   // Rear axle and wheels, fixed.
@@ -96,7 +97,7 @@ export function create(ctx, p) {
   pose();
 
   return {
-    layout({ active }) { group.visible = active; },
+    layout({ active, onPhoto }) { group.visible = active; wood.opacity = tyreMat.opacity = onPhoto ? 0.25 : 1; },
     update(dt) {
       if (auto) { t += dt; steer = maxS * D * Math.sin(t * 0.6); ui.slider("steer").set((steer / D).toFixed(1)); }
       const r = pose(), straight = Math.abs(steer) < 0.5 * D;

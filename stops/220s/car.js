@@ -1,5 +1,6 @@
 // Mercedes-Benz 220 S (W 111), 1959. Frame: mm, x forward, y left, z up; origin = front axle centre on the ground.
-// Mass, crush forces and stiffnesses, body dimensions are illustrative. No ghost body: the crash body moves.
+// Mass, crush forces and stiffnesses, body dimensions are illustrative. The ghost body is drawn only over the photo:
+// in the 3D view the crash body moves.
 export default {
   slug: "220s",
   title: "Crumple zones and a rigid cell",
@@ -11,6 +12,19 @@ export default {
   frame: { origin: "front", wheelbase: 2750, wheelR: 340 },
   orbit: { min: 0.8, max: 16 },
   sun: [3, -4, 6],
+  body: {
+    ghost: [                                                                    // outline for the photo view; illustrative
+      { pts: [[950, 300], [960, 760], [650, 830], [-650, 900], [-3200, 960], [-3925, 1010], [-3925, 330], [-3200, 300],
+        { arc: [-2750, 340, 400, 192, -12] }, [-400, 300], { arc: [0, 340, 400, 192, -12] }], y: [-890, 890] },
+      { pts: [[-650, 900], [-1150, 1470], [-2350, 1480], [-3050, 960]], y: [-700, 700] },
+    ],
+  },
+  photo: {
+    src: "photo.jpg", w: 1200, h: 803,
+    alt: "Cream 1964 Mercedes-Benz 220 S (W 111) on display in the Mercedes-Benz Museum, seen from the front left",
+    cam: { c: [5378.5, 1864.4, 1708.1], yaw: -2.8155, pitch: -0.1618, roll: 0.005, f: 1624.7 }, // tools/photo-fits/220s.json
+    credit: { author: "Valder137", license: "CC BY 2.0", url: "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_220S_1964_LSideFront_MBMuse_9June2013_(14960636166).jpg" },
+  },
   components: [
     {
       id: "crash", label: "Crash test", subsystem: "crumple-zone",
@@ -37,7 +51,7 @@ export default {
     },
   ],
   note: "Real crush behaviour is far more ragged than this model's nearly constant force. The fins at the back gave the car its nickname 'Heckflosse'.",
-  unverified: ["Mass, crush forces, crush lengths and stiffnesses (chosen to give plausible g values)", "Body dimensions", "Which W 111 variant is on display"],
+  unverified: ["Mass, crush forces, crush lengths and stiffnesses (chosen to give plausible g values)", "Body dimensions and ghost-body outline", "Which W 111 variant is on display (the photo shows a 1964 220 S)"],
   sources: [
     { label: "Mercedes-Benz press text: the passenger safety cell is patented (German Car Forum)", url: "https://www.germancarforum.com/threads/mercedes-benz-23-january-1951-the-passenger-safety-cell-is-patented.36023" },
     { label: "Motorway America: Mercedes-Benz marks 50 years of crash testing", url: "https://www.motorwayamerica.com/content/mercedes-benz-marks-50-years-crash-testing-first-car" },

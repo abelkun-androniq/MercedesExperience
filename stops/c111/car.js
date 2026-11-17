@@ -13,10 +13,17 @@ export default {
   sun: [3, -3, 6],
   body: {
     ghost: [
-      { pts: [[980, 250], [980, 450], [400, 690], [-450, 800], [-1050, 1120], [-1900, 1100], [-3450, 860], [-3450, 300]], y: [-940, 940] },
+      { pts: [[980, 250], [980, 450], [400, 690], [-450, 780], [-3450, 860], [-3450, 300]], y: [-900, 900] },   // body
+      { pts: [[-450, 780], [-1050, 1120], [-1900, 1100], [-3450, 860]], y: [-600, 600] },                       // cabin and engine cover
       { torus: { R: 250, r: 70, pos: [0, 760, 320], rot: [90, 0, 0] }, mirror: true },
       { torus: { R: 250, r: 70, pos: [-2620, 760, 320], rot: [90, 0, 0] }, mirror: true },
     ],
+  },
+  photo: {
+    src: "photo.jpg", w: 1200, h: 803,
+    alt: "Orange 1970 Mercedes-Benz C 111 on a raised display in the Mercedes-Benz Museum, seen from the rear left",
+    cam: { c: [-5358.6, 5216.1, 2139.2], yaw: -0.9242, pitch: -0.2533, roll: -0.1044, f: 1762 }, // tools/photo-fits/c111.json
+    credit: { author: "Valder137", license: "CC BY 2.0", url: "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_C111_1970_Wenkel_Concept_LSideRear_MBMuse_9June2013_(14983249132).jpg" },
   },
   components: [
     {

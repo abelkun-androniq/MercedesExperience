@@ -16,6 +16,7 @@ export function create(ctx, p) {
   const world = new THREE.Group(); stage.scene.add(world);   // wheels and axles do not move with the body
   const xF = m(p.front), wb = m(p.wheelbase), yT = m(p.halfTrack), R = m(p.wheelR), bz0 = m(p.bellows.z0), bh = m(p.bellows.h), br = m(p.bellows.r);
   const tyreMat = mat(0x2a2d31, { roughness: 0.9 }), rimMat = mat(0x9aa4ad, { metalness: 0.5 }), airMat = stage.tokenMat("--l4"), coilMat = stage.tokenMat("--metal");
+  tyreMat.transparent = rimMat.transparent = true;   // faded over the museum photo
   const axles = [["front", xF], ["rear", xF - wb]];
   const corners = axles.flatMap(([axle, x]) => [1, -1].map(s => {
     const wheel = tyre(tyreMat, R - 0.07, 0.07); wheel.position.set(x, s * yT, R); world.add(wheel);
@@ -52,14 +53,14 @@ export function create(ctx, p) {
     return Math.sqrt(k / mass) / (2 * Math.PI);
   }
   return {
-    layout({ active }) { world.visible = active; loadGroup.visible = active && loaded; },
-    update(dt) {
+    layout({ active, onPhoto }) { world.visible = active; loadGroup.visible = active && loaded; tyreMat.opacity = rimMat.opacity = onPhoto ? 0.12 : 1; },
+    update(dt, { onPhoto }) {
       if (auto) { t += dt; const l = Math.floor(t / 7) % 2 === 1; if (l !== loaded) { loaded = l; ui.toggle("load").set(l); } }
       loadGroup.visible = loaded;
       const h = Math.min(dt, 0.05) / SUB;
       for (let i = 0; i < SUB; i++) for (const md of ["air", "steel"]) for (const axle of ["front", "rear"]) sims[md][axle].step(massOf(axle), h);
       const zF = sims[mode].front.z, zR = sims[mode].rear.z, sin = (zF - zR) / wb;
-      carRoot.rotation.y = Math.asin(sin); carRoot.position.z = -zF + xF * sin;
+      if (!onPhoto) { carRoot.rotation.y = Math.asin(sin); carRoot.position.z = -zF + xF * sin; }   // the photo's car stays put
       for (const c of corners) {
         const sag = sims[mode][c.axle].z, k = Math.max(0.2, (bh - sag) / bh);
         c.bellows.visible = mode === "air"; c.coil.visible = mode === "steel";

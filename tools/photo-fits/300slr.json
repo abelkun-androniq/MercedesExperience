@@ -1,0 +1,19 @@
+{
+  "photo": "stops/300slr/photo.jpg",
+  "image": { "width": 1200, "height": 803 },
+  "frame": "mm; x forward, y left, z up; origin = front axle centre at wheel-centre height",
+  "aimAt": [-1200, 0, 0],
+  "seeds": [[2500, -3500, 1000], [2000, -4500, 1200], [3500, -3000, 800], [1800, -3000, 1400]],
+  "focalSeeds": [900, 1300, 1800],
+  "rollPenalty": 300,
+  "focalPrior": { "f": 1700, "w": 0.05 },
+  "groundZ": -330,
+  "points": [
+    { "name": "RF wheel centre",  "X": [0, -665, 0],        "px": [508, 543], "w": 3 },
+    { "name": "RF tyre bottom",   "X": [0, -665, -330],     "px": [525, 668], "w": 2 },
+    { "name": "RR wheel centre",  "X": [-2370, -690, 0],    "px": [225, 390], "w": 3 },
+    { "name": "RR tyre bottom",   "X": [-2370, -690, -330], "px": [235, 462], "w": 2 },
+    { "name": "R headlamp",       "X": [600, -540, 300],    "px": [690, 490], "w": 1 },
+    { "name": "L headlamp",       "X": [600, 540, 300],     "px": [1010, 380], "w": 1 }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "photo": "stops/papamobil/photo.jpg",
+  "image": { "width": 1200, "height": 803 },
+  "frame": "mm; x forward, y left, z up; origin = front axle centre on the ground",
+  "aimAt": [-1200, 0, 1000],
+  "seeds": [[3500, 1500, 1500], [4000, 2500, 1700], [3000, 1000, 1300], [4500, 2000, 1900]],
+  "focalSeeds": [700, 1000, 1400],
+  "rollPenalty": 300,
+  "focalPrior": { "f": 1100, "w": 0.05 },
+  "groundZ": 0,
+  "points": [
+    { "name": "LF wheel centre", "X": [0, 712, 360],      "px": [772, 695], "w": 3 },
+    { "name": "LR wheel centre", "X": [-2850, 712, 360],  "px": [915, 543], "w": 3 },
+    { "name": "LR tyre bottom",  "X": [-2850, 712, 0],    "px": [920, 605], "w": 2 },
+    { "name": "R headlamp",      "X": [760, -590, 880],   "px": [288, 500], "w": 2 },
+    { "name": "L headlamp",      "X": [760, 590, 880],    "px": [615, 548], "w": 2 },
+    { "name": "Grille star",     "X": [800, 0, 880],      "px": [418, 530], "w": 1 }
+  ]
+}

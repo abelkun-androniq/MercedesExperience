@@ -2,6 +2,7 @@
 // Usage: node tools/fit-photo-camera.mjs tools/photo-fits/540k.json
 // Output: the photo.cam line to paste into stops/<slug>/car.js, plus per-point residuals in px.
 // Camera parameters p = [cx, cy, cz (mm), yaw, pitch, roll (rad), f (px)]; no lens distortion; principal point = image centre.
+// Optional: rollPenalty (keeps roll near 0), focalPrior { f, w } (pulls f towards a typical lens when depth cues are weak).
 import { readFileSync } from "node:fs";
 
 const cfg = JSON.parse(readFileSync(process.argv[2], "utf8"));
@@ -24,6 +25,7 @@ function residuals(p) {
   const out = [];
   for (const [X, x, w] of P) { const q = project(p, X); out.push(w * (q[0] - x[0]), w * (q[1] - x[1])); }
   if (cfg.rollPenalty) out.push(p[5] * cfg.rollPenalty);   // keeps the horizon level when points are few
+  if (cfg.focalPrior) out.push((p[6] - cfg.focalPrior.f) * cfg.focalPrior.w);   // near-planar points leave f vs distance loose
   return out;
 }
 const sq = r => r.reduce((a, v) => a + v * v, 0);

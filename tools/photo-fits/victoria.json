@@ -1,0 +1,21 @@
+{
+  "photo": "stops/victoria/photo.jpg",
+  "image": { "width": 1200, "height": 803 },
+  "frame": "mm; x forward, y left, z up; origin = rear axle centre on the ground",
+  "aimAt": [800, 0, 500],
+  "seeds": [[5500, -4500, 1500], [4500, -5500, 1800], [6500, -3500, 1200], [3500, -4000, 2000]],
+  "focalSeeds": [900, 1300, 1800],
+  "rollPenalty": 300,
+  "focalPrior": { "f": 1700, "w": 0.05 },
+  "groundZ": 0,
+  "points": [
+    { "name": "RF wheel centre", "X": [1650, -660, 380], "px": [650, 582], "w": 3 },
+    { "name": "RF tyre bottom",  "X": [1650, -660, 0],   "px": [655, 700], "w": 2 },
+    { "name": "RF tyre top",     "X": [1650, -660, 760], "px": [645, 462], "w": 1 },
+    { "name": "LF wheel centre", "X": [1650, 660, 380],  "px": [822, 515], "w": 2 },
+    { "name": "LF tyre bottom",  "X": [1650, 660, 0],    "px": [828, 608], "w": 1 },
+    { "name": "RR wheel centre", "X": [0, -640, 560],    "px": [322, 503], "w": 3 },
+    { "name": "RR tyre bottom",  "X": [0, -640, 0],      "px": [325, 620], "w": 2 },
+    { "name": "RR tyre top",     "X": [0, -640, 1120],   "px": [318, 385], "w": 1 }
+  ]
+}

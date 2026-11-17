@@ -1,0 +1,152 @@
+{
+  "photo": "stops/patent-motorwagen/photo.jpg",
+  "image": {
+    "width": 1200,
+    "height": 803
+  },
+  "frame": "mm; x forward, y left, z up; origin = rear axle centre on the ground",
+  "aimAt": [
+    500,
+    0,
+    500
+  ],
+  "seeds": [
+    [
+      -4000,
+      4000,
+      1500
+    ],
+    [
+      -3000,
+      5000,
+      1800
+    ],
+    [
+      -5000,
+      3000,
+      1200
+    ],
+    [
+      -2500,
+      3500,
+      2000
+    ]
+  ],
+  "focalSeeds": [
+    900,
+    1200,
+    1600
+  ],
+  "rollPenalty": 300,
+  "groundZ": 0,
+  "points": [
+    {
+      "name": "LR wheel centre",
+      "X": [
+        0,
+        600,
+        560
+      ],
+      "px": [
+        590,
+        564
+      ],
+      "w": 3
+    },
+    {
+      "name": "LR tyre bottom",
+      "X": [
+        0,
+        600,
+        0
+      ],
+      "px": [
+        600,
+        757
+      ],
+      "w": 2
+    },
+    {
+      "name": "LR tyre top",
+      "X": [
+        0,
+        600,
+        1120
+      ],
+      "px": [
+        578,
+        352
+      ],
+      "w": 1
+    },
+    {
+      "name": "RR wheel centre",
+      "X": [
+        0,
+        -600,
+        560
+      ],
+      "px": [
+        750,
+        478
+      ],
+      "w": 1
+    },
+    {
+      "name": "RR tyre bottom",
+      "X": [
+        0,
+        -600,
+        0
+      ],
+      "px": [
+        762,
+        640
+      ],
+      "w": 1
+    },
+    {
+      "name": "Front wheel centre",
+      "X": [
+        1450,
+        0,
+        375
+      ],
+      "px": [
+        238,
+        522
+      ],
+      "w": 3
+    },
+    {
+      "name": "Front tyre bottom",
+      "X": [
+        1450,
+        0,
+        0
+      ],
+      "px": [
+        240,
+        635
+      ],
+      "w": 2
+    },
+    {
+      "name": "Front tyre top",
+      "X": [
+        1450,
+        0,
+        750
+      ],
+      "px": [
+        233,
+        410
+      ],
+      "w": 1
+    }
+  ],
+  "focalPrior": {
+    "f": 1700,
+    "w": 0.05
+  }
+}

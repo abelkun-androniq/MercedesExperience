@@ -13,10 +13,17 @@ export default {
   sun: [3, -4, 6],
   body: {
     ghost: [
-      { pts: [[420, 620], [-300, 1150], [-1700, 1200], [-2050, 1400], [-2450, 1400], [-2600, 1150], [-3900, 850], [-3950, 650], [-200, 420]], y: [-380, 380] },   // body
+      { pts: [[250, 1290], [-300, 1290], [-1250, 1200], [-1700, 1180], [-2050, 1320], [-2450, 1320], [-2600, 1150], [-3900, 850], [-4170, 560],
+        [-3900, 450], [-200, 420], [0, 620], [100, 850]], y: [-380, 380] },                                                                // body, traced from the photo
       { torus: { R: 410, r: 45, pos: [0, 650, 450], rot: [90, 0, 0] }, mirror: true },
       { torus: { R: 410, r: 45, pos: [-2800, 650, 450], rot: [90, 0, 0] }, mirror: true },
     ],
+  },
+  photo: {
+    src: "photo.jpg", w: 1200, h: 803,
+    alt: "White 1909 Blitzen-Benz record car on display in the Mercedes-Benz Museum, seen from the front left",
+    cam: { c: [3731.2, 2398.2, 1711.9], yaw: -2.7001, pitch: -0.1962, roll: 0.0719, f: 1566.4 }, // tools/photo-fits/blitzen-benz.json
+    credit: { author: "Valder137", license: "CC BY 2.0", url: "https://commons.wikimedia.org/wiki/File:Benz_200PS_1909_Blitzen-Benz_Bob_Burman_LSideFront_MBMuse_9June2013_(14983653675).jpg" },
   },
   components: [
     {
@@ -45,7 +52,7 @@ export default {
         label: "Record run at full power",
         shapes: [{ id: "blitzen", label: "Blitzen-Benz", cd: 0.55, area: 1.1, mass: 1450, crr: 0.02, eta: 0.75, ps: 200, quoted: 228 }],   // cd, area, crr, eta illustrative
         power: { min: 50, max: 400 }, vmax: 300,
-        nose: [420, 620], wheel: [-2800, 0], wind: { x0: 2500, x1: -5500, y: 900, z0: 100, z1: 1700 }, time: 3,
+        nose: [250, 1000], wheel: [-2800, 0], wind: { x0: 2500, x1: -5500, y: 900, z0: 100, z1: 1700 }, time: 3,
       },
       talk: [
         "Bob Burman at Daytona Beach on 23 April 1911: 228.1 km/h over the flying mile, faster than any aeroplane or train of the time. The record stood until 1919.",

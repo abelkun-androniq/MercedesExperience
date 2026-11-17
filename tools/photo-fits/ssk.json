@@ -1,0 +1,60 @@
+{
+  "photo": "stops/ssk/photo.jpg",
+  "image": {
+    "width": 1200,
+    "height": 803
+  },
+  "frame": "mm; x forward, y left, z up; origin = front axle centre at wheel-centre height; wheelbase 2950, track 1425 (Mercedes-Benz archive)",
+  "aimAt": [-1200, 0, 0],
+  "seeds": [
+    [2500, 3500, 1100],
+    [2000, 4500, 1300],
+    [3500, 3000, 900],
+    [1800, 3000, 1500]
+  ],
+  "focalSeeds": [900, 1300, 1800],
+  "rollPenalty": 300,
+  "focalPrior": {
+    "f": 1700,
+    "w": 0.05
+  },
+  "groundZ": -400,
+  "points": [
+    {
+      "name": "LF wheel centre",
+      "X": [0, 712, 0],
+      "px": [505, 582],
+      "w": 3
+    },
+    {
+      "name": "LF tyre bottom",
+      "X": [0, 712, -400],
+      "px": [500, 735],
+      "w": 2
+    },
+    {
+      "name": "RF wheel centre",
+      "X": [0, -712, 0],
+      "px": [190, 435],
+      "w": 1
+    },
+    {
+      "name": "RF tyre bottom",
+      "X": [0, -712, -400],
+      "px": [200, 540],
+      "w": 1
+    },
+    {
+      "name": "LR wheel centre",
+      "X": [-2950, 712, 0],
+      "px": [1005, 412],
+      "w": 3
+    },
+    {
+      "name": "LR tyre bottom",
+      "X": [-2950, 712, -400],
+      "px": [1000, 495],
+      "w": 2
+    }
+  ]
+}

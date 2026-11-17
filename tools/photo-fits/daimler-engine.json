@@ -1,0 +1,18 @@
+{
+  "photo": "stops/daimler-engine/photo.jpg",
+  "image": { "width": 1200, "height": 1600 },
+  "frame": "mm; x along the crank, y left, z up; origin = crank centre. Scale from the crankcase (radius 220 mm, illustrative)",
+  "aimAt": [0, 0, 300],
+  "seeds": [[1200, 0, 300], [1500, 100, 500], [1000, -100, 200]],
+  "focalSeeds": [1200, 1500],
+  "rollPenalty": 300,
+  "focalPrior": { "f": 1400, "w": 0.5 },
+  "groundZ": -220,
+  "points": [
+    { "name": "Crank centre",        "X": [0, 0, 0],     "px": [565, 1310], "w": 3 },
+    { "name": "Case, right of crank","X": [0, -220, 0],  "px": [262, 1305], "w": 2 },
+    { "name": "Case, left of crank", "X": [0, 220, 0],   "px": [880, 1300], "w": 2 },
+    { "name": "Case top",            "X": [0, 0, 220],   "px": [567, 995],  "w": 2 },
+    { "name": "Cylinder top",        "X": [0, 0, 509],   "px": [572, 600],  "w": 1 }
+  ]
+}

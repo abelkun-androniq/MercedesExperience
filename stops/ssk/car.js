@@ -8,14 +8,22 @@ export default {
   summary: "A 7.1-litre straight-six with a Roots blower that only cuts in when the driver stamps the pedal through to the floor.",
   eyebrow: "Mercedes-Benz 27/170/225 PS Typ SSK, 1928",
   lede: "The short-chassis Super Sport, shown working: the blower that joins in only at full pedal, and the big six-cylinder engine it feeds.",
-  frame: { origin: "front", wheelbase: 2400, wheelR: 400 },
+  frame: { origin: "front", wheelbase: 2950, wheelR: 400 },
   orbit: { min: 0.6, max: 12 },
   sun: [3, 4, 6],
   body: {
     ghost: [
-      { pts: [[350, -60], [330, 780], [-1900, 800], [-1900, -60]], y: [-420, 420] },                                                // radiator and bonnet
-      { pts: [[-1900, -160], [-1900, 700], [-2300, 760], [-2900, 640], [-3600, 560], [-3700, 100], [-3500, -160]], y: [-720, 720] }, // cockpit and tail
+      { pts: [[-150, -60], [-140, 740], [-1950, 720], [-1950, -60]], y: [-380, 380] },                                              // radiator and bonnet
+      { pts: [[-1950, -160], [-1950, 700], [-2300, 760], [-3030, 480], [-3840, 240], [-3900, 0], [-3700, -160]], y: [-560, 560] },   // cockpit and tail
+      { torus: { R: 375, r: 45, pos: [0, 712, 0], rot: [90, 0, 0] }, mirror: true },
+      { torus: { R: 375, r: 45, pos: [-2950, 712, 0], rot: [90, 0, 0] }, mirror: true },
     ],
+  },
+  photo: {
+    src: "photo.jpg", w: 1200, h: 803,
+    alt: "White 1928 Mercedes-Benz SSK on display in the Mercedes-Benz Museum, seen from the front left",
+    cam: { c: [1821.7, 2536, 1112.4], yaw: -2.4297, pitch: -0.248, roll: 0.0773, f: 1157.5 }, // tools/photo-fits/ssk.json
+    credit: { author: "Valder137", license: "CC BY 2.0", url: "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_27-170-225_PS_TypSSK_1928_Sport-Zweisitzer_LSideFront_MBMuse_9June2013_(14796953659).jpg" },
   },
   components: [
     {
@@ -54,9 +62,10 @@ export default {
     },
   ],
   note: "Geometry is illustrative: blower layout, drive ratio, boost, conrod length and cylinder spacing are plausible values, not factory data.",
-  unverified: ["Blower layout, 2.6 drive ratio and 0.45 bar boost", "Conrod length and cylinder spacing", "Ghost-body outline", "Room and level"],
+  unverified: ["Blower layout, 2.6 drive ratio and 0.45 bar boost", "Conrod length and cylinder spacing", "Ghost-body outline (traced from the photo)", "Room and level"],
   sources: [
     { label: "Wikipedia: Mercedes-Benz SSK", url: "https://en.wikipedia.org/wiki/Mercedes-Benz_SSK" },
+    { label: "Mercedes-Benz public archive: SSK 27/180/250 hp (wheelbase, track)", url: "https://mercedes-benz-publicarchive.com/marsClassic/en/instance/ko/SSK-27180250-hp--WS-06-1929---1930.xhtml?oid=4181" },
     { label: "eMercedesBenz: the Super Sport Short", url: "https://emercedesbenz.com/autos/mercedes-benz/motorsports/mercedes-benz-history-the-super-sport-short" },
     { label: "Autozine: Mercedes SSK", url: "https://w.autozine.org/Archive/Mercedes/classic/SSK.html" },
   ],

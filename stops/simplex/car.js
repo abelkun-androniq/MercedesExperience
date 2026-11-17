@@ -19,6 +19,12 @@ export default {
       { torus: { R: 430, r: 45, pos: [-2450, 700, 460], rot: [90, 0, 0] }, mirror: true },
     ],
   },
+  photo: {
+    src: "photo.jpg", w: 1200, h: 803,
+    alt: "Blue 1902 Mercedes Simplex 40 PS on display in the Mercedes-Benz Museum, seen from the front left",
+    cam: { c: [4278.9, 5687.9, 1723.4], yaw: -2.3421, pitch: -0.1236, roll: -0.0029, f: 1500.3 }, // tools/photo-fits/simplex.json
+    credit: { author: "Valder137", license: "CC BY 2.0", url: "https://commons.wikimedia.org/wiki/File:Mercedes_40_PS_1902_Simplex_LSideFront_MBMuse_9June2013_(14797093187).jpg" },
+  },
   components: [
     {
       id: "gears", label: "Gearbox", subsystem: "gearbox",

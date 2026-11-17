@@ -13,10 +13,17 @@ export default {
   sun: [3, -3, 6],
   body: {
     ghost: [
-      { pts: [[950, 300], [930, 600], [500, 760], [-900, 830], [-1250, 900], [-1650, 1300], [-2450, 1300], [-3150, 920], [-3570, 680], [-3570, 300]], y: [-880, 880] },
+      { pts: [[950, 300], [930, 600], [500, 760], [-900, 830], [-3150, 860], [-3570, 680], [-3570, 300]], y: [-880, 880] },   // body
+      { pts: [[-900, 830], [-1250, 900], [-1650, 1300], [-2450, 1300], [-3150, 860]], y: [-620, 620] },                       // cabin
       { torus: { R: 260, r: 70, pos: [0, 720, 330], rot: [90, 0, 0] }, mirror: true },
       { torus: { R: 260, r: 70, pos: [-2400, 730, 330], rot: [90, 0, 0] }, mirror: true },
     ],
+  },
+  photo: {
+    src: "photo.jpg", w: 1200, h: 803,
+    alt: "Silver 1955 Mercedes-Benz 300 SL Gullwing with its doors open in the Mercedes-Benz Museum, seen from the front right",
+    cam: { c: [2660.9, -3343.7, 2178], yaw: 2.3898, pitch: -0.3126, roll: -0.0502, f: 1327.5 }, // tools/photo-fits/300sl.json
+    credit: { author: "Valder137", license: "CC BY 2.0", url: "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_300SL_1955_Fl%C3%BCgelt%C3%BCren_Gullwing_Coup%C3%A8_RSideFront_MBMuse_9June2013_(14797075767).jpg" },
   },
   components: [
     {

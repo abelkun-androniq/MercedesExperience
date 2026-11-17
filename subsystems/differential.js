@@ -16,6 +16,7 @@ export function create(ctx, p) {
   const h = m(p.halfTrack), R = m(p.wheelR), ax = m(p.axleX);
   const group = new THREE.Group(); carRoot.add(group);
   const iron = mat(0x5a626b, { metalness: 0.5 }), tyreMat = mat(0x2a2d31, { roughness: 0.9 }), dark = mat(0x343b42);
+  const rimMat = mat(0x5a626b, { metalness: 0.5 }), wheelMats = [tyreMat, rimMat];   // faded over the museum photo
   const sideMat = stage.tokenMat("--l1"), spiderMat = stage.tokenMat("--l2"), carrierMat = stage.tokenMat("--metal"), shaftMat = stage.tokenMat("--l4");
   const K = p.counter ? 0.22 / 0.07 : 1;   // half-shaft turns per wheel turn (chain sprockets on the countershaft)
   const cx = p.counter ? m(p.counter.x) : ax, cz = p.counter ? m(p.counter.z) : R, half = p.counter ? m(p.counter.half) : h;
@@ -29,11 +30,13 @@ export function create(ctx, p) {
   // Wheels (axis along y) on their own spinners.
   const wheels = [1, -1].map(s => {
     const g = new THREE.Group();
-    if (p.wheel === "wire") { const spokes = line(0x9aa4ad, 0.85); spokes.userData.solid = iron; g.add(wireWheel(tyreMat, spokes, R - 0.02, 0.02, R - 0.05, 28)); }
-    else { const tw = m(p.tyreW ?? 110); g.add(tyre(tyreMat, R - tw, tw)); g.add(new THREE.Mesh(new THREE.CylinderGeometry(R - 1.8 * tw, R - 1.8 * tw, 0.14, 32), iron)); }
+    if (p.wheel === "wire") { const spokes = line(0x9aa4ad, 0.85); spokes.userData.solid = rimMat; wheelMats.push(spokes); g.add(wireWheel(tyreMat, spokes, R - 0.02, 0.02, R - 0.05, 28)); }
+    else { const tw = m(p.tyreW ?? 110); g.add(tyre(tyreMat, R - tw, tw)); g.add(new THREE.Mesh(new THREE.CylinderGeometry(R - 1.8 * tw, R - 1.8 * tw, 0.14, 32), rimMat)); }
     const mk = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.15, 0.45 * R), carrierMat); mk.position.z = 0.4 * R; g.add(mk);
     return spinner(V(ax, s * h, R), g);
   });
+
+  for (const w of wheelMats) { w.transparent = true; w.userData.opacity = w.opacity; }
 
   // Carrier: crown wheel or belt pulley, cross pin, two spider gears. Side gears turn with their half-shafts.
   const carrier = spinner(C, new THREE.Group());
@@ -124,7 +127,10 @@ export function create(ctx, p) {
   }
 
   return {
-    layout({ active }) { group.visible = active; },
+    layout({ active, onPhoto }) {
+      group.visible = active;
+      for (const w of wheelMats) w.opacity = onPhoto ? 0.12 : w.userData.opacity;   // the real wheels show through
+    },
     update(dt) {
       (p.mode === "corner" ? corner : grip)(dt);
       wheels[0].rotation.y = angL / K; wheels[1].rotation.y = angR / K;

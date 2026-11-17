@@ -1,5 +1,6 @@
-// Daimler/Maybach single-cylinder "Grandfather Clock" engine, 1884–1885. A bare engine exhibit, so no car body.
-// Frame: m from the crank centre, x forward, z up. Bore × stroke per period data sheets (sources disagree); rest illustrative.
+// Daimler/Maybach single-cylinder "Grandfather Clock" engine, 1884–1885. A bare engine exhibit: the ghost body is its casing.
+// Frame: mm from the crank centre, x along the crank, z up. Bore × stroke per period data sheets (sources disagree); rest
+// illustrative, with case, rod and outline sized to match the museum photo.
 export default {
   slug: "daimler-engine",
   title: "The Grandfather Clock engine",
@@ -8,18 +9,33 @@ export default {
   summary: "The fast-running single cylinder that made a motor vehicle possible: hot-tube ignition and flywheels sealed in the crankcase.",
   eyebrow: "Daimler and Maybach single-cylinder engine, 1884–1885",
   lede: "Gottlieb Daimler and Wilhelm Maybach's small, fast-running engine, shown turning over in slow motion: the falling piston sucks the intake valve open, a groove in the flywheel pushes the exhaust valve, and a glowing tube lights the mixture near the top of the compression stroke.",
-  orbit: { min: 0.3, max: 4 },
+  orbit: { min: 0.3, max: 5 },
+  body: {
+    ghost: [                                                                    // casing, traced from the photo; illustrative
+      { cyl: { r: [220, 220], h: 200, axis: "x", pos: [0, 0, 0] } },            // round crankcase
+      { pts: [[-50, 220], [50, 220], [50, 510], [-50, 510]], y: [-50, 50] },     // cylinder
+      { pts: [[-68, 510], [68, 510], [68, 740], [-68, 740]], y: [-68, 68] },     // hot-tube chimney
+      { pts: [[-72, 290], [72, 290], [72, 730], [-72, 730]], y: [-232, -88] },   // surface carburettor
+    ],
+  },
+  photo: {
+    src: "photo.jpg", w: 1200, h: 1600,
+    alt: "Daimler and Maybach's 1885 Grandfather Clock engine on display in the Mercedes-Benz Museum, seen along its crankshaft",
+    cam: { c: [1020.5, 35, 282.2], yaw: 3.1518, pitch: 0.0773, roll: -0.0048, f: 1400 }, // tools/photo-fits/daimler-engine.json
+    credit: { author: "Mohan S from Dublin, Ireland", license: "CC BY 2.0", url: "https://commons.wikimedia.org/wiki/File:Daimler_Maybach_Grandfather_Clock_Engine.jpg" },
+  },
   components: [
     {
       id: "engine", label: "Engine", subsystem: "inline-engine",
-      view: { pos: [0.95, 0.75, 0.45], target: [0, 0, 0.16] },
+      view: { pos: [1.5, 1.1, 0.75], target: [0, 0, 0.3] },
       ghost: { fill: 0, edge: 0 },
       params: {
         label: "Four-stroke cycle · one cylinder",
         order: [1],
-        bore: 58, stroke: 100, rod: 200,            // rod length illustrative
+        bore: 58, stroke: 100, rod: 400,            // rod length illustrative
         xs: [0], crankZ: 0, lean: 0,
         valvetrain: "atmospheric", ignition: "hot-tube", fuel: "carb", crankcase: "flywheels",
+        flywheelR: 205,                             // illustrative, scaled from the photo
         speed: { min: 5, max: 60, value: 20 },
         realRpm: 600,
       },
@@ -35,6 +51,7 @@ export default {
   unverified: [
     "Bore 58 mm × stroke 100 mm (264 cc) and 0.5–1 hp at about 600 rpm: sources disagree, and some figures may describe the Riding Car's version",
     "Conrod length, valve sizes and timing",
+    "Crankcase size and casing outline, scaled from the photo by assuming a 220 mm case radius",
     "Room and level",
   ],
   sources: [

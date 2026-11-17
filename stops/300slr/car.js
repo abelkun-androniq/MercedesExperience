@@ -14,8 +14,18 @@ export default {
   sun: [3, 4, 6],
   body: {
     ghost: [
-      { pts: [[800, -120], [780, 250], [400, 420], [-1000, 520], [-1500, 560], [-1800, 880], [-2600, 880], [-3200, 560], [-3500, 380], [-3520, -120]], y: [-850, 850] },
+      { pts: [[400, -120], [400, 430], [-1000, 520], [-3200, 540], [-3500, 380], [-3520, -120]], y: [-850, 850] },   // body, traced from the photo
+      { pts: [[900, -120], [900, 150], [700, 330], [400, 430], [400, -120]], y: [-560, 560] },                       // nose
+      { pts: [[-1000, 520], [-1300, 790], [-1800, 820], [-2500, 760], [-3200, 540]], y: [-560, 560] },               // cabin
+      { torus: { R: 290, r: 40, pos: [0, 665, 0], rot: [90, 0, 0] }, mirror: true },
+      { torus: { R: 290, r: 40, pos: [-2370, 690, 0], rot: [90, 0, 0] }, mirror: true },
     ],
+  },
+  photo: {
+    src: "photo.jpg", w: 1200, h: 803,
+    alt: "Silver 1955 Mercedes-Benz 300 SLR Uhlenhaut Coupé on display in the Mercedes-Benz Museum, seen from the front right",
+    cam: { c: [2793.9, -2105.5, 1189.9], yaw: 2.5851, pitch: -0.2559, roll: -0.0614, f: 1291 }, // tools/photo-fits/300slr.json
+    credit: { author: "Valder137", license: "CC BY 2.0", url: "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_300SLR_1955_Uhlenhaut_Coup%C3%A8_RSideFront_MBMuse_9June2013_(14960622596).jpg" },
   },
   components: [
     {

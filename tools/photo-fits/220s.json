@@ -1,0 +1,19 @@
+{
+  "photo": "stops/220s/photo.jpg",
+  "image": { "width": 1200, "height": 803 },
+  "frame": "mm; x forward, y left, z up; origin = front axle centre on the ground",
+  "aimAt": [-1200, 0, 700],
+  "seeds": [[4500, 2500, 1500], [5500, 2000, 1800], [4000, 3000, 1300], [6000, 1000, 2000]],
+  "focalSeeds": [900, 1300, 1800],
+  "rollPenalty": 300,
+  "focalPrior": { "f": 1700, "w": 0.05 },
+  "groundZ": 0,
+  "points": [
+    { "name": "LF wheel centre", "X": [0, 735, 340],      "px": [787, 543], "w": 3 },
+    { "name": "LF tyre bottom",  "X": [0, 735, 0],        "px": [792, 628], "w": 2 },
+    { "name": "LR wheel centre", "X": [-2750, 742, 340],  "px": [903, 410], "w": 1 },
+    { "name": "R headlamp",      "X": [860, -610, 720],   "px": [318, 450], "w": 2 },
+    { "name": "L headlamp",      "X": [860, 610, 720],    "px": [688, 478], "w": 2 },
+    { "name": "Grille centre",   "X": [930, 0, 640],      "px": [480, 478], "w": 1 }
+  ]
+}

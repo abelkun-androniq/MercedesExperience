@@ -1,0 +1,21 @@
+{
+  "photo": "stops/simplex/photo.jpg",
+  "image": { "width": 1200, "height": 803 },
+  "frame": "mm; x forward, y left, z up; origin = front axle centre on the ground",
+  "aimAt": [-1200, 0, 600],
+  "seeds": [[3000, 4000, 1500], [2500, 5000, 1800], [4000, 3000, 1200], [2000, 3500, 2000]],
+  "focalSeeds": [900, 1300, 1800],
+  "rollPenalty": 300,
+  "focalPrior": { "f": 1700, "w": 0.05 },
+  "groundZ": 0,
+  "points": [
+    { "name": "LF wheel centre", "X": [0, 700, 450],      "px": [507, 503], "w": 3 },
+    { "name": "LF tyre bottom",  "X": [0, 700, 0],        "px": [515, 610], "w": 2 },
+    { "name": "LF tyre top",     "X": [0, 700, 900],      "px": [495, 395], "w": 1 },
+    { "name": "RF wheel centre", "X": [0, -700, 450],     "px": [330, 465], "w": 2 },
+    { "name": "RF tyre bottom",  "X": [0, -700, 0],       "px": [335, 545], "w": 1 },
+    { "name": "LR wheel centre", "X": [-2450, 700, 450],  "px": [840, 445], "w": 3 },
+    { "name": "LR tyre bottom",  "X": [-2450, 700, 0],    "px": [845, 525], "w": 2 },
+    { "name": "LR tyre top",     "X": [-2450, 700, 900],  "px": [835, 365], "w": 1 }
+  ]
+}

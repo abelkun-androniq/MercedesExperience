@@ -21,7 +21,8 @@ export function create(ctx, p) {
 
   // Wall (fixed), wheels and rear section (move with the car).
   const wallGeo = new THREE.BoxGeometry(0.3, 2.6, 1.6); wallGeo.translate(xb + 0.15, 0, 0.8);
-  group.add(new THREE.Mesh(wallGeo, stage.tokenMat("--muted", { transparent: true, opacity: 0.55 })));
+  const wall = new THREE.Mesh(wallGeo, stage.tokenMat("--muted", { transparent: true, opacity: 0.55 })); group.add(wall);
+  tyreMat.transparent = true;
   for (const x of [p.wheels.front, p.wheels.rear]) for (const s of [1, -1]) { const t = tyre(tyreMat, m(p.wheels.R) - 0.06, 0.06); t.position.set(m(x), s * (w - 0.06), m(p.wheels.R)); car.add(t); }
   const rearGeo = new THREE.BoxGeometry(xc - xt, 2 * w, zb - zs); rearGeo.translate((xc + xt) / 2, 0, (zs + zb) / 2);
   car.add(new THREE.Mesh(rearGeo, glassOf()), new THREE.LineSegments(new THREE.EdgesGeometry(rearGeo), new THREE.LineBasicMaterial({ color: 0x8fa3b3, transparent: true, opacity: 0.5 })));
@@ -41,7 +42,7 @@ export function create(ctx, p) {
   rails.flat(2).forEach(r => car.add(r));
 
   // ---------- state + panel ----------
-  let kase = 0, kmh = p.speed.value, sims = [], t = 0, playing = !ctx.reducedMotion;
+  let kase = 0, kmh = p.speed.value, sims = [], t = 0, playing = !ctx.reducedMotion, onPhoto = false;
   const ui = ctx.panel([{ label: p.label, badge: { id: "cell", text: "" }, items: [
     { buttons: p.cases.map((c, i) => ({ id: c.id, label: c.label, pressed: i === 0, onClick: () => { kase = i; p.cases.forEach((k, j) => ui.toggle(k.id).set(j === i)); t = 0; draw(); } })) },
     { slider: { id: "speed", label: "Impact speed (km/h)", min: p.speed.min, max: p.speed.max, step: 5, value: kmh, onInput: v => { kmh = v; run(); t = 0; } } },
@@ -83,7 +84,8 @@ export function create(ctx, p) {
     const s = sims[kase], zone = p.cases[kase].zone, v0 = kmh / 3.6, gap = v0 / p.slow * APPROACH;
     const tau = Math.max(0, (t - APPROACH) / p.slow), done = tau >= s.duration;
     const d = t < APPROACH ? 0 : done ? s.crush : sample(s, tau, "x"), g = t < APPROACH || done ? 0 : sample(s, tau, "a");
-    car.position.x = t < APPROACH ? -gap + v0 / p.slow * t : d;
+    // Over the museum photo the car stays where it stands and the front folds back towards the cell instead.
+    car.position.x = onPhoto ? 0 : t < APPROACH ? -gap + v0 / p.slow * t : d;
     // The front folds ring by ring from the bumper (which sits on the wall at car-frame x = xb − d); whatever crush is
     // left over once the zone is used up pushes the firewall into the cell.
     const front = Math.min(d, zone.length), intr = d - front;
@@ -104,7 +106,7 @@ export function create(ctx, p) {
   pose();
 
   return {
-    layout({ active }) { group.visible = active; },
+    layout({ active, onPhoto: photo }) { group.visible = active; onPhoto = photo; wall.visible = !photo; tyreMat.opacity = photo ? 0.12 : 1; pose(); },
     update(dt) {
       if (playing) { t += dt; if (t > APPROACH + sims[kase].duration * p.slow + HOLD) t = 0; }
       pose();
