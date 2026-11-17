@@ -1,6 +1,6 @@
 // Every stop on the route loads, renders, animates, and every Component/View switch works, on each emulated device.
 import { test, expect } from "@playwright/test";
-import tour from "../../stops/tour.js";
+import tour, { teaser } from "../../stops/tour.js";
 
 const cars = await Promise.all(tour.map(async s => (await import(`../../stops/${s.slug}/car.js`)).default));
 
@@ -60,4 +60,29 @@ test("unknown stop shows the not-found message and loads no 3D code", async ({ p
   await page.goto("stop.html?s=../../etc");
   await expect(page.getByRole("heading", { name: "Stop not found" })).toBeVisible();
   expect(three).toEqual([]);
+});
+
+test("teaser lists its three stops; opened from there, they page between each other", async ({ page }) => {
+  const errors = watchErrors(page);
+  const order = tour.filter(s => teaser.includes(s.slug)).map(s => s.slug), href = s => `stop.html?s=${s}&r=teaser`;
+  await page.goto("teaser.html");
+  const links = page.locator('a[href^="stop.html?s="]');
+  await expect(links).toHaveCount(3);
+  expect(await links.evaluateAll(as => as.map(a => a.getAttribute("href")))).toEqual(order.map(href));
+
+  for (const [i, slug] of order.entries()) {
+    await page.goto(`${href(slug)}&debug`);
+    await page.waitForFunction(() => window.__tour?.stats.frames > 5, null, { timeout: 20_000 });   // leaving mid-load aborts imports
+    await expect(page.locator("#where")).toContainText(`Stop ${i + 1} of 3`);
+    await expect(page.getByRole("link", { name: "← Highlights" })).toHaveAttribute("href", "teaser.html");
+    const pager = await page.locator(".pager a").evaluateAll(as => as.map(a => a.getAttribute("href")));
+    expect(pager).toEqual([order[i - 1], order[i + 1]].filter(Boolean).map(href));
+  }
+
+  const other = tour.find(s => !teaser.includes(s.slug)).slug;   // not a teaser stop: the full tour's paging
+  await page.goto(`stop.html?s=${other}&r=teaser&debug`);
+  await page.waitForFunction(() => window.__tour?.stats.frames > 5, null, { timeout: 20_000 });
+  await expect(page.locator("#where")).toContainText(`of ${tour.length}`);
+  await expect(page.getByRole("link", { name: "← Tour route" })).toHaveAttribute("href", "./");
+  expect(errors).toEqual([]);
 });

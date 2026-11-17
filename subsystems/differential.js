@@ -4,7 +4,7 @@
 // Params (mm, ground at z = 0): label, mode, halfTrack, wheelR, axleX, wheel "wire" | "tyre", tyreW?, ringR,
 // drive "crown" | "belt", counter? { x, z, half } (differential on a countershaft, chains to the wheels: Benz 1886),
 // corner? { kmh, minRadius (m) }, grip? { torque (N·m at the axle), normal (N per wheel), muLow, muHigh, resist (N),
-// surface (label), locks (bool) }.
+// surface ("ice": the slippery patch, named in the panel), locks (bool) }.
 import * as THREE from "three";
 import { V, mat, rod, place, tyre, wireWheel, line } from "../lib/scene/helpers.js";
 import { cornerSpeeds, traction } from "../lib/model/differential.js";
@@ -12,7 +12,8 @@ import { cornerSpeeds, traction } from "../lib/model/differential.js";
 const SLOW = 0.3, SIDE = 0.05, PIN = 0.045, Z_SIDE = 16, Z_SPIDER = 10;   // shown speed share; gear offsets (m); teeth
 
 export function create(ctx, p) {
-  const { stage, carRoot } = ctx, m = v => v / 1000;
+  const { stage, carRoot, t } = ctx, m = v => v / 1000;
+  const SURFACE = { ice: { on: t("Left wheel, on ice"), under: t("ice under the left wheel") } };   // whole phrases: case endings differ
   const h = m(p.halfTrack), R = m(p.wheelR), ax = m(p.axleX);
   const group = new THREE.Group(); carRoot.add(group);
   const iron = mat(0x5a626b, { metalness: 0.5 }), tyreMat = mat(0x2a2d31, { roughness: 0.9 }), dark = mat(0x343b42);
@@ -76,27 +77,27 @@ export function create(ctx, p) {
 
   // ---------- state + panel ----------
   const D = 180 / Math.PI;
-  let auto = !ctx.reducedMotion, t = 0, curve = 0.6, locked = false, angL = 0, angR = 0, angC = 0;   // half-shaft and carrier angles
+  let auto = !ctx.reducedMotion, clock = 0, curve = 0.6, locked = false, angL = 0, angR = 0, angC = 0;   // half-shaft and carrier angles
   const ui = p.mode === "corner" ? ctx.panel([{ label: p.label, items: [
-    { slider: { id: "curve", label: "Steering: right ← straight → left", min: -1, max: 1, step: 0.05, value: curve, onInput: v => { auto = false; ui.toggle("auto").set(false); curve = v; } } },
-    { readouts: [{ id: "radius", label: "Turn radius", unit: "m, axle centre" }, { id: "left", label: "Left wheel", unit: "rpm" }, { id: "right", label: "Right wheel", unit: "rpm" },
-      { id: "spider", label: "Spider gears", unit: "rpm in the carrier" }, { id: "extra", label: "Outer wheel goes", unit: "% further" }] },
-    { buttons: [{ id: "auto", toggle: ["Auto demo on", "Auto demo off"], pressed: auto, onClick: v => (auto = v) }] },
-    { key: [["--l1", "left wheel path"], ["--l2", "right wheel path"]] },
-  ] }, { label: "Parts", items: [{ legend: [["--l1", "Side gears (one per half-shaft)"], ["--l2", "Spider gears"], ["--metal", p.drive === "belt" ? "Carrier inside the belt pulley" : "Carrier and crown wheel"], ["--l4", "Half-shafts"]] }] }])
+    { slider: { id: "curve", label: t("Steering: right ← straight → left"), min: -1, max: 1, step: 0.05, value: curve, onInput: v => { auto = false; ui.toggle("auto").set(false); curve = v; } } },
+    { readouts: [{ id: "radius", label: t("Turn radius"), unit: t("m, axle centre") }, { id: "left", label: t("Left wheel"), unit: t("rpm") }, { id: "right", label: t("Right wheel"), unit: t("rpm") },
+      { id: "spider", label: t("Spider gears"), unit: t("rpm in the carrier") }, { id: "extra", label: t("Outer wheel goes"), unit: t("% further") }] },
+    { buttons: [{ id: "auto", toggle: [t("Auto demo on"), t("Auto demo off")], pressed: auto, onClick: v => (auto = v) }] },
+    { key: [["--l1", t("left wheel path")], ["--l2", t("right wheel path")]] },
+  ] }, { label: t("Parts"), items: [{ legend: [["--l1", t("Side gears (one per half-shaft)")], ["--l2", t("Spider gears")], ["--metal", p.drive === "belt" ? t("Carrier inside the belt pulley") : t("Carrier and crown wheel")], ["--l4", t("Half-shafts")]] }] }])
     : ctx.panel([{ label: p.label, badge: { id: "moves", text: "" }, items: [
-      { buttons: [{ id: "open", label: "Open differential", pressed: true, onClick: () => setLock(false) },
-        ...(p.grip.locks ? [{ id: "lock", label: "Differential lock", pressed: false, onClick: () => setLock(true) }] : [])] },
-      { readouts: [{ id: "fL", label: `Left wheel, on ${p.grip.surface}`, unit: "N of push" }, { id: "fR", label: "Right wheel, dry", unit: "N of push" },
-        { id: "total", label: "Total drive", unit: `N, needs ${p.grip.resist} to move` }, { id: "spin", label: "Left wheel", unit: "rpm" }] },
-      { buttons: [{ id: "auto", toggle: ["Auto demo on", "Auto demo off"], pressed: auto, onClick: v => (auto = v) }] },
-      { key: [["--l4", `${p.grip.surface} under the left wheel`]] },
-    ] }, { label: "Parts", items: [{ legend: [["--l1", "Side gears (one per half-shaft)"], ["--l2", "Spider gears"], ["--metal", "Carrier and crown wheel"], ["--l4", "Half-shafts"]] }] }]);
+      { buttons: [{ id: "open", label: t("Open differential"), pressed: true, onClick: () => setLock(false) },
+        ...(p.grip.locks ? [{ id: "lock", label: t("Differential lock"), pressed: false, onClick: () => setLock(true) }] : [])] },
+      { readouts: [{ id: "fL", label: SURFACE[p.grip.surface].on, unit: t("N of push") }, { id: "fR", label: t("Right wheel, dry"), unit: t("N of push") },
+        { id: "total", label: t("Total drive"), unit: t("N, needs {0} to move", p.grip.resist) }, { id: "spin", label: t("Left wheel"), unit: t("rpm") }] },
+      { buttons: [{ id: "auto", toggle: [t("Auto demo on"), t("Auto demo off")], pressed: auto, onClick: v => (auto = v) }] },
+      { key: [["--l4", SURFACE[p.grip.surface].under]] },
+    ] }, { label: t("Parts"), items: [{ legend: [["--l1", t("Side gears (one per half-shaft)")], ["--l2", t("Spider gears")], ["--metal", t("Carrier and crown wheel")], ["--l4", t("Half-shafts")]] }] }]);
   function setLock(v) { locked = v; ui.toggle("open").set(!v); if (p.grip.locks) ui.toggle("lock").set(v); }
 
   const rpm = w => (w * 60 / (2 * Math.PI)).toFixed(0);
   function corner(dt) {
-    if (auto) { t += dt; curve = Math.sin(0.35 * t); ui.slider("curve").set(curve.toFixed(2)); }
+    if (auto) { clock += dt; curve = Math.sin(0.35 * clock); ui.slider("curve").set(curve.toFixed(2)); }
     const radius = Math.abs(curve) < 0.02 ? Infinity : p.corner.minRadius / curve, v = p.corner.kmh / 3.6;
     const s = cornerSpeeds({ halfTrack: h, wheelR: R }, radius, v);
     angL += s.left * K * SLOW * dt; angR += s.right * K * SLOW * dt; angC += s.carrier * K * SLOW * dt;
@@ -110,20 +111,20 @@ export function create(ctx, p) {
       }
       pos.needsUpdate = true;
     });
-    ui.set("radius", straight ? "straight" : Math.abs(radius).toFixed(1));
+    ui.set("radius", straight ? t("straight") : Math.abs(radius).toFixed(1));
     ui.set("left", rpm(s.left)); ui.set("right", rpm(s.right));
     ui.set("spider", rpm(Math.abs(s.diff) * Z_SIDE / Z_SPIDER));
     ui.set("extra", straight ? "0" : ((Math.max(s.left, s.right) / Math.min(s.left, s.right) - 1) * 100).toFixed(0));
   }
   function grip(dt) {
-    if (auto) { t += dt; const lk = p.grip.locks && Math.floor(t / 5) % 2 === 1; if (lk !== locked) setLock(lk); }
+    if (auto) { clock += dt; const lk = p.grip.locks && Math.floor(clock / 5) % 2 === 1; if (lk !== locked) setLock(lk); }
     const g = p.grip, r = traction({ torque: g.torque, wheelR: R, normal: g.normal, muL: g.muLow, muR: g.muHigh, locked, resist: g.resist });
     const wC = 1.2 / R;   // carrier speed from the engine: walking pace, as on a slippery start
     // Open with the left wheel slipping: the right wheel stands and the left one turns twice as fast as the carrier.
     const [wL, wR] = locked ? [wC, wC] : r.spinL ? [2 * wC, 0] : r.moves ? [wC, wC] : [0, 0];
     angL += wL * K * SLOW * dt; angR += wR * K * SLOW * dt; angC += (wL + wR) / 2 * K * SLOW * dt;
     ui.set("fL", r.fL.toFixed(0)); ui.set("fR", r.fR.toFixed(0)); ui.set("total", r.total.toFixed(0)); ui.set("spin", rpm(wL));
-    ui.badge("moves").set(r.moves ? "Car moves off" : "Stuck: left wheel spins", r.moves);
+    ui.badge("moves").set(r.moves ? t("Car moves off") : t("Stuck: left wheel spins"), r.moves);
   }
 
   return {

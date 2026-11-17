@@ -1,9 +1,19 @@
 /* Layout shared by the index and every stop, after the current mercedes-benz.com pages: black header bar and hero, white
    page, condensed serif headlines, black photo cards with 12 px corners, pill buttons. Light by default, dark on request.
    Colours are tokens and the 3-D scene reads them too; --band and --card are the fixed-black areas. */
-@font-face {   /* Instrument Serif (SIL OFL 1.1, fonts/OFL.txt), standing in for the brand's proprietary condensed serif */
+/* Instrument Serif (SIL OFL 1.1, fonts/OFL.txt), standing in for the brand's proprietary condensed serif. Two subsets, as
+   Google Fonts splits it: latin-ext carries Hungarian ő and ű and loads only on pages that use them. */
+@font-face {
   font-family: "Instrument Serif"; font-weight: 400; font-style: normal; font-display: swap;
   src: url("fonts/instrument-serif-latin-400.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F,
+    U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Instrument Serif"; font-weight: 400; font-style: normal; font-display: swap;
+  src: url("fonts/instrument-serif-latin-ext-400.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF,
+    U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 :root {
   --bg: #ffffff; --panel: #f4f4f4; --fg: #333333; --muted: #696969; --rule: #e8e8e8; --edge: #9f9f9f;
@@ -51,6 +61,12 @@ h2 { font-family: var(--display); font-weight: 400; font-size: 28px; line-height
 .crumbs a, .crumbs .home { display: inline-flex; align-items: center; min-height: 44px; color: var(--band-fg); text-decoration: none; }
 .crumbs .home { font-family: var(--display); font-size: 24px; letter-spacing: 0; }
 .crumbs a:hover { text-decoration: underline; }
+.crumbs .where { flex: 1; text-align: center; }
+@media (max-width: 600px) { .crumbs .where { order: 3; flex-basis: 100%; text-align: left; padding-bottom: 12px; } .crumbs .where:empty { display: none; } }
+.langs { display: inline-flex; gap: 2px; padding: 2px; border: 1px solid var(--band-edge); border-radius: 9999px; }
+.langs button { min-height: 36px; min-width: 44px; padding: 0 12px; font-size: 13px; color: var(--band-fg); border-color: transparent; }
+.langs button[aria-pressed="true"] { background: var(--band-fg); border-color: var(--band-fg); color: var(--band); }
+.translating [data-i18n] { visibility: hidden; }   /* lang.js sets it; i18n.js removes it once the text is translated */
 .pager { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 24px; border-top: 1px solid var(--rule); padding-top: 16px; }
 .pager a { display: inline-flex; align-items: center; min-height: 44px; font-family: var(--display); font-size: 24px; letter-spacing: 0; text-decoration: none; }
 .pager a:hover { text-decoration: underline; }

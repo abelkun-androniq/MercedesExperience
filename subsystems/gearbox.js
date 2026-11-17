@@ -12,7 +12,7 @@ import { ratio, primaryRpmFor, mismatch } from "../lib/model/gearbox.js";
 const SLOW = 0.05, TOL = 0.1, TAU = 2 * Math.PI;   // shown shaft speed share; mesh tolerance (share of speed)
 
 export function create(ctx, p) {
-  const { stage, carRoot } = ctx, m = v => v / 1000, box = p.box, gears = box.gears;
+  const { stage, carRoot, t } = ctx, m = v => v / 1000, box = p.box, gears = box.gears;
   const group = new THREE.Group(); carRoot.add(group);
   const md = m(p.module), w = m(p.width), x0 = m(p.pos[0]), zS = m(p.pos[1]);
   const fwd = gears.filter(g => !g.idler), cd = md * (fwd[0].drive + fwd[0].driven) / 2, zP = zS + cd;
@@ -39,17 +39,17 @@ export function create(ctx, p) {
   const nameOf = i => (i === null ? "N" : gears[i].name);
   const order = fwd.map(g => gears.indexOf(g)).sort((a, b) => ratio(box, b) - ratio(box, a));   // 1st … top
 
-  const ui = ctx.panel([{ label: p.label, badge: { id: "mesh", text: "Neutral" }, items: [
-    { svg: { id: "gate", viewBox: "0 0 200 100", aria: "Gear lever and its gate" } },
+  const ui = ctx.panel([{ label: p.label, badge: { id: "mesh", text: t("Neutral") }, items: [
+    { svg: { id: "gate", viewBox: "0 0 200 100", aria: t("Gear lever and its gate") } },
     { buttons: [...gears.map((g, i) => ({ id: `g${i}`, label: g.name, pressed: false, onClick: () => { stopDemo(); select(i); } })),
-      { id: "gn", label: "N", pressed: true, onClick: () => { stopDemo(); select(null); } }] },
-    { buttons: [{ id: "clutch", toggle: ["Clutch down", "Clutch up"], pressed: false, onClick: v => { stopDemo(); clutchIn = v; } },
-      { id: "brake", toggle: ["Braking", "Brake off"], pressed: false, onClick: v => { stopDemo(); braking = v; } }] },
-    { slider: { id: "thr", label: "Throttle", min: 0, max: 100, value: 0, onInput: v => { stopDemo(); throttle = v / 100; } } },
-    { readouts: [{ id: "kmh", label: "Road speed", unit: "km/h" }, { id: "eng", label: "Engine", unit: "rpm" },
-      { id: "prim", label: "Primary shaft", unit: "rpm" }, { id: "need", label: "Chosen gear needs", unit: "rpm on the primary shaft" }] },
-    { buttons: [{ id: "auto", toggle: ["Demo drive on", "Demo drive off"], pressed: demo, onClick: v => { demo = v; step = 0; age = 0; } }] },
-    { key: [["--l1", "pair in mesh"], ["--l2", "pair grinding"], ["--metal", "pairs apart"], ["--l4", "shafts"]] },
+      { id: "gn", label: t("N"), pressed: true, onClick: () => { stopDemo(); select(null); } }] },
+    { buttons: [{ id: "clutch", toggle: [t("Clutch down"), t("Clutch up")], pressed: false, onClick: v => { stopDemo(); clutchIn = v; } },
+      { id: "brake", toggle: [t("Braking"), t("Brake off")], pressed: false, onClick: v => { stopDemo(); braking = v; } }] },
+    { slider: { id: "thr", label: t("Throttle"), min: 0, max: 100, value: 0, onInput: v => { stopDemo(); throttle = v / 100; } } },
+    { readouts: [{ id: "kmh", label: t("Road speed"), unit: t("km/h") }, { id: "eng", label: t("Engine"), unit: t("rpm") },
+      { id: "prim", label: t("Primary shaft"), unit: t("rpm") }, { id: "need", label: t("Chosen gear needs"), unit: t("rpm on the primary shaft") }] },
+    { buttons: [{ id: "auto", toggle: [t("Demo drive on"), t("Demo drive off")], pressed: demo, onClick: v => { demo = v; step = 0; age = 0; } }] },
+    { key: [["--l1", t("pair in mesh")], ["--l2", t("pair grinding")], ["--metal", t("pairs apart")], ["--l4", t("shafts")]] },
   ] }]);
   function stopDemo() { if (demo) { demo = false; ui.toggle("auto").set(false); } }
   function select(i) {
@@ -113,9 +113,9 @@ export function create(ctx, p) {
     const s = slot(sel ?? want), tx = s ? s[1] : knob[0], ty = s ? (sel !== null ? s[2] : grinding ? s[2] * 0.45 : 0) : 0;
     knob = [knob[0] + (tx - knob[0]) * 0.3, knob[1] + (ty - knob[1]) * 0.3];
     knobEl.setAttribute("cx", gx(knob[0]).toFixed(1)); knobEl.setAttribute("cy", gy(knob[1]).toFixed(1));
-    ui.set("kmh", Math.abs(kmh).toFixed(1) + (kmh < -0.05 ? " back" : "")); ui.set("eng", eng.toFixed(0)); ui.set("prim", prim.toFixed(0));
+    ui.set("kmh", kmh < -0.05 ? t("{0} back", Math.abs(kmh).toFixed(1)) : Math.abs(kmh).toFixed(1)); ui.set("eng", eng.toFixed(0)); ui.set("prim", prim.toFixed(0));
     ui.set("need", want === null ? "–" : Math.abs(primaryRpmFor(box, want, kmh)).toFixed(0));
-    ui.badge("mesh").set(sel !== null ? `In gear ${nameOf(sel)}` : grinding ? `Grinding: ${(mismatch(box, want, prim, kmh) * 100).toFixed(0)} % apart` : "Neutral", sel !== null);
+    ui.badge("mesh").set(sel !== null ? t("In gear {0}", nameOf(sel)) : grinding ? t("Grinding: {0} % apart", (mismatch(box, want, prim, kmh) * 100).toFixed(0)) : t("Neutral"), sel !== null);
   }
 
   return {

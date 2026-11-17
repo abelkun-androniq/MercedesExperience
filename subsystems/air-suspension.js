@@ -12,7 +12,7 @@ import { createCorner } from "../lib/model/air-spring.js";
 const PATM = 101325, SUB = 10;
 
 export function create(ctx, p) {
-  const { stage, carRoot } = ctx, m = v => v / 1000;
+  const { stage, carRoot, t } = ctx, m = v => v / 1000;
   const world = new THREE.Group(); stage.scene.add(world);   // wheels and axles do not move with the body
   const xF = m(p.front), wb = m(p.wheelbase), yT = m(p.halfTrack), R = m(p.wheelR), bz0 = m(p.bellows.z0), bh = m(p.bellows.h), br = m(p.bellows.r);
   const tyreMat = mat(0x2a2d31, { roughness: 0.9 }), rimMat = mat(0x9aa4ad, { metalness: 0.5 }), airMat = stage.tokenMat("--l4"), coilMat = stage.tokenMat("--metal");
@@ -35,14 +35,14 @@ export function create(ctx, p) {
   // Four corner models: front/rear × air/steel; both systems run all the time so switching shows each one's state.
   const make = (kind, axle) => createCorner({ kind, air: p.air, k: p.steel[axle], emptyMass: p.corners[axle].mass, damping: p.damping });
   const sims = { air: { front: make("air", "front"), rear: make("air", "rear") }, steel: { front: make("steel", "front"), rear: make("steel", "rear") } };
-  let mode = "air", loaded = false, auto = !ctx.reducedMotion, t = 0;
+  let mode = "air", loaded = false, auto = !ctx.reducedMotion, clock = 0;
   const ui = ctx.panel([{ label: p.label, badge: { id: "valve", text: "" }, items: [
-    { buttons: [{ id: "air", label: "Air suspension, self-levelling", pressed: true, onClick: () => setMode("air") }, { id: "steel", label: "Steel springs", pressed: false, onClick: () => setMode("steel") }] },
-    { buttons: [{ id: "load", toggle: ["Loaded: 4 people + luggage", "Driver only"], pressed: false, onClick: v => { auto = false; ui.toggle("auto").set(false); loaded = v; } }] },
-    { readouts: [{ id: "front", label: "Front sits lower by", unit: "mm" }, { id: "rear", label: "Rear sits lower by", unit: "mm" },
-      { id: "bar", label: "Rear bellows pressure", unit: "bar" }, { id: "hz", label: "Rear ride frequency", unit: "Hz (bounce rate)" }, { id: "pitch", label: "Nose up", unit: "deg" }] },
-    { buttons: [{ id: "auto", toggle: ["Auto demo on", "Auto demo off"], pressed: auto, onClick: v => (auto = v) }] },
-    { key: [["--l4", "air bellows"], ["--metal", "steel coil spring"], ["--accent", "passengers"], ["--l2", "luggage"]] },
+    { buttons: [{ id: "air", label: t("Air suspension, self-levelling"), pressed: true, onClick: () => setMode("air") }, { id: "steel", label: t("Steel springs"), pressed: false, onClick: () => setMode("steel") }] },
+    { buttons: [{ id: "load", toggle: [t("Loaded: 4 people + luggage"), t("Driver only")], pressed: false, onClick: v => { auto = false; ui.toggle("auto").set(false); loaded = v; } }] },
+    { readouts: [{ id: "front", label: t("Front sits lower by"), unit: t("mm") }, { id: "rear", label: t("Rear sits lower by"), unit: t("mm") },
+      { id: "bar", label: t("Rear bellows pressure"), unit: t("bar") }, { id: "hz", label: t("Rear ride frequency"), unit: t("Hz (bounce rate)") }, { id: "pitch", label: t("Nose up"), unit: t("deg") }] },
+    { buttons: [{ id: "auto", toggle: [t("Auto demo on"), t("Auto demo off")], pressed: auto, onClick: v => (auto = v) }] },
+    { key: [["--l4", t("air bellows")], ["--metal", t("steel coil spring")], ["--accent", t("passengers")], ["--l2", t("luggage")]] },
   ] }]);
   function setMode(md) { mode = md; ui.toggle("air").set(md === "air"); ui.toggle("steel").set(md === "steel"); }
 
@@ -55,7 +55,7 @@ export function create(ctx, p) {
   return {
     layout({ active, onPhoto }) { world.visible = active; loadGroup.visible = active && loaded; tyreMat.opacity = rimMat.opacity = onPhoto ? 0.12 : 1; },
     update(dt, { onPhoto }) {
-      if (auto) { t += dt; const l = Math.floor(t / 7) % 2 === 1; if (l !== loaded) { loaded = l; ui.toggle("load").set(l); } }
+      if (auto) { clock += dt; const l = Math.floor(clock / 7) % 2 === 1; if (l !== loaded) { loaded = l; ui.toggle("load").set(l); } }
       loadGroup.visible = loaded;
       const h = Math.min(dt, 0.05) / SUB;
       for (let i = 0; i < SUB; i++) for (const md of ["air", "steel"]) for (const axle of ["front", "rear"]) sims[md][axle].step(massOf(axle), h);
@@ -67,7 +67,7 @@ export function create(ctx, p) {
         c.rolls.forEach((r, i) => (r.position.z = bh * k * (i + 0.5) / 3)); c.coil.scale.set(1, 1, bh * k);
       }
       const valve = sims.air.rear.valve === "level" ? sims.air.front.valve : sims.air.rear.valve;
-      ui.badge("valve").set(mode === "steel" ? "No levelling" : valve === "filling" ? "Valves: letting air in" : valve === "venting" ? "Valves: letting air out" : "At ride height", mode === "air" && valve === "level");
+      ui.badge("valve").set(mode === "steel" ? t("No levelling") : valve === "filling" ? t("Valves: letting air in") : valve === "venting" ? t("Valves: letting air out") : t("At ride height"), mode === "air" && valve === "level");
       ui.set("front", (zF * 1000).toFixed(0)); ui.set("rear", (zR * 1000).toFixed(0));
       ui.set("bar", mode === "air" ? (sims.air.rear.pressure() / 1e5).toFixed(2) : "–");
       ui.set("hz", rideHz("rear").toFixed(2)); ui.set("pitch", (-Math.asin(sin) * 180 / Math.PI).toFixed(2));

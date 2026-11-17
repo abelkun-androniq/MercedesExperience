@@ -11,7 +11,7 @@ export default defineConfig({
   fullyParallel: true,
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? [["github"], ["html", { open: "never" }]] : "list",
-  use: { baseURL: `http://localhost:${PORT}/`, trace: "retain-on-failure" },
+  use: { baseURL: `http://localhost:${PORT}/`, locale: "en-US", trace: "retain-on-failure" },   // hungarian.spec sets hu-HU
   webServer: { command: `node tools/build.mjs && python3 -m http.server ${PORT} -d _site`, url: `http://localhost:${PORT}/index.html`, stderr: "ignore", reuseExistingServer: !process.env.CI },
   projects: [
     { name: "iphone", use: devices["iPhone 15"], ...webkit },

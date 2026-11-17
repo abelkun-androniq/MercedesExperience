@@ -11,7 +11,7 @@ import { drag, rolling, powerNeeded, topSpeed, accelerate } from "../lib/model/a
 const PS = 735.5, NS = "http://www.w3.org/2000/svg";
 
 export function create(ctx, p) {
-  const { stage, carRoot } = ctx, m = v => v / 1000;
+  const { stage, carRoot, t } = ctx, m = v => v / 1000;
   const group = new THREE.Group(); carRoot.add(group);
   const W = p.wind, wx0 = m(W.x0), wx1 = m(W.x1);
 
@@ -38,20 +38,20 @@ export function create(ctx, p) {
   const pmax = p.power.max * PS / 1000, X = kmh => 34 + kmh / p.vmax * 236, Yk = kw => 128 - kw / pmax * 116;
   const ui = ctx.panel([{ label: p.label, items: [
     ...(p.shapes.length > 1 ? [{ buttons: p.shapes.map((s, i) => ({ id: s.id, label: s.label, pressed: i === 0, onClick: () => setShape(s) })) }] : []),
-    { slider: { id: "ps", label: "Engine power (PS)", min: p.power.min, max: p.power.max, step: 5, value: ps, onInput: x => { ps = x; drawChart(); } } },
-    { readouts: [{ id: "v", label: "Speed", unit: "km/h" }, { id: "drag", label: "Air drag", unit: "N" }, { id: "dkw", label: "Power into drag", unit: "kW" },
-      { id: "rkw", label: "Into rolling", unit: "kW" }, { id: "top", label: "Model top speed", unit: "km/h" }, { id: "quoted", label: "Quoted", unit: "km/h" }] },
-    { svg: { id: "chart", viewBox: "0 0 280 150", aria: "Power needed against speed, and the engine's power" } },
-    { key: [["--accent", p.shapes.length > 1 ? "power needed, this body" : "power needed"], ...(p.shapes.length > 1 ? [["--muted", "other body"]] : []), ["--l1", "engine power"], ["--l2", "now"]] },
-    { buttons: [{ id: "again", label: "Run again", onClick: () => { v = 0; hold = 0; } }] },
-  ] }, { label: "Forces", items: [{ legend: [["--l1", "Air drag at the nose"], ["--l3", "Drive force at the wheels"], ["--muted", "Air streaming past"]] }] }]);
+    { slider: { id: "ps", label: t("Engine power (PS)"), min: p.power.min, max: p.power.max, step: 5, value: ps, onInput: x => { ps = x; drawChart(); } } },
+    { readouts: [{ id: "v", label: t("Speed"), unit: t("km/h") }, { id: "drag", label: t("Air drag"), unit: t("N") }, { id: "dkw", label: t("Power into drag"), unit: t("kW") },
+      { id: "rkw", label: t("Into rolling"), unit: t("kW") }, { id: "top", label: t("Model top speed"), unit: t("km/h") }, { id: "quoted", label: t("Quoted"), unit: t("km/h") }] },
+    { svg: { id: "chart", viewBox: "0 0 280 150", aria: t("Power needed against speed, and the engine's power") } },
+    { key: [["--accent", p.shapes.length > 1 ? t("power needed, this body") : t("power needed")], ...(p.shapes.length > 1 ? [["--muted", t("other body")]] : []), ["--l1", t("engine power")], ["--l2", t("now")]] },
+    { buttons: [{ id: "again", label: t("Run again"), onClick: () => { v = 0; hold = 0; } }] },
+  ] }, { label: t("Forces"), items: [{ legend: [["--l1", t("Air drag at the nose")], ["--l3", t("Drive force at the wheels")], ["--muted", t("Air streaming past")]] }] }]);
   function setShape(s) { shape = s; p.shapes.forEach(k => ui.toggle(k.id).set(k === s)); v = Math.min(v, topSpeed(s, ps * PS)); drawChart(); }
 
   const svg = ui.el("chart"), el = (tag, a, text) => { const e = document.createElementNS(NS, tag); for (const [k, x] of Object.entries(a)) e.setAttribute(k, x); if (text) e.textContent = text; svg.append(e); return e; };
   el("line", { x1: 34, y1: 128, x2: 272, y2: 128, stroke: "var(--rule)" }); el("line", { x1: 34, y1: 8, x2: 34, y2: 128, stroke: "var(--rule)" });
   for (let k = 0; k <= p.vmax; k += 50) el("text", { x: X(k), y: 142, "text-anchor": "middle", "font-size": 10, fill: "var(--muted)" }, String(k));
-  el("text", { x: 272, y: 122, "text-anchor": "end", "font-size": 10, fill: "var(--muted)" }, "km/h");
-  el("text", { x: 38, y: 16, "font-size": 10, fill: "var(--muted)" }, `kW (max ${pmax.toFixed(0)})`);
+  el("text", { x: 272, y: 122, "text-anchor": "end", "font-size": 10, fill: "var(--muted)" }, t("km/h"));
+  el("text", { x: 38, y: 16, "font-size": 10, fill: "var(--muted)" }, t("kW (max {0})", pmax.toFixed(0)));
   const curves = p.shapes.map(() => el("polyline", { fill: "none" }));
   const engine = el("line", { x1: 34, x2: 272, stroke: "var(--l1)", "stroke-width": 1.6 });
   const topDot = el("circle", { r: 4, fill: "var(--l1)" }), now = el("line", { y1: 8, y2: 128, stroke: "var(--l2)", "stroke-width": 1.4 });

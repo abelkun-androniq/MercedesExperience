@@ -12,7 +12,8 @@ import { housing, rotorCentre, apexAngle, flank, chamberOutline, chamberVolume, 
 const TOKEN = { Power: "--l1", Exhaust: "--metal", Intake: "--l4", Compression: "--l2" }, TAU = 2 * Math.PI, NS = "http://www.w3.org/2000/svg";
 
 export function create(ctx, p) {
-  const { stage, carRoot } = ctx, m = v => v / 1000;
+  const { stage, carRoot, t } = ctx, m = v => v / 1000;
+  const STROKE_NAME = { Power: t("Power"), Exhaust: t("Exhaust"), Intake: t("Intake"), Compression: t("Compression") };
   const g = Object.fromEntries(Object.entries(p.geometry).map(([k, v]) => [k, m(v)]));
   const group = new THREE.Group(); carRoot.add(group);
   const [ox, oy, oz] = p.origin.map(m), sp = m(p.spacing), phases = p.phases.map(d => d * Math.PI / 180);
@@ -45,15 +46,15 @@ export function create(ctx, p) {
   // ---------- panel ----------
   let theta = 0, playing = !ctx.reducedMotion, rpm = p.speed.value;
   const ui = ctx.panel([{ label: p.label, items: [
-    { cells: { id: "rotors", labels: units.map((_, i) => `Rotor ${i + 1}, chamber A`) } },
-    { key: [["--l1", "power"], ["--metal", "exhaust"], ["--l4", "intake"], ["--l2", "compression"]] },
-    { readouts: [{ id: "shaft", label: "Eccentric shaft", unit: "deg" }, { id: "rot", label: "Rotor 1", unit: "deg, a third as fast" },
-      { id: "vol", label: "Chamber A of rotor 1", unit: "cm³" }, { id: "cr", label: "Compression", unit: ": 1 (model)" }, { id: "real", label: "Real engine", unit: "rpm at full power", value: String(p.realRpm) }] },
-    { slider: { id: "rpm", label: "Speed (slow motion)", min: p.speed.min, max: p.speed.max, value: rpm, onInput: v => (rpm = v) } },
-    { buttons: [{ id: "play", toggle: ["Pause", "Play"], pressed: playing, onClick: v => (playing = v) }] },
-  ] }, { label: "End view of rotor 1", items: [
-    { svg: { id: "end", viewBox: "-140 -120 280 240", aria: "Rotor 1 seen end-on with its three chambers coloured by stroke" } },
-    { text: "Intake and exhaust ports on the left, spark plugs at the right waist. Three power strokes per rotor turn, one per shaft turn." },
+    { cells: { id: "rotors", labels: units.map((_, i) => t("Rotor {0}, chamber A", i + 1)) } },
+    { key: [["--l1", t("power")], ["--metal", t("exhaust")], ["--l4", t("intake")], ["--l2", t("compression")]] },
+    { readouts: [{ id: "shaft", label: t("Eccentric shaft"), unit: t("deg") }, { id: "rot", label: t("Rotor 1"), unit: t("deg, a third as fast") },
+      { id: "vol", label: t("Chamber A of rotor 1"), unit: t("cm³") }, { id: "cr", label: t("Compression"), unit: t(": 1 (model)") }, { id: "real", label: t("Real engine"), unit: t("rpm at full power"), value: String(p.realRpm) }] },
+    { slider: { id: "rpm", label: t("Speed (slow motion)"), min: p.speed.min, max: p.speed.max, value: rpm, onInput: v => (rpm = v) } },
+    { buttons: [{ id: "play", toggle: [t("Pause"), t("Play")], pressed: playing, onClick: v => (playing = v) }] },
+  ] }, { label: t("End view of rotor 1"), items: [
+    { svg: { id: "end", viewBox: "-140 -120 280 240", aria: t("Rotor 1 seen end-on with its three chambers coloured by stroke") } },
+    { text: t("Intake and exhaust ports on the left, spark plugs at the right waist. Three power strokes per rotor turn, one per shaft turn.") },
   ] }]);
   ui.set("cr", compressionRatio(g).ratio.toFixed(1));
 
@@ -65,9 +66,9 @@ export function create(ctx, p) {
   const rotorEl = el("polygon", { fill: "var(--metal)", "fill-opacity": 0.35, stroke: "var(--metal)", "stroke-width": 1.5 });
   const eccEl = el("circle", { r: 0.4 * g.R * S, fill: "none", stroke: "var(--l4)", "stroke-width": 1.5 });
   el("circle", { cx: 0, cy: 0, r: 4, fill: "var(--fg)" });
-  el("text", { x: (g.R - g.e) * S + 8, y: 4, "font-size": 11, fill: "var(--l1)" }, "plugs");
-  el("text", { x: -(g.R - g.e) * S - 8, y: 36, "text-anchor": "end", "font-size": 11, fill: "var(--l4)" }, "in");
-  el("text", { x: -(g.R - g.e) * S - 8, y: -30, "text-anchor": "end", "font-size": 11, fill: "var(--muted)" }, "out");
+  el("text", { x: (g.R - g.e) * S + 8, y: 4, "font-size": 11, fill: "var(--l1)" }, t("plugs"));
+  el("text", { x: -(g.R - g.e) * S - 8, y: 36, "text-anchor": "end", "font-size": 11, fill: "var(--l4)" }, t("in"));
+  el("text", { x: -(g.R - g.e) * S - 8, y: -30, "text-anchor": "end", "font-size": 11, fill: "var(--muted)" }, t("out"));
   const labels = [0, 1, 2].map(k => el("text", { "font-size": 12, "text-anchor": "middle", fill: "var(--fg)" }, "ABC"[k]));
 
   function pose() {
@@ -77,7 +78,7 @@ export function create(ctx, p) {
       u.ecc.position.set(c[0], c[1], 0);
       const strokes = [0, 1, 2].map(k => strokeOf(th, k)), a = strokes[0];
       u.spark.visible = strokes.some(s => s.stroke === "Power" && s.f < 0.12);
-      ui.cells("rotors").set(units.indexOf(u), a.stroke, a.stroke === "Power");
+      ui.cells("rotors").set(units.indexOf(u), STROKE_NAME[a.stroke], a.stroke === "Power");
     }
     const th = theta + units[0].phase, c = rotorCentre(th, g);
     [0, 1, 2].forEach(k => {

@@ -12,7 +12,7 @@ import { deckRise, strokeFor, deckSpeed, pressureBar, endPulls } from "../lib/mo
 const SHEAVE = 0.045;   // sheave radius (m)
 
 export function create(ctx, p) {
-  const { stage, carRoot } = ctx, m = v => v / 1000, h = p.hoist, D = p.deck;
+  const { stage, carRoot, t } = ctx, m = v => v / 1000, h = p.hoist, D = p.deck;
   const group = new THREE.Group(); carRoot.add(group);
   const deckMat = stage.tokenMat("--l2", { transparent: true, opacity: 0.55 }), cylMat = stage.tokenMat("--l4", { metalness: 0.4 });
   const rodMat = stage.tokenMat("--metal", { metalness: 0.6 }), postMat = stage.tokenMat("--muted");
@@ -48,12 +48,12 @@ export function create(ctx, p) {
   let loaded = true, demo = !ctx.reducedMotion, step = 0, wait = 0;
   const ui = ctx.panel([{ label: p.label, badge: { id: "state", text: "" }, items: [
     { buttons: p.presets.map((q, i) => ({ id: q.id, label: q.label, pressed: i === 0, onClick: () => { stopDemo(); go(q); } })) },
-    { buttons: [{ id: "car", toggle: ["Car on the deck", "Deck empty"], pressed: loaded, onClick: v => (loaded = v) }] },
-    { readouts: [{ id: "front", label: "Front end raised", unit: "mm" }, { id: "rear", label: "Rear end raised", unit: "mm" },
-      { id: "tilt", label: "Deck tilt", unit: "deg" }, { id: "stroke", label: "Front pistons out", unit: "mm" },
-      { id: "pull", label: "Front cable pull", unit: "kN per side" }, { id: "pF", label: "Front cylinders", unit: "bar to lift" }, { id: "pR", label: "Rear cylinders", unit: "bar to lift" }] },
-    { buttons: [{ id: "auto", toggle: ["Demo on", "Demo off"], pressed: demo, onClick: v => { demo = v; wait = 0; } }] },
-    { key: [["--l2", "deck"], ["--l1", "cables"], ["--l4", "cylinders"], ["--metal", "rods and sheaves"]] },
+    { buttons: [{ id: "car", toggle: [t("Car on the deck"), t("Deck empty")], pressed: loaded, onClick: v => (loaded = v) }] },
+    { readouts: [{ id: "front", label: t("Front end raised"), unit: t("mm") }, { id: "rear", label: t("Rear end raised"), unit: t("mm") },
+      { id: "tilt", label: t("Deck tilt"), unit: t("deg") }, { id: "stroke", label: t("Front pistons out"), unit: t("mm") },
+      { id: "pull", label: t("Front cable pull"), unit: t("kN per side") }, { id: "pF", label: t("Front cylinders"), unit: t("bar to lift") }, { id: "pR", label: t("Rear cylinders"), unit: t("bar to lift") }] },
+    { buttons: [{ id: "auto", toggle: [t("Demo on"), t("Demo off")], pressed: demo, onClick: v => { demo = v; wait = 0; } }] },
+    { key: [["--l2", t("deck")], ["--l1", t("cables")], ["--l4", t("cylinders")], ["--metal", t("rods and sheaves")]] },
   ] }]);
   function stopDemo() { if (demo) { demo = false; ui.toggle("auto").set(false); } }
   function go(q) { target.front = m(q.front); target.rear = m(q.rear); p.presets.forEach(k => ui.toggle(k.id).set(k === q)); }
@@ -95,7 +95,7 @@ export function create(ctx, p) {
       ui.set("tilt", ((a * 180) / Math.PI).toFixed(1)); ui.set("stroke", (strokeFor(h, rise.front) * 1000).toFixed(0));
       ui.set("pull", (pulls.front / 2000).toFixed(1));
       ui.set("pF", pressureBar(h, pulls.front / 2).toFixed(0)); ui.set("pR", pressureBar(h, pulls.rear / 2).toFixed(0));
-      ui.badge("state").set(moving.length ? (moving.length === 2 ? "Both ends moving: the flow is shared" : `Moving the ${moving[0]} end`) : `Holding · ${(deckRise(h, h.stroke) * 1000).toFixed(0)} mm of travel`, moving.length > 0);
+      ui.badge("state").set(moving.length ? (moving.length === 2 ? t("Both ends moving: the flow is shared") : moving[0] === "front" ? t("Moving the front end") : t("Moving the rear end")) : t("Holding · {0} mm of travel", (deckRise(h, h.stroke) * 1000).toFixed(0)), moving.length > 0);
     },
   };
 }

@@ -18,7 +18,7 @@ self.addEventListener("activate", e => {
 self.addEventListener("fetch", e => {
   const req = e.request, url = new URL(req.url);
   if (req.method !== "GET" || url.origin !== location.origin) return;
-  const page = req.mode === "navigate" || /\/(stop\.html|index\.html)?$/.test(url.pathname);
+  const page = req.mode === "navigate" || /\/(stop|index|teaser)\.html$|\/$/.test(url.pathname);
   e.respondWith((async () => {
     const cache = await caches.open(CACHE);
     const hit = await cache.match(req, { ignoreSearch: page });   // stop.html?s=… is one cached page

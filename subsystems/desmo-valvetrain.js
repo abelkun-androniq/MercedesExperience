@@ -9,7 +9,7 @@ import { camLift, desmoCams, simulateSpringValve } from "../lib/model/valvetrain
 const TAU = 2 * Math.PI, SHOWN_REV_S = 0.3, CAM_Z = 0.12, STEM = 0.1;
 
 export function create(ctx, p) {
-  const { stage, carRoot } = ctx, cam = p.cam;
+  const { stage, carRoot, t } = ctx, cam = p.cam;
   const group = new THREE.Group(); group.position.set(...(p.origin ?? [0, 0, 0])); carRoot.add(group);
   const steel = mat(0x9aa4ad, { metalness: 0.5 }), dark = mat(0x343b42);
   const desmoMat = stage.tokenMat("--accent"), springValveMat = stage.tokenMat("--l1"), rockerMat = stage.tokenMat("--l2"), springMat = stage.tokenMat("--l4");
@@ -65,15 +65,15 @@ export function create(ctx, p) {
 
   // ---------- panel ----------
   const ui = ctx.panel([
-    { label: p.label, badge: { id: "state", text: "Following" }, items: [
-      { slider: { id: "rpm", label: "Engine speed (real physics, shown in slow motion)", min: p.rpm.min, max: p.rpm.max, step: 100, value: rpm, onInput: v => { rpm = v; sim = simulateSpringValve(cam, rpm); drawLift(); } } },
-      { readouts: [{ id: "rpm", label: "Engine speed", unit: "rpm" }, { id: "float", label: "Spring valve float", unit: "mm off the cam" },
-        { id: "desmo", label: "Desmo valve lift", unit: "mm, always = cam" }, { id: "spring", label: "Spring valve lift", unit: "mm" }] },
-      { svg: { id: "lift", viewBox: "0 0 280 120", aria: "Valve lift over one cam revolution: cam profile, spring valve and desmodromic valve" } },
-      { key: [["--muted", "cam profile"], ["--accent", "desmo valve"], ["--l1", "spring valve"]] },
-      { buttons: [{ id: "play", toggle: ["Pause", "Play"], pressed: playing, onClick: v => (playing = v) }] },
+    { label: p.label, badge: { id: "state", text: t("Following") }, items: [
+      { slider: { id: "rpm", label: t("Engine speed (real physics, shown in slow motion)"), min: p.rpm.min, max: p.rpm.max, step: 100, value: rpm, onInput: v => { rpm = v; sim = simulateSpringValve(cam, rpm); drawLift(); } } },
+      { readouts: [{ id: "rpm", label: t("Engine speed"), unit: t("rpm") }, { id: "float", label: t("Spring valve float"), unit: t("mm off the cam") },
+        { id: "desmo", label: t("Desmo valve lift"), unit: t("mm, always = cam") }, { id: "spring", label: t("Spring valve lift"), unit: t("mm") }] },
+      { svg: { id: "lift", viewBox: "0 0 280 120", aria: t("Valve lift over one cam revolution: cam profile, spring valve and desmodromic valve") } },
+      { key: [["--muted", t("cam profile")], ["--accent", t("desmo valve")], ["--l1", t("spring valve")]] },
+      { buttons: [{ id: "play", toggle: [t("Pause"), t("Play")], pressed: playing, onClick: v => (playing = v) }] },
     ] },
-    { label: "Parts", items: [{ legend: [["--accent", "Desmodromic valve"], ["--l2", "Closing cam and closing rocker"], ["--l1", "Spring-closed valve (for comparison)"], ["--l4", "Valve spring"], ["--metal", "Opening cams and camshaft"]] }] },
+    { label: t("Parts"), items: [{ legend: [["--accent", t("Desmodromic valve")], ["--l2", t("Closing cam and closing rocker")], ["--l1", t("Spring-closed valve (for comparison)")], ["--l4", t("Valve spring")], ["--metal", t("Opening cams and camshaft")]] }] },
   ]);
   const svg = ui.el("lift"), maxL = cam.lift * 1.6;
   const X = a => (a / TAU * 280).toFixed(1), Yp = L => (112 - L / maxL * 100).toFixed(1);
@@ -86,7 +86,7 @@ export function create(ctx, p) {
     const pts = (arr) => sim.phi.map((a, i) => `${X(a)},${Yp(arr[i])}`).join(" ");
     camLine.setAttribute("points", pts(sim.cam)); desmoLine.setAttribute("points", pts(sim.cam)); springLine.setAttribute("points", pts(sim.valve));
     const floating = sim.maxSep > 2e-4;
-    ui.badge("state").set(floating ? "Spring valve floating" : "Both valves on the cam", floating);
+    ui.badge("state").set(floating ? t("Spring valve floating") : t("Both valves on the cam"), floating);
     ui.set("rpm", rpm.toFixed(0)); ui.set("float", (sim.maxSep * 1000).toFixed(1));
   }
   drawLift(); pose();

@@ -12,7 +12,7 @@ const TF = 0.014, NS = "http://www.w3.org/2000/svg";   // m: thickness of one fo
 const EDGES = [[0, 1], [2, 3], [0, 2], [1, 3]];   // a ring's four tubes between the corners below
 
 export function create(ctx, p) {
-  const { stage, carRoot } = ctx, m = v => v / 1000, B = p.body;
+  const { stage, carRoot, t } = ctx, m = v => v / 1000, B = p.body;
   const group = new THREE.Group(), car = new THREE.Group(); carRoot.add(group); group.add(car);
   const xb = m(B.bumper), xf = m(B.firewall), xc = m(B.cellRear), xt = m(B.tail), w = m(B.w), zs = m(B.sill), zb = m(B.belt), zr = m(B.roof);
   const L = xb - xf, N = p.folds, ell = L / N;
@@ -42,17 +42,17 @@ export function create(ctx, p) {
   rails.flat(2).forEach(r => car.add(r));
 
   // ---------- state + panel ----------
-  let kase = 0, kmh = p.speed.value, sims = [], t = 0, playing = !ctx.reducedMotion, onPhoto = false;
+  let kase = 0, kmh = p.speed.value, sims = [], clock = 0, playing = !ctx.reducedMotion, onPhoto = false;
   const ui = ctx.panel([{ label: p.label, badge: { id: "cell", text: "" }, items: [
-    { buttons: p.cases.map((c, i) => ({ id: c.id, label: c.label, pressed: i === 0, onClick: () => { kase = i; p.cases.forEach((k, j) => ui.toggle(k.id).set(j === i)); t = 0; draw(); } })) },
-    { slider: { id: "speed", label: "Impact speed (km/h)", min: p.speed.min, max: p.speed.max, step: 5, value: kmh, onInput: v => { kmh = v; run(); t = 0; } } },
-    { readouts: [{ id: "now", label: "Deceleration now", unit: "g" }, { id: "peak", label: "Peak", unit: "g" }, { id: "mean", label: "Average", unit: "g" },
-      { id: "crush", label: "Front crushed", unit: "mm" }, { id: "intr", label: "Cell pushed in", unit: "mm" }, { id: "dur", label: "Crash lasts", unit: "ms" }] },
-    { svg: { id: "trace", viewBox: "0 0 280 120", aria: "Deceleration over time for both bodies" } },
-    { key: [["--accent", "this body"], ["--muted", "the other one"], ["--l2", "now"]] },
-    { buttons: [{ id: "play", toggle: ["Pause", "Play"], pressed: playing, onClick: v => (playing = v) }, { id: "again", label: "Replay", onClick: () => (t = 0) }] },
-    { text: `Shown ${p.slow}× slower than real. One mass and two force laws: an illustration, not a crash simulation.` },
-  ] }, { label: "Parts", items: [{ legend: [["--l2", "Longitudinal members (fold up)"], ["--metal", "Fold rings"], ["--l3", "Passenger cell, intact"], ["--l1", "Cell pushed in"], ["--accent", "Occupant"]] }] }]);
+    { buttons: p.cases.map((c, i) => ({ id: c.id, label: c.label, pressed: i === 0, onClick: () => { kase = i; p.cases.forEach((k, j) => ui.toggle(k.id).set(j === i)); clock = 0; draw(); } })) },
+    { slider: { id: "speed", label: t("Impact speed (km/h)"), min: p.speed.min, max: p.speed.max, step: 5, value: kmh, onInput: v => { kmh = v; run(); clock = 0; } } },
+    { readouts: [{ id: "now", label: t("Deceleration now"), unit: t("g") }, { id: "peak", label: t("Peak"), unit: t("g") }, { id: "mean", label: t("Average"), unit: t("g") },
+      { id: "crush", label: t("Front crushed"), unit: t("mm") }, { id: "intr", label: t("Cell pushed in"), unit: t("mm") }, { id: "dur", label: t("Crash lasts"), unit: t("ms") }] },
+    { svg: { id: "trace", viewBox: "0 0 280 120", aria: t("Deceleration over time for both bodies") } },
+    { key: [["--accent", t("this body")], ["--muted", t("the other one")], ["--l2", t("now")]] },
+    { buttons: [{ id: "play", toggle: [t("Pause"), t("Play")], pressed: playing, onClick: v => (playing = v) }, { id: "again", label: t("Replay"), onClick: () => (clock = 0) }] },
+    { text: t("Shown {0}× slower than real. One mass and two force laws: an illustration, not a crash simulation.", p.slow) },
+  ] }, { label: t("Parts"), items: [{ legend: [["--l2", t("Longitudinal members (fold up)")], ["--metal", t("Fold rings")], ["--l3", t("Passenger cell, intact")], ["--l1", t("Cell pushed in")], ["--accent", t("Occupant")]] }] }]);
 
   const svg = ui.el("trace"), el = (tag, a) => { const e = document.createElementNS(NS, tag); for (const [k, v] of Object.entries(a)) e.setAttribute(k, v); svg.append(e); return e; };
   el("line", { x1: 10, y1: 110, x2: 275, y2: 110, stroke: "var(--rule)" });
@@ -69,11 +69,11 @@ export function create(ctx, p) {
       lines[i].setAttribute("points", s.t.map((tt, k) => `${(10 + tt / tMax * 265).toFixed(1)},${(110 - s.a[k] / gMax * 100).toFixed(1)}`).join(" "));
       lines[i].setAttribute("stroke", i === kase ? "var(--accent)" : "var(--muted)"); lines[i].setAttribute("stroke-width", i === kase ? 2 : 1.2);
     });
-    scaleTxt.textContent = `0 – ${gMax.toFixed(0)} g over ${(tMax * 1000).toFixed(0)} ms`;
+    scaleTxt.textContent = t("0 – {0} g over {1} ms", gMax.toFixed(0), (tMax * 1000).toFixed(0));
     const s = sims[kase];
     ui.set("peak", s.peakG.toFixed(0)); ui.set("mean", s.meanG.toFixed(0)); ui.set("crush", (s.crush * 1000).toFixed(0));
     ui.set("intr", (s.intrusion * 1000).toFixed(0)); ui.set("dur", (s.duration * 1000).toFixed(0));
-    ui.badge("cell").set(s.intrusion > 0.002 ? "Cell pushed in" : "Cell intact", s.intrusion <= 0.002);
+    ui.badge("cell").set(s.intrusion > 0.002 ? t("Cell pushed in") : t("Cell intact"), s.intrusion <= 0.002);
   }
   run();
 
@@ -82,10 +82,10 @@ export function create(ctx, p) {
   const sample = (s, tau, key) => { const k = Math.min(s.t.length - 1, Math.floor(tau * 1000)); return s[key][k]; };
   function pose() {
     const s = sims[kase], zone = p.cases[kase].zone, v0 = kmh / 3.6, gap = v0 / p.slow * APPROACH;
-    const tau = Math.max(0, (t - APPROACH) / p.slow), done = tau >= s.duration;
-    const d = t < APPROACH ? 0 : done ? s.crush : sample(s, tau, "x"), g = t < APPROACH || done ? 0 : sample(s, tau, "a");
+    const tau = Math.max(0, (clock - APPROACH) / p.slow), done = tau >= s.duration;
+    const d = clock < APPROACH ? 0 : done ? s.crush : sample(s, tau, "x"), g = clock < APPROACH || done ? 0 : sample(s, tau, "a");
     // Over the museum photo the car stays where it stands and the front folds back towards the cell instead.
-    car.position.x = onPhoto ? 0 : t < APPROACH ? -gap + v0 / p.slow * t : d;
+    car.position.x = onPhoto ? 0 : clock < APPROACH ? -gap + v0 / p.slow * clock : d;
     // The front folds ring by ring from the bumper (which sits on the wall at car-frame x = xb − d); whatever crush is
     // left over once the zone is used up pushes the firewall into the cell.
     const front = Math.min(d, zone.length), intr = d - front;
@@ -100,7 +100,7 @@ export function create(ctx, p) {
     cellEdge.color.copy(cEdge.copy(stage.color(intr > 0.002 ? "--l1" : "--l3")));
     occ.rotation.y = Math.min(0.6, g / 60);
     ui.set("now", g.toFixed(0));
-    const tc = t < APPROACH ? 0 : Math.min(tau, s.duration);
+    const tc = clock < APPROACH ? 0 : Math.min(tau, s.duration);
     cursor.setAttribute("x1", (10 + tc / tMax * 265).toFixed(1)); cursor.setAttribute("x2", (10 + tc / tMax * 265).toFixed(1));
   }
   pose();
@@ -108,7 +108,7 @@ export function create(ctx, p) {
   return {
     layout({ active, onPhoto: photo }) { group.visible = active; onPhoto = photo; wall.visible = !photo; tyreMat.opacity = photo ? 0.12 : 1; pose(); },
     update(dt) {
-      if (playing) { t += dt; if (t > APPROACH + sims[kase].duration * p.slow + HOLD) t = 0; }
+      if (playing) { clock += dt; if (clock > APPROACH + sims[kase].duration * p.slow + HOLD) clock = 0; }
       pose();
     },
   };

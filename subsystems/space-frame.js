@@ -9,7 +9,7 @@ import { V, rod, place, ball } from "../lib/scene/helpers.js";
 import { tubeFrame, twistTest } from "../lib/model/truss.js";
 
 export function create(ctx, p) {
-  const { stage, carRoot } = ctx;
+  const { stage, carRoot, t } = ctx;
   const group = new THREE.Group(); carRoot.add(group);
   const tens = stage.tokenMat("--l1"), comp = stage.tokenMat("--l4"), idle = stage.tokenMat("--metal");
   const solve = door => {
@@ -29,15 +29,15 @@ export function create(ctx, p) {
   const liftRod = rod(stage.tokenMat("--l2"), 0.015); group.add(liftRod);
   const supports = [nodeOf(last, 0, 0), nodeOf(last, 1, 0), nodeOf(0, 1, 0)].map(n => { const b = ball(stage.tokenMat("--muted"), 0.035); group.add(b); return { b, n }; });
 
-  let mode = "high", t = 0, playing = !ctx.reducedMotion, f = 0.5;
+  let mode = "high", clock = 0, playing = !ctx.reducedMotion, f = 0.5;
   const ui = ctx.panel([{ label: p.label, items: [
     { buttons: [{ id: "high", label: p.modes.high, pressed: true, onClick: () => setMode("high") }, { id: "low", label: p.modes.low, pressed: false, onClick: () => setMode("low") }] },
-    { readouts: [{ id: "load", label: "Lift at the front wheel", unit: "N" }, { id: "twist", label: "Frame twist", unit: "deg" },
-      { id: "stiff", label: "Twist stiffness", unit: "N·m per degree" }, { id: "rel", label: "Compared with the 300 SL frame", unit: "%" },
-      { id: "maxF", label: "Hardest-working tube", unit: "N" }] },
-    { buttons: [{ id: "play", toggle: ["Pause", "Play"], pressed: playing, onClick: v => (playing = v) }] },
-    { key: [["--l1", "tube in tension"], ["--l4", "in compression"], ["--metal", "hardly loaded"], ["--l2", "lift"], ["--muted", "held"]] },
-    { text: `Bending drawn ${p.exaggerate}× larger than it is. Tube sizes and frame shape are simplified.` },
+    { readouts: [{ id: "load", label: t("Lift at the front wheel"), unit: t("N") }, { id: "twist", label: t("Frame twist"), unit: t("deg") },
+      { id: "stiff", label: t("Twist stiffness"), unit: t("N·m per degree") }, { id: "rel", label: t("Compared with the 300 SL frame"), unit: "%" },
+      { id: "maxF", label: t("Hardest-working tube"), unit: t("N") }] },
+    { buttons: [{ id: "play", toggle: [t("Pause"), t("Play")], pressed: playing, onClick: v => (playing = v) }] },
+    { key: [["--l1", t("tube in tension")], ["--l4", t("in compression")], ["--metal", t("hardly loaded")], ["--l2", t("lift")], ["--muted", t("held")]] },
+    { text: t("Bending drawn {0}× larger than it is. Tube sizes and frame shape are simplified.", p.exaggerate) },
   ] }]);
   function setMode(md) { mode = md; ui.toggle("high").set(md === "high"); ui.toggle("low").set(md === "low"); }
 
@@ -46,7 +46,7 @@ export function create(ctx, p) {
   return {
     layout({ active }) { group.visible = active; },
     update(dt) {
-      if (playing) { t += dt; f = 0.5 - 0.5 * Math.cos(t * 1.4); }
+      if (playing) { clock += dt; f = 0.5 - 0.5 * Math.cos(clock * 1.4); }
       for (const [k, s] of Object.entries(modes)) for (const tb of s.tubes) {
         tb.t.visible = k === mode;
         if (k === mode) place(tb.t, posOf(s, tb.ends[0], a), posOf(s, tb.ends[1], b).clone());

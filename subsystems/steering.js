@@ -9,7 +9,7 @@ import { createDoublePivot, centrePivot } from "../lib/model/steering.js";
 const D = Math.PI / 180, FAR = 40;   // m: axis lines longer than this are not drawn (nearly straight ahead)
 
 export function create(ctx, p) {
-  const { stage, carRoot } = ctx;
+  const { stage, carRoot, t } = ctx;
   const sys = createDoublePivot({ kingpinHalf: p.kingpinHalf, arm: p.arm, wheelbase: p.wheelbase });
   const m = v => v / 1000, wb = m(p.wheelbase), k = m(p.kingpinHalf), zF = m(p.frontR), zR = m(p.rearR), stub = m(p.stub ?? 60);
   const group = new THREE.Group(); carRoot.add(group);
@@ -47,22 +47,22 @@ export function create(ctx, p) {
   const setLine = (l, a, b) => { const pos = l.geometry.attributes.position; pos.setXYZ(0, a.x, a.y, a.z); pos.setXYZ(1, b.x, b.y, b.z); pos.needsUpdate = true; };
   const G = 0.01;   // line height above the ground
 
-  let mode = "dp", steer = 0, auto = !ctx.reducedMotion, t = 0;
+  let mode = "dp", steer = 0, auto = !ctx.reducedMotion, clock = 0;
   const maxS = p.maxSteer ?? 30;
   const setMode = md => { mode = md; ui.toggle("dp").set(md === "dp"); ui.toggle("cp").set(md === "cp"); };
 
   const ui = ctx.panel([
     { label: p.label, items: [
-      { buttons: [{ id: "dp", label: "Double-pivot (Benz, 1893)", pressed: true, onClick: () => setMode("dp") },
-        { id: "cp", label: "Centre-pivot axle", pressed: false, onClick: () => setMode("cp") }] },
-      { slider: { id: "steer", label: "Steering angle (+ = left)", min: -maxS, max: maxS, value: 0, onInput: v => { auto = false; ui.toggle("auto").set(false); steer = v * D; } } },
-      { readouts: [{ id: "inner", label: "Inner wheel", unit: "deg" }, { id: "outer", label: "Outer wheel", unit: "deg" },
-        { id: "ideal", label: "Ideal outer", unit: "deg, all axes meet" }, { id: "miss", label: "Axes miss by", unit: "m at the rear axle" },
-        { id: "radius", label: "Turning circle", unit: "m radius, outer front" }, { id: "support", label: "Front support width", unit: "% of straight ahead" }] },
-      { buttons: [{ id: "auto", toggle: ["Auto demo on", "Auto demo off"], pressed: auto, onClick: v => (auto = v) }] },
-      { key: [["--l1", "left wheel axis"], ["--l2", "right wheel axis"], ["--muted", "rear axle line"]] },
+      { buttons: [{ id: "dp", label: t("Double-pivot (Benz, 1893)"), pressed: true, onClick: () => setMode("dp") },
+        { id: "cp", label: t("Centre-pivot axle"), pressed: false, onClick: () => setMode("cp") }] },
+      { slider: { id: "steer", label: t("Steering angle (+ = left)"), min: -maxS, max: maxS, value: 0, onInput: v => { auto = false; ui.toggle("auto").set(false); steer = v * D; } } },
+      { readouts: [{ id: "inner", label: t("Inner wheel"), unit: t("deg") }, { id: "outer", label: t("Outer wheel"), unit: t("deg") },
+        { id: "ideal", label: t("Ideal outer"), unit: t("deg, all axes meet") }, { id: "miss", label: t("Axes miss by"), unit: t("m at the rear axle") },
+        { id: "radius", label: t("Turning circle"), unit: t("m radius, outer front") }, { id: "support", label: t("Front support width"), unit: t("% of straight ahead") }] },
+      { buttons: [{ id: "auto", toggle: [t("Auto demo on"), t("Auto demo off")], pressed: auto, onClick: v => (auto = v) }] },
+      { key: [["--l1", t("left wheel axis")], ["--l2", t("right wheel axis")], ["--muted", t("rear axle line")]] },
     ] },
-    { label: "Parts", items: [{ legend: [["--l1", "Steering arms"], ["--l2", "Tie rod"], ["--metal", "Front axle beam"]] }] },
+    { label: t("Parts"), items: [{ legend: [["--l1", t("Steering arms")], ["--l2", t("Tie rod")], ["--metal", t("Front axle beam")]] }] },
   ]);
 
   function pose() {
@@ -99,12 +99,12 @@ export function create(ctx, p) {
   return {
     layout({ active, onPhoto }) { group.visible = active; wood.opacity = tyreMat.opacity = onPhoto ? 0.25 : 1; },
     update(dt) {
-      if (auto) { t += dt; steer = maxS * D * Math.sin(t * 0.6); ui.slider("steer").set((steer / D).toFixed(1)); }
+      if (auto) { clock += dt; steer = maxS * D * Math.sin(clock * 0.6); ui.slider("steer").set((steer / D).toFixed(1)); }
       const r = pose(), straight = Math.abs(steer) < 0.5 * D;
       ui.set("inner", (r.inner / D).toFixed(1)); ui.set("outer", (r.outer / D).toFixed(1));
       ui.set("ideal", straight ? "0.0" : (r.ideal / D).toFixed(1));
       ui.set("miss", straight ? "–" : (r.miss / 1000).toFixed(2));
-      ui.set("radius", straight ? "straight" : (r.radius / 1000).toFixed(1));
+      ui.set("radius", straight ? t("straight") : (r.radius / 1000).toFixed(1));
       ui.set("support", Math.round(r.support * 100));
     },
   };

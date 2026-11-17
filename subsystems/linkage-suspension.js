@@ -11,13 +11,13 @@ import { createRide } from "../lib/model/quarter-car.js";
 import { createRoad } from "../lib/scene/road.js";
 
 const SLOWMO = 0.2;   // 25 km/h shown 5× slower
-const READOUTS = {
-  travel: ["Wheel travel", "mm, + = bump"], load: ["Tyre load", "% of static"], camber: ["Camber", "deg"],
-  toe: ["Toe", "deg, + = in"], track: ["Track change", "mm at the tyre"],
-};
 
 export function create(ctx, p) {
-  const { stage, carRoot, frame } = ctx;
+  const { stage, carRoot, frame, t } = ctx;
+  const READOUTS = {
+    travel: [t("Wheel travel"), t("mm, + = bump")], load: [t("Tyre load"), t("% of static")], camber: [t("Camber"), t("deg")],
+    toe: [t("Toe"), t("deg, + = in")], track: [t("Track change"), t("mm at the tyre")],
+  };
   const lk = createLinkage({ W0: p.W0, links: p.links, wheelR: frame.wheelR });
   const wb = frame.wheelbase / 1000;
   const ride = createRide({ ride: ctx.ride, xFront: frame.origin === "rear" ? wb : 0, xRear: frame.origin === "rear" ? 0 : -wb });
@@ -104,11 +104,11 @@ export function create(ctx, p) {
   const ui = ctx.panel([
     { label: p.label, items: [
       { readouts: p.readouts.map(id => ({ id, label: READOUTS[id][0], unit: READOUTS[id][1] })) },
-      { trace: { id: "trace", series: [{ token: "--accent", min: -60, max: 60 }, { token: "--l1", min: 0, max: 200 }], top: "bump / 200 %", bottom: "rebound / 0 %", aria: "Wheel travel and tyre load over the last six seconds" }, only: "model" },
-      { key: [["--accent", "travel (±60 mm)"], ["--l1", "tyre load (0–200 %)"]], only: "model" },
-      { buttons: [{ id: "play", toggle: ["Pause", "Play"], pressed: playing, onClick: v => (playing = v) }] },
+      { trace: { id: "trace", series: [{ token: "--accent", min: -60, max: 60 }, { token: "--l1", min: 0, max: 200 }], top: t("bump / 200 %"), bottom: t("rebound / 0 %"), aria: t("Wheel travel and tyre load over the last six seconds") }, only: "model" },
+      { key: [["--accent", t("travel (±60 mm)")], ["--l1", t("tyre load (0–200 %)")]], only: "model" },
+      { buttons: [{ id: "play", toggle: [t("Pause"), t("Play")], pressed: playing, onClick: v => (playing = v) }] },
     ] },
-    { label: p.legendTitle ?? "Parts", items: [{ legend: p.legend ?? p.links.map(l => [l.tok, l.name]) }] },
+    { label: p.legendTitle ?? t("Parts"), items: [{ legend: p.legend ?? p.links.map(l => [l.tok, l.name]) }] },
   ]);
   const trace = ui.trace("trace");
   const fmt = { travel: v => v.toFixed(0), camber: v => v.toFixed(2), toe: v => v.toFixed(2), track: v => v.toFixed(1) };

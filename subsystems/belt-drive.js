@@ -13,7 +13,7 @@ import * as belt from "../lib/model/belt.js";
 const SLOW = 0.1, W = 0.03, GAP = 0.004, TAU = 2 * Math.PI;   // shown speed share; pulley face width, gap (m)
 
 export function create(ctx, p) {
-  const { stage, carRoot } = ctx, m = v => v / 1000, d = p.drive, gears = d.gears, veh = p.vehicle, A = p.at;
+  const { stage, carRoot, t } = ctx, m = v => v / 1000, d = p.drive, gears = d.gears, veh = p.vehicle, A = p.at;
   const loose = p.shift === "loose", lo = 0, hi = gears.length - 1, R = d.wheelR;
   const group = new THREE.Group(); carRoot.add(group);
   const usedMat = stage.tokenMat("--l2", { metalness: 0.3 }), idleMat = stage.tokenMat("--metal", { metalness: 0.3 });
@@ -87,15 +87,15 @@ export function create(ctx, p) {
   let angE = 0, angC = 0, angW = 0, demo = !ctx.reducedMotion, step = 0, age = 0;
   const ui = ctx.panel([{ label: p.label, badge: { id: "state", text: "" }, items: [
     { buttons: [...gears.map((x, k) => ({ id: `g${k}`, label: x.name, pressed: k === g, onClick: () => { stopDemo(); select(k); } })),
-      ...(loose ? [{ id: "gn", label: "Neutral", pressed: false, onClick: () => { stopDemo(); select(null); } }] : [])] },
-    { buttons: [{ id: "brake", toggle: ["Braking", "Brake off"], pressed: false, onClick: v => { stopDemo(); braking = v; } }] },
-    { slider: { id: "grade", label: "Hill (%)", min: 0, max: p.grade.max, step: 0.5, value: p.grade.value, onInput: v => { stopDemo(); grade = v / 100; } } },
-    { readouts: [{ id: "kmh", label: "Road speed", unit: "km/h" }, { id: "push", label: "Push at the wheel", unit: "N, full power" },
-      { id: "need", label: "Hill and rolling resistance", unit: "N" }, { id: "steep", label: "Steepest hill in this gear", unit: "%" },
-      { id: "ratio", label: "Engine turns per wheel turn", unit: "" }, { id: "rpm", label: "Engine (governed)", unit: "rpm", value: String(veh.rpm) }] },
-    { buttons: [{ id: "auto", toggle: ["Demo drive on", "Demo drive off"], pressed: demo, onClick: v => { demo = v; step = 0; age = 0; } }] },
-    { text: "Shown at a tenth of real speed." },
-    { key: [["--l1", "belt"], ["--l2", "pulleys in use"], ["--metal", "idle pulleys"], ["--l4", p.final === "ring" ? "pinion and ring gear" : "chain sprockets"]] },
+      ...(loose ? [{ id: "gn", label: t("Neutral"), pressed: false, onClick: () => { stopDemo(); select(null); } }] : [])] },
+    { buttons: [{ id: "brake", toggle: [t("Braking"), t("Brake off")], pressed: false, onClick: v => { stopDemo(); braking = v; } }] },
+    { slider: { id: "grade", label: t("Hill (%)"), min: 0, max: p.grade.max, step: 0.5, value: p.grade.value, onInput: v => { stopDemo(); grade = v / 100; } } },
+    { readouts: [{ id: "kmh", label: t("Road speed"), unit: t("km/h") }, { id: "push", label: t("Push at the wheel"), unit: t("N, full power") },
+      { id: "need", label: t("Hill and rolling resistance"), unit: t("N") }, { id: "steep", label: t("Steepest hill in this gear"), unit: "%" },
+      { id: "ratio", label: t("Engine turns per wheel turn"), unit: "" }, { id: "rpm", label: t("Engine (governed)"), unit: t("rpm"), value: String(veh.rpm) }] },
+    { buttons: [{ id: "auto", toggle: [t("Demo drive on"), t("Demo drive off")], pressed: demo, onClick: v => { demo = v; step = 0; age = 0; } }] },
+    { text: t("Shown at a tenth of real speed.") },
+    { key: [["--l1", t("belt")], ["--l2", t("pulleys in use")], ["--metal", t("idle pulleys")], ["--l4", p.final === "ring" ? t("pinion and ring gear") : t("chain sprockets")]] },
   ] }]);
   function stopDemo() { if (demo) { demo = false; ui.toggle("auto").set(false); } }
   function select(k) {
@@ -123,12 +123,12 @@ export function create(ctx, p) {
 
   function badge() {
     const top = belt.roadSpeed(d, g, veh.rpm), push = belt.wheelForce(d, g, veh), need = belt.resistance(veh, grade);
-    if (refuse > 0) return ["Stop first: the belt is moved across by hand", false];
-    if (!engaged) return ["Belt on the loose pulley: engine runs free", false];
-    if (braking && kmh === 0) return ["Held by the brake; the belt slips", false];
-    if (push < need) return [kmh > 0 ? "Too steep for this gear: slowing" : g > lo ? "Too steep: shift down" : "Too steep even in low: get off and push", false];
-    if (kmh > top - 0.05) return [`Holding ${top.toFixed(1)} km/h`, true];
-    return ["Picking up speed", true];
+    if (refuse > 0) return [t("Stop first: the belt is moved across by hand"), false];
+    if (!engaged) return [t("Belt on the loose pulley: engine runs free"), false];
+    if (braking && kmh === 0) return [t("Held by the brake; the belt slips"), false];
+    if (push < need) return [kmh > 0 ? t("Too steep for this gear: slowing") : g > lo ? t("Too steep: shift down") : t("Too steep even in low: get off and push"), false];
+    if (kmh > top - 0.05) return [t("Holding {0} km/h", top.toFixed(1)), true];
+    return [t("Picking up speed"), true];
   }
 
   return {

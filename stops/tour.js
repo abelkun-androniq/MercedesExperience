@@ -28,3 +28,7 @@ export default [
   { slug: "w196r", room: "Legend 7", level: 2 },
   { slug: "500slc", room: "Legend 7", level: 2 },
 ];
+
+// The teaser page (teaser.html): the three stops with the most to show, kept in route order. Opened from there, their stop
+// pages page between these three only.
+export const teaser = ["blitzen-benz", "300sl", "300slr"];

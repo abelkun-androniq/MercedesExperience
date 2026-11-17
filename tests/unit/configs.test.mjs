@@ -3,6 +3,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { existsSync } from "node:fs";
 import { tour, loadCars } from "./helpers.mjs";
+import { teaser } from "../../stops/tour.js";
 
 const root = new URL("../../", import.meta.url);
 const exists = p => existsSync(new URL(p, root));
@@ -15,6 +16,11 @@ test("tour slugs are unique, safe and match their config", () => {
     assert.equal(cars[i].slug, s.slug);
     assert.ok(s.room && Number.isInteger(s.level), `${s.slug}: room and level`);
   });
+});
+
+test("the teaser is three distinct stops of the tour", () => {
+  assert.equal(new Set(teaser).size, 3);
+  for (const slug of teaser) assert.ok(tour.some(s => s.slug === slug), slug);
 });
 
 for (const car of cars) {

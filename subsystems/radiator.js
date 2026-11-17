@@ -11,7 +11,7 @@ import { createCooling, perHundredKm } from "../lib/model/cooling.js";
 const TIME = 20, LATENT = 2.26e6;
 
 export function create(ctx, p) {
-  const { stage, carRoot } = ctx, m = v => v / 1000;
+  const { stage, carRoot, t } = ctx, m = v => v / 1000;
   const group = new THREE.Group(); carRoot.add(group);
   const E = p.engine, Rd = p.radiator, ex = m(E.x), ez = m(E.z), rx = m(Rd.x), rz = m(Rd.z), rw = m(Rd.w), rh = m(Rd.h), rd = m(Rd.d);
   const glassM = () => new THREE.MeshStandardMaterial({ color: 0x8fa3b3, transparent: true, opacity: 0.1, depthWrite: false, side: THREE.DoubleSide });
@@ -69,14 +69,14 @@ export function create(ctx, p) {
   };
   const ui = ctx.panel([{ label: p.label, badge: { id: "boil", text: "" }, items: [
     { buttons: p.types.map((t, i) => ({ id: t.id, label: t.label, pressed: i === 0, onClick: () => setType(t) })) },
-    { slider: { id: "speed", label: "Road speed (km/h)", min: p.speed.min, max: p.speed.max, value: kmh, onInput: v => (kmh = v) } },
-    { slider: { id: "load", label: "Engine load (%)", min: 20, max: 100, step: 5, value: 100, onInput: v => (load = v / 100) } },
+    { slider: { id: "speed", label: t("Road speed (km/h)"), min: p.speed.min, max: p.speed.max, value: kmh, onInput: v => (kmh = v) } },
+    { slider: { id: "load", label: t("Engine load (%)"), min: 20, max: 100, step: 5, value: 100, onInput: v => (load = v / 100) } },
     { meter: { id: "temp" } },
-    { readouts: [{ id: "T", label: "Water", unit: "°C" }, { id: "in", label: "Heat into water", unit: "kW" }, { id: "out", label: "Radiator gives off", unit: "kW" },
-      { id: "lh", label: "Boiling away", unit: "litres per hour" }, { id: "l100", label: "Water used", unit: "litres per 100 km" }] },
-    { buttons: [{ id: "cold", label: "Cold start", onClick: () => cool.reset() }] },
-    { text: `Time runs ${TIME}× faster than real.` },
-    { key: [["--l1", "hot water"], ["--l4", "cooled water"], ["--muted", "air through the core"], ["--fg", "steam"]] },
+    { readouts: [{ id: "T", label: t("Water"), unit: t("°C") }, { id: "in", label: t("Heat into water"), unit: t("kW") }, { id: "out", label: t("Radiator gives off"), unit: t("kW") },
+      { id: "lh", label: t("Boiling away"), unit: t("litres per hour") }, { id: "l100", label: t("Water used"), unit: t("litres per 100 km") }] },
+    { buttons: [{ id: "cold", label: t("Cold start"), onClick: () => cool.reset() }] },
+    { text: t("Time runs {0}× faster than real.", TIME) },
+    { key: [["--l1", t("hot water")], ["--l4", t("cooled water")], ["--muted", t("air through the core")], ["--fg", t("steam")]] },
   ] }]);
   setType(type);
 
@@ -89,9 +89,9 @@ export function create(ctx, p) {
       rate = cool.boiling ? Math.max(0, heat - cool.q) / LATENT : 0;   // kg/s ≈ litres/s
       const f = (cool.T - p.airT) / (100 - p.airT), share = Math.min(1, cool.q / Math.max(heat, 1));
       ui.meter("temp").set(f, cool.boiling);
-      ui.badge("boil").set(cool.boiling ? "Boiling" : cool.T > T0 + 1e-6 ? "Warming up" : "Steady", cool.boiling);
+      ui.badge("boil").set(cool.boiling ? t("Boiling") : cool.T > T0 + 1e-6 ? t("Warming up") : t("Steady"), cool.boiling);
       ui.set("T", cool.T.toFixed(0)); ui.set("in", (heat / 1000).toFixed(1)); ui.set("out", (cool.q / 1000).toFixed(1));
-      ui.set("lh", (rate * 3600).toFixed(1)); ui.set("l100", rate === 0 ? "0" : Number.isFinite(perHundredKm(rate, kmh)) ? perHundredKm(rate, kmh).toFixed(0) : "standing");
+      ui.set("lh", (rate * 3600).toFixed(1)); ui.set("l100", rate === 0 ? "0" : Number.isFinite(perHundredKm(rate, kmh)) ? perHundredKm(rate, kmh).toFixed(0) : t("standing"));
 
       // Particles.
       cHot.copy(stage.color("--l1")); cCool.copy(stage.color("--l4")); cAir.copy(stage.color("--muted")); cWarm.copy(stage.color("--l2")); cSteam.copy(stage.color("--fg"));

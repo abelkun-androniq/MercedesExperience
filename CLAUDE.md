@@ -4,15 +4,20 @@ Static GitHub Pages site: one page per exhibit showing its mechanism working (th
 iPhone/iPad Safari (iOS 16.4+, import maps). No bundler: native ES modules; `tools/build.mjs` only stamps the service worker.
 
 ## Map
-- `index.html` route (lib/app/index.js) · `stop.html?s=<slug>` shell for every stop (lib/app/shell.js) · `sw.js` offline cache
-- `stops/tour.js` route order, room, level: single source for order and prev/next · `stops/<slug>/car.js` pure data (+ photo.jpg)
+- `index.html` route (lib/app/index.js) · `teaser.html` the same page for the three `teaser` stops (`data-route="teaser"`,
+  own manifest) · `stop.html?s=<slug>[&r=teaser]` shell for every stop (lib/app/shell.js; r=teaser pages among the teaser
+  stops and links back to teaser.html) · `sw.js` offline cache (new root files also go in tools/build.mjs ENTRIES)
+- `stops/tour.js` route order, room, level, and `teaser` (slugs): single source for order and prev/next ·
+  `stops/<slug>/car.js` pure data (+ photo.jpg)
 - `lib/model/` pure maths, Node-tested: linkage (multi-link closure), quarter-car (ride), engine (N-cylinder slider-crank,
   timing, diesel), blower, valvetrain (spring float, desmo), steering (double-pivot trapezoid, centre pivot), differential,
   gearbox (sliding gears), aero (drag, top speed), truss (space frame twist), crash, air-spring (levelling), wankel, cooling,
   belt (two-speed flat-belt drive, hill climbing), hoist (car-transporter deck: cylinder, pulley block, cables)
 - `lib/scene/` stage (renderer, cameras, lights, theme tokens, loop), helpers, ghost-body, road
 - `lib/app/` shell, panel (declarative widgets, API in its header), offline, index, theme.css (look after
-  mercedes-benz.com: black bar/hero, white page, condensed serif, black photo cards, pills), fonts/ (Instrument Serif, OFL)
+  mercedes-benz.com: black bar/hero, white page, condensed serif, black photo cards, pills), fonts/ (Instrument Serif, OFL;
+  latin + latin-ext for ő/ű), lang.js (head script: saved EN/HU choice or browser language → `<html lang>`), i18n.js
+  (`t`, `num`, `loadCar`, `localizePage`), i18n/hu.js (UI catalog keyed by the English text)
 - `subsystems/<id>.js` one mechanism each (params documented in each file's header): linkage-suspension, inline-engine,
   roots-blower, desmo-valvetrain, steering, differential, gearbox, radiator, aero, space-frame, crumple-zone,
   air-suspension, wankel, belt-drive, hoist. inline-engine also draws V engines (`leans`: one bank per lean angle,
@@ -28,11 +33,16 @@ iPhone/iPad Safari (iOS 16.4+, import maps). No bundler: native ES modules; `too
   `--band`/`--card` are the fixed-black areas (header bar, index hero, stop cards) and stay dark in both themes.
 - Illustrative numbers get a comment in car.js and a line in `unverified` (the page shows it). Sources go in `sources`.
 - Panel DOM is built with textContent only; widget ids must be unique within a component.
+- English is the source; Hungarian is complete and tested. UI text: `t("English literal", ...args)` with `{0}` placeholders
+  (never a variable or template as the key; whole phrases, as Hungarian case endings differ), static HTML: `data-i18n`.
+  Logic never compares displayed text: keep English keys/ids and map them to `t(...)` for display. Readout numbers pass
+  through `num` (decimal comma). Car text: `stops/<slug>/hu.js`, car.js's shape with only the text fields (list in
+  tests/unit/helpers.mjs `TEXT`), null keeps the original; sources and credits stay untranslated.
 
 ## Contracts
 - car.js: `{ slug, title, name, year, summary, eyebrow, lede, frame?, ride?, orbit?, sun?, body?: { ghost }, photo?,
   components: [{ id, label, subsystem, view: { pos, target }, ghost?: { fill, edge }, params, talk }], note, unverified, sources }`
-- Subsystem: `export function create(ctx, params)` with ctx `{ stage, carRoot, frame, ride, panel, reducedMotion }`, returns
+- Subsystem: `export function create(ctx, params)` with ctx `{ stage, carRoot, frame, ride, panel, reducedMotion, t }`, returns
   `{ layout({ active, onPhoto }), update(dt, { onPhoto }) }`. The shell owns switches, photo view, outline, ghost body and
   the loop, and resets carRoot's pose each frame before calling the active component's `update`.
 
@@ -41,16 +51,18 @@ iPhone/iPad Safari (iOS 16.4+, import maps). No bundler: native ES modules; `too
   wide, CC licence with credit, camera fitted with `node tools/fit-photo-camera.mjs tools/photo-fits/<slug>.json` (wheel
   centres and tyre bottoms first; `focalPrior` when the points are nearly flat). Trace `body.ghost` from the photo so Car
   outline lines up. Subsystems fade their own opaque wheels and keep the body still when `onPhoto`. Tests find it via tour.js.
+  Add `stops/<slug>/hu.js` (npm test lists missing text fields) and, for a new room, its name in `lib/app/i18n/hu.js`.
 - Add a mechanism: `lib/model/<x>.js` + `tests/unit/<x>.test.mjs` first, then `subsystems/<x>.js`.
 - Upgrade three.js: `npm run vendor -- <version>` (a release at least two weeks old), then `npm test && npm run e2e`.
 
 ## Commands
-- `npm test` unit tests (models + configs) · `npm run e2e` Playwright: WebKit iPhone/iPad × 4 and Chromium offline (builds first)
+- `npm test` unit tests (models, configs, translations) · `npm run e2e` Playwright: WebKit iPhone/iPad × 4 (Hungarian pass on
+  iPhone only) and Chromium offline (builds first)
 - `npm run serve` dev server on :8765 (service worker off on localhost unless `?sw=1`) · `?debug` exposes `window.__tour`
 - `npm run build` → `_site/` · deploy: push to main; `.github/workflows/pages.yml` tests, then deploys.
 
 ## Real-device checklist (iPhone and iPad Safari, from the Pages URL)
-Portrait and landscape · light and dark · orbit, pinch, sliders · photo overlay lines up with Car outline on · airplane mode
+Portrait and landscape · light and dark · EN/HU switch · orbit, pinch, sliders · photo overlay lines up with Car outline on · airplane mode
 after one visit: index → every stop · Add to Home Screen, launch offline · iPad Split View · Low Power Mode still animates at
 true speed · Web Inspector over USB shows no errors. LAN (`http://<mac-ip>:8765`) checks layout only: service workers need HTTPS.
 

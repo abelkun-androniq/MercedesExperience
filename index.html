@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Mercedes-Benz Museum technical tour</title>
+<script src="lib/app/lang.js"></script>
+<title data-i18n>Mercedes-Benz Museum technical tour</title>
 <meta name="description" content="A private technical tour of the Mercedes-Benz Museum, Stuttgart: mechanisms shown working, stop by stop.">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#000000">
@@ -13,22 +14,26 @@
 <link rel="stylesheet" href="lib/app/theme.css">
 </head>
 <body>
-<header class="bar"><div class="crumbs"><span class="home">Under the skin</span><span>Unofficial tour notes</span></div></header>
+<header class="bar"><div class="crumbs">
+  <span class="home" data-i18n>Under the skin</span>
+  <span class="where" data-i18n>Unofficial tour notes</span>
+  <div class="langs" role="group" aria-label="Language · Nyelv"><button type="button" data-lang="en" lang="en" aria-label="English">EN</button><button type="button" data-lang="hu" lang="hu" aria-label="Magyar">HU</button></div>
+</div></header>
 <section class="hero">
   <img src="stops/w196r/photo.jpg" alt="" width="1200" height="803" fetchpriority="high">
   <div class="copy">
-    <div class="eyebrow">Mercedes-Benz Museum · Stuttgart</div>
-    <h1>Under the skin: a technical tour</h1>
-    <p class="lede">At each stop, open the page to see one of the car's mechanisms working, and switch to the museum photo to see where it sits under the bodywork. The route runs from Level 8 down, in the museum's own order.</p>
-    <a class="pill primary" href="#route">See the route</a>
-    <p class="status" id="status" role="status">Checking offline mode…</p>
+    <div class="eyebrow" data-i18n>Mercedes-Benz Museum · Stuttgart</div>
+    <h1 data-i18n>Under the skin: a technical tour</h1>
+    <p class="lede" data-i18n>At each stop, open the page to see one of the car's mechanisms working, and switch to the museum photo to see where it sits under the bodywork. The route runs from Level 8 down, in the museum's own order.</p>
+    <a class="pill primary" href="#route" data-i18n>See the route</a>
+    <p class="status" id="status" role="status" data-i18n>Checking offline mode…</p>
   </div>
 </section>
 <main class="wrap">
-  <ol class="route" id="route"><li class="note">Loading the route…</li></ol>
+  <ol class="route" id="route"><li class="note" data-i18n>Loading the route…</li></ol>
   <footer>
-    <p>Open this page once with signal (museum Wi-Fi or before you arrive): every stop is then stored and works offline. On iPhone or iPad, Share → Add to Home Screen keeps it stored for longer.</p>
-    <p class="note">Unofficial private tour notes, not affiliated with Mercedes-Benz. Rooms and levels follow research notes: confirm on site, exhibits rotate. <span id="credits"></span> 3D: three.js (MIT). Headlines: Instrument Serif (SIL OFL).</p>
+    <p data-i18n>Open this page once with signal (museum Wi-Fi or before you arrive): every stop is then stored and works offline. On iPhone or iPad, Share → Add to Home Screen keeps it stored for longer.</p>
+    <p class="note"><span data-i18n>Unofficial private tour notes, not affiliated with Mercedes-Benz. Rooms and levels follow research notes: confirm on site, exhibits rotate.</span> <span id="credits"></span> <span data-i18n>3D: three.js (MIT). Headlines: Instrument Serif (SIL OFL).</span></p>
   </footer>
 </main>
 <script type="module" src="lib/app/index.js"></script>

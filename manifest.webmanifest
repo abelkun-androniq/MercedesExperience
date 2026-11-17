@@ -1,7 +1,7 @@
 {
   "name": "Mercedes-Benz Museum technical tour",
   "short_name": "Museum tour",
-  "description": "Unofficial tour notes: the mechanisms of six exhibits, shown working. Works offline after one visit.",
+  "description": "Unofficial tour notes: the exhibits' mechanisms, shown working. Works offline after one visit.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

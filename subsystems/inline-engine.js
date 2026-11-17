@@ -14,7 +14,8 @@ import { layout, pinAngle, phaseOf, strokeOf, valveLifts, flashOf, injecting, in
 const STROKE_TOKEN = { Power: "--l1", Exhaust: "--metal", Intake: "--l4", Compression: "--l2" };
 
 export function create(ctx, p) {
-  const { stage, carRoot } = ctx;
+  const { stage, carRoot, t } = ctx;
+  const STROKE_NAME = { Power: t("Power"), Exhaust: t("Exhaust"), Intake: t("Intake"), Compression: t("Compression") };
   const lay = layout(p.order), n = lay.n;
   const r = p.stroke / 2000, l = p.rod / 1000, bR = p.bore / 2000;
   const crankZ = (p.crankZ ?? 0) / 1000, xs = p.xs.map(x => x / 1000);
@@ -181,7 +182,7 @@ export function create(ctx, p) {
         c.spray.visible = injectingDiesel(ph);
         c.pre.material.color.copy(stage.color(flash > 0.15 ? "--l1" : STROKE_TOKEN[stroke]));
       } else if (c.spray) c.spray.visible = injecting(ph);
-      ui.cells("cyls").set(c.i, stroke, stroke === "Power");
+      ui.cells("cyls").set(c.i, STROKE_NAME[stroke], stroke === "Power");
     }
     for (const fw of flywheels) fw.rotation.x = theta;
   }
@@ -189,23 +190,23 @@ export function create(ctx, p) {
   // ---------- panel ----------
   let playing = !ctx.reducedMotion, rpm = p.speed.value;
   const ui = ctx.panel([{ label: p.label, items: [
-    { cells: { id: "cyls", labels: xs.map((_, i) => (n === 1 ? "Cylinder" : `Cyl ${i + 1}`)) } },
-    { key: [["--l1", "power"], ["--metal", "exhaust"], ["--l4", "intake"], ["--l2", "compression"], ...(p.fuel === "direct" ? [["--l3", "fuel injection"]] : [])] },
-    { readouts: [{ id: "crank", label: "Crank angle", unit: "deg" }, { id: "cam", label: "Camshaft", unit: "deg, half speed" }, ...(p.realRpm ? [{ id: "real", label: "Real engine", unit: "rpm", value: String(p.realRpm) }] : [])] },
-    { slider: { id: "rpm", label: "Speed (slow motion)", min: p.speed.min, max: p.speed.max, value: rpm, onInput: v => (rpm = v) } },
-    { buttons: [{ id: "play", toggle: ["Pause", "Play"], pressed: playing, onClick: v => (playing = v) }] },
+    { cells: { id: "cyls", labels: xs.map((_, i) => (n === 1 ? t("Cylinder") : t("Cyl {0}", i + 1))) } },
+    { key: [["--l1", t("power")], ["--metal", t("exhaust")], ["--l4", t("intake")], ["--l2", t("compression")], ...(p.fuel === "direct" ? [["--l3", t("fuel injection")]] : [])] },
+    { readouts: [{ id: "crank", label: t("Crank angle"), unit: t("deg") }, { id: "cam", label: t("Camshaft"), unit: t("deg, half speed") }, ...(p.realRpm ? [{ id: "real", label: t("Real engine"), unit: t("rpm"), value: String(p.realRpm) }] : [])] },
+    { slider: { id: "rpm", label: t("Speed (slow motion)"), min: p.speed.min, max: p.speed.max, value: rpm, onInput: v => (rpm = v) } },
+    { buttons: [{ id: "play", toggle: [t("Pause"), t("Play")], pressed: playing, onClick: v => (playing = v) }] },
   ] }]);
   if (p.compression) {
     // Why a diesel needs no spark: squeezing air heats it. Self-ignition of diesel fuel taken as ≈ 250 °C (illustrative).
     const IGNITE = 250, showCr = cr => {
       const T = compressionTemp(cr);
       ui.set("cr", cr.toFixed(1)); ui.set("hot", T.toFixed(0));
-      ui.badge("ignites").set(T > IGNITE + 100 ? "Fuel ignites by itself" : T > IGNITE ? "Only just (needs a hot engine)" : "Too cool: needs a spark", T > IGNITE);
+      ui.badge("ignites").set(T > IGNITE + 100 ? t("Fuel ignites by itself") : T > IGNITE ? t("Only just (needs a hot engine)") : t("Too cool: needs a spark"), T > IGNITE);
     };
-    ctx.panel([{ label: "Why no spark plug", badge: { id: "ignites", text: "" }, items: [
-      { slider: { id: "crs", label: "Compression ratio", min: p.compression.min, max: p.compression.max, step: 0.5, value: p.compression.value, onInput: showCr } },
-      { readouts: [{ id: "cr", label: "Ratio", unit: ": 1" }, { id: "hot", label: "Air after compression", unit: "°C, from 20 °C" }, { id: "ign", label: "Diesel self-ignites", unit: "°C, approx.", value: String(IGNITE) }] },
-      { text: "Petrol engines of the 1930s ran at about 6 : 1 and need a spark. At diesel ratios the air alone gets hot enough; glow plugs in the prechambers help a cold start." },
+    ctx.panel([{ label: t("Why no spark plug"), badge: { id: "ignites", text: "" }, items: [
+      { slider: { id: "crs", label: t("Compression ratio"), min: p.compression.min, max: p.compression.max, step: 0.5, value: p.compression.value, onInput: showCr } },
+      { readouts: [{ id: "cr", label: t("Ratio"), unit: ": 1" }, { id: "hot", label: t("Air after compression"), unit: t("°C, from 20 °C") }, { id: "ign", label: t("Diesel self-ignites"), unit: t("°C, approx."), value: String(IGNITE) }] },
+      { text: t("Petrol engines of the 1930s ran at about 6 : 1 and need a spark. At diesel ratios the air alone gets hot enough; glow plugs in the prechambers help a cold start.") },
     ] }]);
     showCr(p.compression.value);
   }
