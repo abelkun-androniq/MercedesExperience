@@ -1,7 +1,7 @@
 // Engine kinematics, valve timing, blower and valve-train models.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { layout, firingOrder, pistonPos, phaseOf, strokeOf, valveLifts, TIMING } from "../../lib/model/engine.js";
+import { layout, firingOrder, pistonPos, phaseOf, strokeOf, valveLifts, pinAngle, TIMING } from "../../lib/model/engine.js";
 import { createBlower, autoPedal } from "../../lib/model/blower.js";
 import { camLift, simulateSpringValve, desmoCams, springRateFor } from "../../lib/model/valvetrain.js";
 import { loadCars } from "./helpers.mjs";
@@ -31,6 +31,15 @@ for (const order of [[1], [1, 3, 4, 2], [1, 5, 3, 6, 2, 4], [1, 6, 2, 5, 8, 3, 7
     });
   });
 }
+
+test("V8 1-5-4-8-6-3-7-2, banks ±45°: each right-bank cylinder shares its crankpin with one on the left (cross-plane)", () => {
+  const lay = layout([1, 5, 4, 8, 6, 3, 7, 2]), lean = i => (i < 4 ? 1 : -1) * Math.PI / 4;
+  const pin = i => pinAngle(lay, i, lean(i)), same = (a, b) => Math.abs(Math.cos(a - b) - 1) < 1e-9;
+  for (let i = 0; i < 4; i++) assert.ok(same(pin(i), pin(i + 4)), `cylinders ${i + 1} and ${i + 5} share a pin`);
+  const pins = [0, 1, 2, 3].map(pin).sort((a, b) => a - b);
+  pins.forEach((a, k) => assert.ok(Math.abs(a - k * Math.PI / 2 - Math.PI / 4) < 1e-9), "four pins 90° apart: a cross-plane crank");
+  assert.ok(same(pinAngle(lay, 0), 0) && same(pinAngle(lay, 3), Math.PI), "an upright cylinder's pin points up at its firing");
+});
 
 test("every engine in the tour has a valid firing order", async () => {
   for (const car of await loadCars()) for (const c of car.components) {

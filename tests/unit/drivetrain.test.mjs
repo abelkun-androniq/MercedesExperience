@@ -1,9 +1,10 @@
-// Differential, gearbox and road-load (aero) models.
+// Differential, gearbox, belt-drive and road-load (aero) models.
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { cornerSpeeds, traction } from "../../lib/model/differential.js";
 import { ratio, roadSpeed, primaryRpmFor, mismatch } from "../../lib/model/gearbox.js";
 import { drag, powerNeeded, topSpeed, accelerate } from "../../lib/model/aero.js";
+import * as belt from "../../lib/model/belt.js";
 import { loadCars } from "./helpers.mjs";
 
 const axle = { halfTrack: 0.7, wheelR: 0.36 };
@@ -76,4 +77,68 @@ test("every aero config's model top speed is within 5 % of the quoted one", asyn
       const kmh = topSpeed(s, s.ps * 735.5) * 3.6;
       assert.ok(Math.abs(kmh / s.quoted - 1) < 0.05, `${c.slug} ${s.id}: model ${kmh.toFixed(0)} vs ${s.quoted} km/h`);
     }
+});
+
+const reit = { gears: [{ name: "Low", drive: 100, driven: 230 }, { name: "High", drive: 150, driven: 180 }], pinion: 90, ring: 420, wheelR: 0.3 };
+const rider = { mass: 165, crr: 0.03, eta: 0.8, ps: 0.5, rpm: 600 };
+
+test("belt: the small engine pulley is the low gear; speed and push trade against each other", () => {
+  assert.ok(Math.abs(belt.ratio(reit, 1) - (180 / 150) * (420 / 90)) < 1e-12);
+  assert.ok(belt.roadSpeed(reit, 0, 600) < belt.roadSpeed(reit, 1, 600));
+  assert.ok(belt.wheelForce(reit, 0, rider) > belt.wheelForce(reit, 1, rider));
+  // Power at the wheel is the same in both gears: push × speed = engine power × efficiency.
+  for (const g of [0, 1]) {
+    const P = belt.wheelForce(reit, g, rider) * belt.roadSpeed(reit, g, 600) / 3.6;
+    assert.ok(Math.abs(P - 0.5 * 735.5 * 0.8) < 1e-9);
+  }
+});
+
+test("belt: the steepest grade is where the push equals climbing plus rolling resistance", () => {
+  const F = belt.wheelForce(reit, 0, rider), g = belt.maxGrade(rider, F);
+  assert.ok(g > 0 && Math.abs(belt.resistance(rider, g) - F) < 1e-9);
+  assert.ok(belt.maxGrade(rider, 0.5 * belt.resistance(rider, 0)) < 0, "cannot even roll on the level");
+  assert.equal(belt.maxGrade(rider, 1e6), Infinity);
+});
+
+test("belt: a run settles at the governed speed, stalls on a hill that is too steep, and the brake holds it", () => {
+  let v = 0;
+  for (let t = 0; t < 60; t += 0.05) v = belt.step(reit, 1, rider, v, {}, 0.05);
+  assert.ok(Math.abs(v - belt.roadSpeed(reit, 1, 600)) < 1e-9, "holds top speed on the level");
+  const steep = belt.maxGrade(rider, belt.wheelForce(reit, 1, rider)) + 0.01;
+  for (let t = 0; t < 60; t += 0.05) v = belt.step(reit, 1, rider, v, { grade: steep }, 0.05);
+  assert.equal(v, 0);
+  for (let t = 0; t < 60; t += 0.05) v = belt.step(reit, 0, rider, v, { grade: steep }, 0.05);
+  assert.ok(Math.abs(v - belt.roadSpeed(reit, 0, 600)) < 1e-9, "low gear takes the same hill");
+  const fast = belt.roadSpeed(reit, 1, 600), slowed = belt.step(reit, 0, rider, fast, {}, 0.05);
+  assert.ok(slowed < fast && slowed > belt.roadSpeed(reit, 0, 600), "a downshift at speed slows it gradually");
+  assert.equal(belt.step(reit, 0, rider, 0, { brake: true }, 0.05), 0);
+  assert.ok(belt.step(reit, 0, rider, 5, { engaged: false }, 0.05) < 5, "belt off: it coasts down");
+});
+
+test("belt: the loop is as long as the open-belt formula and wraps each pulley at its radius", () => {
+  const a = [530, 200], b = [147, 375], c = Math.hypot(b[0] - a[0], b[1] - a[1]);
+  for (const [r1, r2] of [[50, 115], [75, 90], [90, 75]]) {
+    const pts = belt.beltLoop(a, r1, b, r2, 400);
+    const len = pts.reduce((s, p, i) => s + Math.hypot(...p.map((x, k) => x - pts[(i + 1) % pts.length][k])), 0);
+    assert.ok(Math.abs(len / belt.beltLength(c, r1, r2) - 1) < 1e-3, `${r1}/${r2}: ${len.toFixed(1)}`);
+    const on = p => Math.min(Math.abs(Math.hypot(p[0] - a[0], p[1] - a[1]) - r1), Math.abs(Math.hypot(p[0] - b[0], p[1] - b[1]) - r2));
+    for (const p of pts) assert.ok(on(p) < 1e-9);
+  }
+});
+
+test("every belt-drive config: top gear matches the quoted speed; one belt moved between steps fits both", async () => {
+  for (const c of await loadCars()) for (const comp of c.components.filter(k => k.subsystem === "belt-drive")) {
+    const { drive, vehicle, at, shift } = comp.params, top = drive.gears.length - 1;
+    const kmh = belt.roadSpeed(drive, top, vehicle.rpm);
+    assert.ok(Math.abs(kmh / vehicle.quoted - 1) < 0.05, `${c.slug}: ${kmh.toFixed(1)} vs ${vehicle.quoted} km/h`);
+    assert.ok(belt.maxGrade(vehicle, belt.wheelForce(drive, 0, vehicle)) > belt.maxGrade(vehicle, belt.wheelForce(drive, top, vehicle)));
+    if (comp.params.final === "ring") {   // the pinion runs inside the ring gear: centres (ring − pinion) / 2 apart
+      const dist = Math.hypot(at.counter[0] - at.wheel[0], at.counter[1] - at.wheel[1]);
+      assert.ok(Math.abs(dist - (drive.ring - drive.pinion) / 2) < 5, `${c.slug}: pinion ${dist.toFixed(0)} mm from the hub`);
+    }
+    if (shift !== "stopped") continue;
+    const C = Math.hypot(at.counter[0] - at.engine[0], at.counter[1] - at.engine[1]);
+    const lens = drive.gears.map(g => belt.beltLength(C, g.drive / 2, g.driven / 2));
+    assert.ok(Math.max(...lens) / Math.min(...lens) - 1 < 0.01, `${c.slug}: ${lens.map(l => l.toFixed(0)).join(" vs ")} mm`);
+  }
 });

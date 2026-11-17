@@ -1,0 +1,113 @@
+{
+  "photo": "stops/daimler-boat/photo.jpg",
+  "image": {
+    "width": 1200,
+    "height": 803
+  },
+  "frame": "mm; x forward, y left, z up; origin = top of the stern on the centreline (deck level). Hull heights and the casing are assumed from the photo: an approximate fit",
+  "aimAt": [
+    2500,
+    0,
+    0
+  ],
+  "seeds": [
+    [
+      -1500,
+      -4000,
+      1500
+    ],
+    [
+      -2500,
+      -3000,
+      1500
+    ],
+    [
+      -500,
+      -5000,
+      1800
+    ],
+    [
+      -3000,
+      -1500,
+      1200
+    ]
+  ],
+  "focalSeeds": [
+    900,
+    1300,
+    1800
+  ],
+  "rollPenalty": 300,
+  "focalPrior": {
+    "f": 1300,
+    "w": 0.2
+  },
+  "groundZ": -1050,
+  "points": [
+    {
+      "name": "stern, deck centre",
+      "X": [
+        0,
+        0,
+        0
+      ],
+      "px": [
+        35,
+        438
+      ],
+      "w": 2
+    },
+    {
+      "name": "rudder stock at the deck",
+      "X": [
+        180,
+        0,
+        30
+      ],
+      "px": [
+        135,
+        432
+      ],
+      "w": 1
+    },
+    {
+      "name": "propeller hub",
+      "X": [
+        450,
+        0,
+        -650
+      ],
+      "px": [
+        192,
+        610
+      ],
+      "w": 2
+    },
+    {
+      "name": "bow, stem head",
+      "X": [
+        5500,
+        0,
+        200
+      ],
+      "px": [
+        860,
+        398
+      ],
+      "w": 2
+    },
+    {
+      "name": "bow, forefoot",
+      "X": [
+        5420,
+        0,
+        -600
+      ],
+      "px": [
+        857,
+        503
+      ],
+      "w": 1
+    }
+  ]
+}

@@ -5,23 +5,37 @@
 // compression-heat card),
 // crankcase "open" | "flywheels", speed { min, max, value } (shown rpm, slow motion), realRpm? (readout note),
 // valvetrain "none" (valve gear not drawn), flywheelR? (mm; with "flywheels" it also sizes the round case), rot? [x, y, z] (deg, turns the whole engine about the crank
-// centre: [0, 90, 0] lays it flat with the cylinder pointing forward and the crank vertical).
+// centre: [0, 90, 0] lays it flat with the cylinder pointing forward and the crank vertical), leans? [deg per cylinder]
+// (V engines: each bank leans its own way; cylinders whose crankpins coincide share one, rods side by side).
 import * as THREE from "three";
 import { V, Y, mat, rod, place, ball, glass, line } from "../lib/scene/helpers.js";
-import { layout, phaseOf, strokeOf, valveLifts, flashOf, injecting, injectingDiesel, compressionTemp } from "../lib/model/engine.js";
+import { layout, pinAngle, phaseOf, strokeOf, valveLifts, flashOf, injecting, injectingDiesel, compressionTemp } from "../lib/model/engine.js";
 
 const STROKE_TOKEN = { Power: "--l1", Exhaust: "--metal", Intake: "--l4", Compression: "--l2" };
 
 export function create(ctx, p) {
   const { stage, carRoot } = ctx;
   const lay = layout(p.order), n = lay.n;
-  const r = p.stroke / 2000, l = p.rod / 1000, bR = p.bore / 2000, lean = (p.lean ?? 0) * Math.PI / 180;
+  const r = p.stroke / 2000, l = p.rod / 1000, bR = p.bore / 2000;
   const crankZ = (p.crankZ ?? 0) / 1000, xs = p.xs.map(x => x / 1000);
   const xMin = Math.min(...xs), xMax = Math.max(...xs), xc = (xMin + xMax) / 2;
-  const dAx = V(0, -Math.sin(lean), Math.cos(lean)), nAx = V(0, Math.cos(lean), Math.sin(lean));   // cylinder axis, crank-plane normal
   const deck = r + l + 0.4 * bR + 0.016, liftMax = 0.2 * bR, blockH = deck + 3.8 * bR;
-  const axisQ = new THREE.Quaternion().setFromUnitVectors(V(0, 0, 1), dAx);
-  const at = (x, along, side = 0) => V(x, 0, crankZ).addScaledVector(dAx, along).addScaledVector(nAx, side);
+  // One frame per bank: cylinder axis d, crank-plane normal n, `at` places a point along d and sideways along n.
+  const banks = new Map(), leanOf = i => ((p.leans?.[i] ?? p.lean ?? 0) * Math.PI) / 180;
+  const bankOf = i => {
+    const a = leanOf(i);
+    if (!banks.has(a)) {
+      const d = V(0, -Math.sin(a), Math.cos(a)), n = V(0, Math.cos(a), Math.sin(a));
+      const at = (x, along, side = 0) => V(x, 0, crankZ).addScaledVector(d, along).addScaledVector(n, side);
+      banks.set(a, { d, n, at, q: new THREE.Quaternion().setFromUnitVectors(V(0, 0, 1), d), xs: [],
+        camC: side => at(0, deck + 2.92 * bR, side * 0.45 * bR), camLow: x => at(x, r + 0.09, -1.9 * bR) });
+    }
+    return banks.get(a);
+  };
+  xs.forEach((x, i) => bankOf(i).xs.push(x));
+  // Shared crankpins (V engines): host[i] is the earlier cylinder whose pin cylinder i shares, or −1.
+  const pinOf = i => pinAngle(lay, i, leanOf(i));
+  const host = xs.map((x, i) => xs.findIndex((x2, j) => j < i && Math.abs(x2 - x) < 2 * bR && Math.abs(Math.cos(pinOf(i) - pinOf(j)) - 1) < 1e-9));
 
   // root sits at the crank centre so `rot` turns the engine about it; group keeps vehicle-frame coordinates.
   const root = new THREE.Group(), group = new THREE.Group();
@@ -36,11 +50,13 @@ export function create(ctx, p) {
   };
 
   // ---------- static parts ----------
-  const len = xMax - xMin + 3.8 * bR;
   const fwR = p.flywheelR ? p.flywheelR / 1000 : r + 0.06;                          // enclosed flywheels (Daimler 1884)
   const b0 = p.crankcase === "flywheels" ? fwR : -0.05, b1 = blockH - 0.05;   // block span along the cylinder axis
-  box(len, 4.5 * bR, b1 - b0, at(xc, (b0 + b1) / 2), axisQ);
-  box(len, 3.8 * bR, 2.5 * bR, at(xc, deck + 3.8 * bR), axisQ);
+  for (const b of banks.values()) {
+    const x0 = Math.min(...b.xs), x1 = Math.max(...b.xs), len = x1 - x0 + 3.8 * bR, xm = (x0 + x1) / 2;
+    box(len, 4.5 * bR, b1 - b0, b.at(xm, (b0 + b1) / 2), b.q);
+    box(len, 3.8 * bR, 2.5 * bR, b.at(xm, deck + 3.8 * bR), b.q);
+  }
   const flywheels = [];
   if (p.crankcase === "flywheels") {
     // Daimler 1884: two flywheels inside a closed round crankcase, either side of the single throw.
@@ -60,24 +76,29 @@ export function create(ctx, p) {
     group.add(place(rod(crankMat, 0.026), V(xMin - 0.08, 0, crankZ), V(xMax + 0.08, 0, crankZ)));
   }
   const camSides = p.valvetrain === "dohc" ? [-1, 1] : p.valvetrain === "ohc" ? [0] : [];
-  const camC = side => at(0, deck + 2.92 * bR, side * 0.45 * bR);
   // Pushrod engine: one camshaft low in the block; each valve has a pushrod up to a rocker on the head.
-  const ohv = p.valvetrain === "ohv", camLow = x => at(x, r + 0.09, -1.9 * bR), pushDx = v => Math.sign(v.side || 1) * 0.3 * bR;
-  if (ohv) group.add(place(rod(crankMat, 0.014), camLow(xMin - 0.06), camLow(xMax + 0.06)), place(rod(dark, 0.006), V(xMax + 0.09, 0, crankZ), camLow(xMax + 0.09)));
-  for (const s of camSides) {
-    group.add(place(rod(crankMat, 0.014), camC(s).setX(xMin - 0.06), camC(s).setX(xMax + 0.06)));
-    group.add(place(rod(dark, 0.006), V(xMax + 0.09, 0, crankZ), camC(s).setX(xMax + 0.09)));   // timing drive
+  const ohv = p.valvetrain === "ohv", pushDx = v => Math.sign(v.side || 1) * 0.3 * bR;
+  for (const b of banks.values()) {
+    const x0 = Math.min(...b.xs), x1 = Math.max(...b.xs);
+    if (ohv) group.add(place(rod(crankMat, 0.014), b.camLow(x0 - 0.06), b.camLow(x1 + 0.06)), place(rod(dark, 0.006), V(xMax + 0.09, 0, crankZ), b.camLow(xMax + 0.09)));
+    for (const s of camSides) {
+      group.add(place(rod(crankMat, 0.014), b.camC(s).setX(x0 - 0.06), b.camC(s).setX(x1 + 0.06)));
+      group.add(place(rod(dark, 0.006), V(xMax + 0.09, 0, crankZ), b.camC(s).setX(xMax + 0.09)));   // timing drive
+    }
   }
 
   // ---------- per cylinder ----------
   const cyl = xs.map((x, i) => {
+    const bank = bankOf(i), { at, d: dAx, q: axisQ } = bank;
     const liner = new THREE.Mesh(new THREE.CylinderGeometry(bR, bR, deck - 0.09, 28, 1, true), linerMat);
     liner.position.copy(at(x, 0.09 + (deck - 0.09) / 2)); liner.quaternion.setFromUnitVectors(Y, dAx); group.add(liner);
-    const c = { x, i, pin: rod(crankMat, 0.5 * bR), webs: [rod(crankMat, 0.65 * bR), rod(crankMat, 0.65 * bR)], conrod: rod(rodMat, 0.011),
+    // The pin spans every rod on it; webs sit outside the outermost rods.
+    const onPin = xs.filter((_, k) => k === i || host[k] === i), span = [Math.min(...onPin) - 0.5 * bR, Math.max(...onPin) + 0.5 * bR];
+    const c = { x, i, bank, span, pin: host[i] < 0 ? rod(crankMat, 0.5 * bR) : null, webs: host[i] < 0 ? [rod(crankMat, 0.65 * bR), rod(crankMat, 0.65 * bR)] : [], conrod: rod(rodMat, 0.011),
       piston: new THREE.Mesh(new THREE.CylinderGeometry(bR - 0.001, bR - 0.001, 1.1 * bR, 28), pistonMat),
       chamber: new THREE.Mesh(new THREE.CylinderGeometry(bR - 0.002, bR - 0.002, 1, 28), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.6, depthWrite: false })) };
     c.piston.quaternion.setFromUnitVectors(Y, dAx); c.chamber.quaternion.setFromUnitVectors(Y, dAx);
-    group.add(c.pin, ...c.webs, c.conrod, c.piston, c.chamber);
+    group.add(...(c.pin ? [c.pin] : []), ...c.webs, c.conrod, c.piston, c.chamber);
     // Valves: intake (blue) on +n side, exhaust (red) on −n side; the atmospheric intake sits on top, on the axis.
     c.valves = p.valvetrain === "none" ? [] : [["intake", intakeMat, p.valvetrain === "atmospheric" ? 0 : -0.45], ["exhaust", exhaustMat, 0.45]].map(([kind, m, side]) => {
       const v = { kind, side: side * bR, stem: rod(m, 0.006) }; group.add(v.stem);
@@ -116,13 +137,14 @@ export function create(ctx, p) {
   let theta = 0, tPhoto = 0;
   function pose() {
     for (const c of cyl) {
+      const { at, d: dAx, n: nAx, camC, camLow } = c.bank;
       const alpha = theta + lay.throwA[c.i], ph = phaseOf(theta, lay.offset[c.i]);
       const C = V(c.x, 0, crankZ);
       const pinP = C.clone().addScaledVector(dAx, r * Math.cos(alpha)).addScaledVector(nAx, r * Math.sin(alpha));
       const s = r * Math.cos(alpha) + Math.sqrt(l * l - (r * Math.sin(alpha)) ** 2);
       const gudgeon = C.clone().addScaledVector(dAx, s);
-      place(c.pin, pinP.clone().setX(c.x - 0.5 * bR), pinP.clone().setX(c.x + 0.5 * bR));
-      c.webs.forEach((w, k) => place(w, C.clone().setX(c.x + (k ? 1 : -1) * 0.67 * bR), pinP.clone().setX(c.x + (k ? 1 : -1) * 0.67 * bR)));
+      if (c.pin) place(c.pin, pinP.clone().setX(c.span[0]), pinP.clone().setX(c.span[1]));
+      c.webs.forEach((w, k) => { const wx = k ? c.span[1] + 0.17 * bR : c.span[0] - 0.17 * bR; place(w, C.clone().setX(wx), pinP.clone().setX(wx)); });
       place(c.conrod, pinP, gudgeon);
       c.piston.position.copy(gudgeon).addScaledVector(dAx, 0.01);
       const top = s + 0.035, hgt = Math.max(deck - top, 0.002);

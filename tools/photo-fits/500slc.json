@@ -1,0 +1,126 @@
+{
+  "photo": "stops/500slc/photo.jpg",
+  "image": {
+    "width": 1200,
+    "height": 803
+  },
+  "frame": "mm; x forward, y left, z up; origin = front axle centre on the ground. Wheelbase 2,820 and tracks from the data sheet; lamp positions and wheel radius assumed",
+  "aimAt": [
+    -1000,
+    0,
+    500
+  ],
+  "seeds": [
+    [
+      3500,
+      2500,
+      1300
+    ],
+    [
+      2500,
+      3500,
+      1500
+    ],
+    [
+      4500,
+      1800,
+      1200
+    ],
+    [
+      3000,
+      2000,
+      1000
+    ]
+  ],
+  "focalSeeds": [
+    600,
+    900,
+    1300
+  ],
+  "rollPenalty": 200,
+  "focalPrior": {
+    "f": 900,
+    "w": 0.05
+  },
+  "groundZ": 0,
+  "points": [
+    {
+      "name": "LF wheel hub",
+      "X": [
+        0,
+        726,
+        300
+      ],
+      "px": [
+        700,
+        563
+      ],
+      "w": 3
+    },
+    {
+      "name": "LF tyre bottom",
+      "X": [
+        0,
+        726,
+        0
+      ],
+      "px": [
+        693,
+        630
+      ],
+      "w": 2
+    },
+    {
+      "name": "LR wheel hub",
+      "X": [
+        -2820,
+        720,
+        300
+      ],
+      "px": [
+        967,
+        420
+      ],
+      "w": 3
+    },
+    {
+      "name": "LR tyre bottom",
+      "X": [
+        -2820,
+        720,
+        0
+      ],
+      "px": [
+        963,
+        467
+      ],
+      "w": 2
+    },
+    {
+      "name": "L headlamp",
+      "X": [
+        830,
+        540,
+        680
+      ],
+      "px": [
+        507,
+        487
+      ],
+      "w": 1
+    },
+    {
+      "name": "L indicator",
+      "X": [
+        780,
+        760,
+        680
+      ],
+      "px": [
+        593,
+        487
+      ],
+      "w": 1
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "photo": "stops/w196r/photo.jpg",
+  "image": {
+    "width": 1200,
+    "height": 803
+  },
+  "frame": "mm; x forward, y left, z up; origin = front axle centre on the ground. Wheelbase 2,350 from the archive; tracks, wheel radius and the nose star's position assumed; focal length pinned near 650 px (the wheel points alone leave it free)",
+  "aimAt": [
+    -1000,
+    0,
+    400
+  ],
+  "seeds": [
+    [
+      3000,
+      2500,
+      1100
+    ],
+    [
+      2500,
+      3500,
+      1300
+    ],
+    [
+      4000,
+      1800,
+      1000
+    ],
+    [
+      2000,
+      2000,
+      900
+    ]
+  ],
+  "focalSeeds": [
+    600,
+    900,
+    1300
+  ],
+  "rollPenalty": 200,
+  "focalPrior": {
+    "f": 650,
+    "w": 2
+  },
+  "groundZ": 0,
+  "points": [
+    {
+      "name": "LF wheel hub",
+      "X": [
+        0,
+        665,
+        340
+      ],
+      "px": [
+        572,
+        577
+      ],
+      "w": 3
+    },
+    {
+      "name": "LF tyre bottom",
+      "X": [
+        0,
+        665,
+        0
+      ],
+      "px": [
+        560,
+        660
+      ],
+      "w": 2
+    },
+    {
+      "name": "LR wheel hub",
+      "X": [
+        -2350,
+        679,
+        340
+      ],
+      "px": [
+        916,
+        464
+      ],
+      "w": 3
+    },
+    {
+      "name": "LR tyre bottom",
+      "X": [
+        -2350,
+        679,
+        0
+      ],
+      "px": [
+        912,
+        521
+      ],
+      "w": 2
+    },
+    {
+      "name": "Nose star",
+      "X": [
+        1150,
+        0,
+        430
+      ],
+      "px": [
+        215,
+        510
+      ],
+      "w": 1
+    }
+  ]
+}

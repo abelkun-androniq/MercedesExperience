@@ -1,9 +1,10 @@
-// Body and chassis models: space-frame truss, frontal crash, air suspension.
+// Body and chassis models: space-frame truss, frontal crash, air suspension, car-transporter deck hoist.
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { solveTruss, tubeFrame, twistTest } from "../../lib/model/truss.js";
 import { crushForce, simulateCrash } from "../../lib/model/crash.js";
 import { airStatic, steelStatic, createCorner } from "../../lib/model/air-spring.js";
+import * as hoist from "../../lib/model/hoist.js";
 import { loadCars } from "./helpers.mjs";
 
 test("truss: one bar stretches F·L/EA and carries F in tension", () => {
@@ -83,4 +84,38 @@ test("air corner: loading sinks the body, the levelling valve fills it back to r
   assert.ok(Math.abs(a.z) < 0.0025 && a.valve === "level", `air z ${a.z}`);
   assert.ok(Math.abs(s.z - 140 * 9.81 / 28000) < 0.001);
   assert.ok(a.pressure() > airStatic(air, 420).pg);
+});
+
+const block = { falls: 2, bore: 0.05, sheaveEta: 0.96, sheaves: 4, stroke: 0.8, flow: 6 };
+
+test("hoist: the pulley block trades force for travel; work in equals work out plus sheave friction", () => {
+  assert.equal(hoist.deckRise(block, 0.3), 0.6); assert.equal(hoist.strokeFor(block, 0.6), 0.3);
+  const pull = 9000, F = hoist.cylinderForce(block, pull), eff = 0.96 ** 4;
+  assert.ok(Math.abs(F * 0.3 * eff - pull * hoist.deckRise(block, 0.3)) < 1e-6);
+  assert.ok(hoist.cylinderForce({ ...block, falls: 4 }, pull) === 2 * F, "twice the falls: twice the force, half the stroke");
+  assert.ok(Math.abs(hoist.pressureBar(block, pull) - F / (Math.PI * 0.025 ** 2) / 1e5) < 1e-9);
+  const pistonSpeed = 6 / 60000 / hoist.pistonArea(block);
+  assert.ok(Math.abs(hoist.deckSpeed(block) - 2 * pistonSpeed) < 1e-12);
+});
+
+test("hoist: the end pulls balance the load; a car near one end loads that end's cable", () => {
+  const deck = { x: 2000, mass: 300 }, car = m => ({ x: m, mass: 1500 });
+  const mid = hoist.endPulls(0, 4000, [deck, car(2000)]);
+  assert.ok(Math.abs(mid.front - mid.rear) < 1e-9 && Math.abs(mid.front + mid.rear - 1800 * 9.81) < 1e-9);
+  const fwd = hoist.endPulls(0, 4000, [deck, car(3500)]);
+  assert.ok(fwd.front > fwd.rear && Math.abs(fwd.front + fwd.rear - 1800 * 9.81) < 1e-9);
+  assert.ok(Math.abs(hoist.endPulls(0, 4000, [car(4000)]).rear) < 1e-9, "a load right over the front end hangs on the front cable");
+});
+
+test("every hoist config: the stroke covers the deck's travel and loaded pressures stay hydraulic-normal", async () => {
+  for (const c of await loadCars()) for (const comp of c.components.filter(k => k.subsystem === "hoist")) {
+    const { hoist: h, deck, car, presets } = comp.params;
+    const most = Math.max(...presets.flatMap(q => [q.front, q.rear])) / 1000;
+    assert.ok(hoist.deckRise(h, h.stroke) >= most, `${c.slug}: stroke too short`);
+    const pulls = hoist.endPulls(deck.rear[0], deck.front[0], [{ x: (deck.rear[0] + deck.front[0]) / 2, mass: deck.mass }, { x: car.x, mass: car.mass }]);
+    for (const end of ["front", "rear"]) {
+      const bar = hoist.pressureBar(h, pulls[end] / 2);   // two cables per end, one cylinder each
+      assert.ok(bar > 20 && bar < 250, `${c.slug} ${end}: ${bar.toFixed(0)} bar`);
+    }
+  }
 });
