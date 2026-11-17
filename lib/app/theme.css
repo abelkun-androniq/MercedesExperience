@@ -178,3 +178,21 @@ footer ul { margin: 4px 0 0; padding-left: 18px; }
   .stop a:hover .pill i { transform: translateX(4px); }
 }
 @media (prefers-reduced-motion: reduce) { .stop img, .stop .pill i { transition: none; } }
+
+/* Teaser scroll stories (teaser.js): each car's stage pins while its steps scroll past, above them on a phone held upright
+   and beside them otherwise. The step at the reading line is the one on the stage; the others are dimmed. */
+.stories { display: grid; gap: 96px; }
+.story-stage { position: sticky; top: 0; z-index: 1; background: var(--bg); padding: max(12px, env(safe-area-inset-top)) 0 12px; }
+.story .stage { width: min(100%, calc(45svh * var(--ar))); margin-inline: auto; }
+.step { min-height: 60svh; padding: 32px 0; display: grid; gap: 16px; align-content: start; transition: opacity .3s; }
+.step:not(.on) { opacity: .4; }
+.step h2 { font-size: clamp(36px, 4.4vw, 48px); margin: 0; }
+.step h3 { font-family: var(--display); font-weight: 400; font-size: 32px; line-height: 1.15; letter-spacing: 0; margin: 0; color: var(--fg); }
+.step footer .pill { justify-self: start; margin-top: 8px; }
+@media (orientation: landscape) and (min-width: 600px) {
+  .story { display: grid; grid-template-columns: minmax(0, 1fr) clamp(280px, 32vw, 400px); gap: 32px; align-items: start; }
+  .story-stage { height: 100svh; display: grid; place-items: center; padding: 16px 0; background: none; }
+  .story .stage { width: min(100%, calc((100svh - 32px) * var(--ar))); }
+  .step { min-height: 70svh; }
+}
+@media (prefers-reduced-motion: reduce) { .step { transition: none; } }

@@ -86,3 +86,34 @@ test("teaser lists its three stops; opened from there, they page between each ot
   await expect(page.getByRole("link", { name: "← Tour route" })).toHaveAttribute("href", "./");
   expect(errors).toEqual([]);
 });
+
+test("teaser: each car's stage stays pinned while its steps scroll past and set what it shows", async ({ page }) => {
+  const errors = watchErrors(page);
+  await page.goto("teaser.html?debug");
+  await page.waitForFunction(() => window.__tour?.ready, null, { timeout: 30_000 });
+  const shown = i => page.evaluate(i => ({ step: window.__tour.stories[i].step(), state: window.__tour.stories[i].state() }), i);
+  const frames = () => page.evaluate(() => window.__tour.stories.map(s => s.frames()));
+
+  for (const [i, car] of cars.filter(c => teaser.includes(c.slug)).entries()) {
+    const el = page.locator(".story").nth(i), first = car.components[0].id;
+    const steps = [{ comp: first, view: "photo", outline: false }, ...car.components.map(c => ({ comp: c.id, view: "model", outline: false })), { comp: first, view: "photo", outline: true }];
+    await expect(el.locator(".step")).toHaveCount(steps.length);
+    const pinned = new Set();
+    for (const [k, want] of steps.entries()) {
+      await el.locator(".step").nth(k).evaluate(s => s.scrollIntoView({ block: "center" }));
+      await expect.poll(() => shown(i)).toEqual({ step: k, state: want });
+      if (want.view !== "model") continue;
+      pinned.add(await el.locator(".stage").evaluate(s => Math.round(s.getBoundingClientRect().top)));
+      if (k > 1) continue;   // on the first component: only this car's stage animates
+      await page.waitForTimeout(300);
+      const f0 = await frames(); await page.waitForTimeout(600); const f1 = await frames();
+      expect(f1.map((f, j) => f > f0[j]), "animating stages").toEqual(f1.map((_, j) => j === i));
+    }
+    expect(pinned.size, "stage stays put through the component steps").toBe(1);
+  }
+
+  const fit = await page.evaluate(() => ({ scrollW: document.documentElement.scrollWidth, w: innerWidth, h: innerHeight, stage: document.querySelector(".story .stage").getBoundingClientRect().height }));
+  expect(fit.scrollW, "no horizontal scroll").toBeLessThanOrEqual(fit.w);
+  expect(fit.stage, "stage fits the viewport height").toBeLessThanOrEqual(fit.h);
+  expect(errors).toEqual([]);
+});

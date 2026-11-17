@@ -12,6 +12,9 @@
 <link rel="apple-touch-icon" href="icons/icon-180.png">
 <link rel="preload" href="lib/app/fonts/instrument-serif-latin-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="lib/app/theme.css">
+<script type="importmap">
+{ "imports": { "three": "./vendor/three/three.module.min.js", "three/addons/": "./vendor/three/addons/" } }
+</script>
 </head>
 <body>
 <header class="bar"><div class="crumbs">
@@ -24,18 +27,19 @@
   <div class="copy">
     <div class="eyebrow" data-i18n>Mercedes-Benz Museum · Stuttgart</div>
     <h1 data-i18n>Under the skin: three highlights</h1>
-    <p class="lede" data-i18n>A taste of the technical tour: three cars, each with a mechanism shown working. A 21.5-litre record car that outran the aeroplanes of 1911, the Gullwing whose frame forced its doors upwards, and the most expensive car ever sold. Open a car, then switch to the museum photo to see where the mechanism sits under the bodywork.</p>
-    <a class="pill primary" href="#route" data-i18n>See the three cars</a>
+    <p class="lede" data-i18n>A taste of the technical tour: three cars, each with a mechanism shown working. A 21.5-litre record car that outran the aeroplanes of 1911, the Gullwing whose frame forced its doors upwards, and the most expensive car ever sold. Scroll on: each car stays in view while its mechanisms run beside their controls, and the museum photo then shows where they sit under the bodywork.</p>
+    <a class="pill primary" href="#cars" data-i18n>See the three cars</a>
     <p class="status" id="status" role="status" data-i18n>Checking offline mode…</p>
   </div>
 </section>
 <main class="wrap">
-  <ol class="route" id="route" data-route="teaser"><li class="note" data-i18n>Loading the route…</li></ol>
+  <div class="stories" id="cars"><p class="note" data-i18n>Loading…</p></div>
   <footer>
     <p data-i18n>Open this page once with signal (museum Wi-Fi or before you arrive): every stop is then stored and works offline. On iPhone or iPad, Share → Add to Home Screen keeps it stored for longer.</p>
     <p class="note"><span data-i18n>Unofficial private tour notes, not affiliated with Mercedes-Benz. Rooms and levels follow research notes: confirm on site, exhibits rotate.</span> <span id="credits"></span> <span data-i18n>3D: three.js (MIT). Headlines: Instrument Serif (SIL OFL).</span></p>
   </footer>
 </main>
-<script type="module" src="lib/app/index.js"></script>
+<noscript><p class="fail">This tour needs JavaScript. · A túrához JavaScript kell.</p></noscript>
+<script type="module" src="lib/app/teaser.js"></script>
 </body>
 </html>

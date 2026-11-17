@@ -4,9 +4,10 @@ Static GitHub Pages site: one page per exhibit showing its mechanism working (th
 iPhone/iPad Safari (iOS 16.4+, import maps). No bundler: native ES modules; `tools/build.mjs` only stamps the service worker.
 
 ## Map
-- `index.html` route (lib/app/index.js) · `teaser.html` the same page for the three `teaser` stops (`data-route="teaser"`,
-  own manifest) · `stop.html?s=<slug>[&r=teaser]` shell for every stop (lib/app/shell.js; r=teaser pages among the teaser
-  stops and links back to teaser.html) · `sw.js` offline cache (new root files also go in tools/build.mjs ENTRIES)
+- `index.html` route (lib/app/index.js) · `teaser.html` the three `teaser` stops as scroll stories (lib/app/teaser.js,
+  own manifest): each car's stage pins while its steps (intro on the photo, one per component with its cards, background
+  with the outline) scroll past and set what it shows · `stop.html?s=<slug>[&r=teaser]` shell for every stop
+  (lib/app/shell.js; r=teaser pages among the teaser stops and links back to teaser.html) · `sw.js` offline cache (new root files also go in tools/build.mjs ENTRIES)
 - `stops/tour.js` route order, room, level, and `teaser` (slugs): single source for order and prev/next ·
   `stops/<slug>/car.js` pure data (+ photo.jpg)
 - `lib/model/` pure maths, Node-tested: linkage (multi-link closure), quarter-car (ride), engine (N-cylinder slider-crank,
@@ -16,7 +17,8 @@ iPhone/iPad Safari (iOS 16.4+, import maps). No bundler: native ES modules; `too
   lattice-Boltzmann wind tunnel: D2Q9 + Smagorinsky, moving road, drag split)
 - `lib/scene/` stage (renderer, cameras, lights, theme tokens, loop), helpers, ghost-body, road, wind-tunnel (CFD view of
   `flow` on the centre plane: speed/pressure/swirl field, body section, smoke streaklines; `--cfd-*` tokens)
-- `lib/app/` shell, panel (declarative widgets, API in its header), offline, index, theme.css (look after
+- `lib/app/` shell, teaser, viewer (one stop's stage, subsystems, photo view and loop: shared by shell and teaser), panel
+  (declarative widgets, API in its header), dom (`h`, `link`), offline, index, theme.css (look after
   mercedes-benz.com: black bar/hero, white page, condensed serif, black photo cards, pills), fonts/ (Instrument Serif, OFL;
   latin + latin-ext for ő/ű), lang.js (head script: saved EN/HU choice or browser language → `<html lang>`), i18n.js
   (`t`, `num`, `loadCar`, `localizePage`), i18n/hu.js (UI catalog keyed by the English text)
@@ -47,8 +49,9 @@ iPhone/iPad Safari (iOS 16.4+, import maps). No bundler: native ES modules; `too
 - car.js: `{ slug, title, name, year, summary, eyebrow, lede, frame?, ride?, orbit?, sun?, body?: { ghost }, photo?,
   components: [{ id, label, subsystem, view: { pos, target }, ghost?: { fill, edge }, params, talk }], note, unverified, sources }`
 - Subsystem: `export function create(ctx, params)` with ctx `{ stage, carRoot, frame, ride, panel, reducedMotion, t }`, returns
-  `{ layout({ active, onPhoto }), update(dt, { onPhoto }) }`. The shell owns switches, photo view, outline, ghost body and
-  the loop, and resets carRoot's pose each frame before calling the active component's `update`.
+  `{ layout({ active, onPhoto }), update(dt, { onPhoto }) }`. lib/app/viewer.js owns photo view, outline, ghost body and
+  the loop (the stop page's switches or the teaser's scroll choose what it shows), and resets carRoot's pose each frame
+  before calling the active component's `update`.
 
 ## Recipes
 - Add a stop: entry in `stops/tour.js` + `stops/<slug>/car.js` (copy the closest sibling). Photo (every stop has one): 1200 px
@@ -73,7 +76,7 @@ iPhone/iPad Safari (iOS 16.4+, import maps). No bundler: native ES modules; `too
 - `npm run build` → `_site/` · deploy: push to main; `.github/workflows/pages.yml` tests, then deploys.
 
 ## Real-device checklist (iPhone and iPad Safari, from the Pages URL)
-Portrait and landscape · light and dark · EN/HU switch · orbit, pinch, sliders · photo overlay lines up with Car outline on · airplane mode
+Portrait and landscape · light and dark · EN/HU switch · teaser: each stage stays pinned while its steps scroll · orbit, pinch, sliders · photo overlay lines up with Car outline on · airplane mode
 after one visit: index → every stop · Add to Home Screen, launch offline · iPad Split View · Low Power Mode still animates at
 true speed · Web Inspector over USB shows no errors. LAN (`http://<mac-ip>:8765`) checks layout only: service workers need HTTPS.
 

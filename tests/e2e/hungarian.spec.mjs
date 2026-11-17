@@ -1,7 +1,7 @@
 // The Hungarian tour: a hu-HU browser gets Hungarian on its first visit, no stop shows untranslated text, numbers use a
 // decimal comma, and the EN/HU switch is remembered. One device is enough: smoke.spec covers layout on all of them.
 import { test, expect } from "@playwright/test";
-import tour from "../../stops/tour.js";
+import tour, { teaser } from "../../stops/tour.js";
 import { merge } from "../../lib/app/i18n.js";
 import hu from "../../lib/app/i18n/hu.js";
 
@@ -63,5 +63,19 @@ test("index in Hungarian; the switch changes language and is remembered", async 
 
   await page.getByRole("button", { name: "Magyar" }).click();
   await expect(page.getByRole("link", { name: hu["← Tour route"] })).toBeVisible();
+  expect(errors).toEqual([]);
+});
+
+test("teaser in Hungarian", async ({ page }) => {
+  const errors = watchErrors(page);
+  await page.goto("teaser.html?debug");
+  await page.waitForFunction(() => window.__tour?.ready, null, { timeout: 30_000 });
+  await expect(page.locator("h1")).toHaveText(hu["Under the skin: three highlights"]);
+  const teaserCars = cars.filter(c => teaser.includes(c.slug));
+  await expect(page.locator(".story h2")).toHaveText(teaserCars.map(c => c.title));
+  await expect(page.locator(".story h3").first()).toHaveText(teaserCars[0].components[0].label);
+  const shown = await page.locator(".story .panel output").allTextContents();
+  expect(shown.filter(s => /\d\.\d/.test(s)), "decimal comma").toEqual([]);
+  expect(await page.evaluate(() => window.__tour.missing())).toEqual([]);
   expect(errors).toEqual([]);
 });
