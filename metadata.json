@@ -1,0 +1,55 @@
+{
+  "cli_version": "0.13.4",
+  "checkpoint_id": "01M7NMGT48QR1EE196PRWGWJK7",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "CLAUDE.md",
+    "lib/app/i18n/hu.js",
+    "lib/app/theme.css",
+    "lib/model/flow.js",
+    "lib/scene/wind-tunnel.js",
+    "stops/blitzen-benz/car.js",
+    "stops/blitzen-benz/hu.js",
+    "subsystems/aero.js",
+    "tests/unit/flow.test.mjs",
+    "tools/camera.mjs",
+    "tools/fit-photo-camera.mjs",
+    "tools/photo-fits/blitzen-benz-side.json",
+    "tools/photo-grid.mjs",
+    "tools/profile-traces/blitzen-benz.json",
+    "tools/stop-shot.mjs",
+    "tools/trace-profile.mjs"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 154,
+    "cache_creation_tokens": 227401,
+    "cache_read_tokens": 15848399,
+    "output_tokens": 140263,
+    "api_call_count": 77
+  },
+  "redaction": {
+    "replacements": 2,
+    "layers": {
+      "betterleaks": 0,
+      "connection_string": 0,
+      "credential_key": 0,
+      "credential_value": 0,
+      "credentialed_uri": 0,
+      "entropy": 4,
+      "key_context": 0,
+      "provider_token": 0,
+      "shell_stdin": 0
+    }
+  }
+}

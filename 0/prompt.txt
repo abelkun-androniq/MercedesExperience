@@ -1,0 +1,17 @@
+There are multiple aerodynamics animations in the cards. Lets start with the teaser page and upgrade the aerodynamics animation there - make it like a CFD animation with a more accurate contour of the car. Search the internet for materials that can help with that - the goal is to emphasize the streamlines of the aerodynamics more on these animations. It would be also good to have turbulence and real flow properties - it would help explanation of where drag appears and how it decreases efficiency.
+
+---
+
+Lets make this a PoC - it doesnt need to be pixel perfect. Round the effort up so that I dont run out of my limit.
+
+---
+
+continue
+
+---
+
+I reset the limit, so you can do the more thorough approach. Make sure that you save the scripts and tools used because if the PoC is good, I will ask you to reproduce it for more cars. It needs to be token efficient - more than it is now. Way more.
+
+---
+
+Commit push and deploy it for the teaser so I can check
