@@ -1,0 +1,69 @@
+{
+  "cli_version": "0.13.4",
+  "checkpoint_id": "01M7KE7KQMV6A5787BZJ2GKH89",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    ".github/workflows/pages.yml",
+    "CLAUDE.md",
+    "stops/220s/car.js",
+    "stops/260d/car.js",
+    "stops/260d/photo.jpg",
+    "stops/300sel63/car.js",
+    "stops/300sel63/photo.jpg",
+    "stops/300sl/car.js",
+    "stops/300slr/car.js",
+    "stops/blitzen-benz/car.js",
+    "stops/c111/car.js",
+    "stops/c111/photo.jpg",
+    "stops/daimler-engine/car.js",
+    "stops/daimler-van/car.js",
+    "stops/papamobil/car.js",
+    "stops/papamobil/photo.jpg",
+    "stops/patent-motorwagen/car.js",
+    "stops/simplex/car.js",
+    "stops/ssk/car.js",
+    "stops/victoria/car.js",
+    "subsystems/aero.js",
+    "subsystems/air-suspension.js",
+    "subsystems/crumple-zone.js",
+    "subsystems/differential.js",
+    "subsystems/inline-engine.js",
+    "subsystems/steering.js",
+    "tools/fit-photo-camera.mjs",
+    "tools/photo-fits/260d.json",
+    "tools/photo-fits/300sel63.json",
+    "tools/photo-fits/papamobil.json"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 346,
+    "cache_creation_tokens": 375230,
+    "cache_read_tokens": 46382406,
+    "output_tokens": 165255,
+    "api_call_count": 173
+  },
+  "redaction": {
+    "replacements": 77,
+    "layers": {
+      "betterleaks": 0,
+      "connection_string": 0,
+      "credential_key": 0,
+      "credential_value": 12,
+      "credentialed_uri": 0,
+      "entropy": 71,
+      "key_context": 0,
+      "provider_token": 0,
+      "shell_stdin": 0
+    }
+  }
+}
