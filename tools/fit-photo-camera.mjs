@@ -4,18 +4,13 @@
 // Camera parameters p = [cx, cy, cz (mm), yaw, pitch, roll (rad), f (px)]; no lens distortion; principal point = image centre.
 // Optional: rollPenalty (keeps roll near 0), focalPrior { f, w } (pulls f towards a typical lens when depth cues are weak).
 import { readFileSync } from "node:fs";
+import { basis as cameraBasis } from "./camera.mjs";
 
 const cfg = JSON.parse(readFileSync(process.argv[2], "utf8"));
 const CX = cfg.image.width / 2, CY = cfg.image.height / 2;
 const P = cfg.points.map(q => [q.X, q.px, q.w ?? 1]);
 
-function basis([, , , yaw, pitch, roll]) {
-  const f = [Math.cos(pitch) * Math.cos(yaw), Math.cos(pitch) * Math.sin(yaw), Math.sin(pitch)];
-  let r = [f[1], -f[0], 0]; const n = Math.hypot(...r); r = r.map(v => v / n);   // r = f × z
-  const u = [r[1] * f[2] - r[2] * f[1], r[2] * f[0] - r[0] * f[2], r[0] * f[1] - r[1] * f[0]];
-  const c = Math.cos(roll), s = Math.sin(roll);
-  return { f, r: r.map((v, i) => c * v + s * u[i]), u: u.map((v, i) => c * v - s * r[i]) };
-}
+const basis = ([, , , yaw, pitch, roll]) => cameraBasis(yaw, pitch, roll);
 const dot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
 function project(p, X) {
   const { f, r, u } = basis(p), d = [X[0] - p[0], X[1] - p[1], X[2] - p[2]], z = dot(d, f);

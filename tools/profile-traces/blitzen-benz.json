@@ -1,0 +1,20 @@
+{
+  "photo": "https://commons.wikimedia.org/wiki/File:Benz_200PS_1909_Blitzen-Benz_Bob_Burman_LSide_MBMuse_9June2013_(14797108977).jpg",
+  "image": { "width": 1200, "height": 803 },
+  "cam": { "c": [-1280.5, 7219.7, 3850.9], "yaw": -1.6306, "pitch": -0.4118, "roll": -0.0016, "f": 1646.1 },
+  "camFrom": "tools/photo-fits/blitzen-benz-side.json",
+  "dz": 30,
+  "dzWhy": "the side fit puts the axle at 420 mm, the tour's frame at 450",
+  "groups": [
+    { "name": "nose tip", "y": 0, "px": [[210, 330]] },
+    { "name": "radiator cowl top", "y": -100, "px": [[223, 315], [240, 307], [263, 302], [290, 298]] },
+    { "name": "bonnet crown (silhouette lies behind the centre line)", "y": -160, "px": [[330, 296], [400, 296], [480, 292], [580, 287], [680, 282.5]] },
+    { "name": "far cockpit coaming", "y": -300, "px": [[760, 272], [850, 270], [905, 277]] },
+    { "name": "rear deck and tail top", "y": -120, "px": [[930, 275], [980, 281], [1030, 292], [1055, 302], [1080, 317], [1100, 332]] },
+    { "name": "tail tip", "y": 0, "px": [[1112, 342]] },
+    { "name": "tail underside", "y": 150, "px": [[1100, 352], [1080, 362], [1060, 371], [1040, 380], [1020, 386], [1000, 392], [980, 398], [960, 404], [950, 410], [940, 418], [930, 425]] },
+    { "name": "sill", "y": 400, "px": [[760, 470], [600, 475], [450, 475], [300, 470]] },
+    { "name": "radiator front edge", "y": 0, "px": [[290, 460], [275, 450], [262, 430], [257, 407], [253, 393], [247, 370], [230, 357], [217, 343]] }
+  ],
+  "after": "car.js rounds the cowl (a sharp traced tip made the simulated flow separate over the whole bonnet), adds a seated driver and a crankcase, and flattens the underside at 540 mm"
+}

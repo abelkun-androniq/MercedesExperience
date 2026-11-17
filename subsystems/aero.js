@@ -1,19 +1,22 @@
 // A full-power run against the air: engine power against aerodynamic drag (½ρ·cd·A·v²: the power for it grows with v³)
 // and rolling resistance. The chart plots power needed over speed for each body; where it meets the engine's power is the
-// top speed. Wind streaks and two arrows (drag at the nose, drive at the wheels) show the forces during the run.
+// top speed. Two arrows (drag at the nose, drive at the wheels) show the forces during the run. With `flow`, a 2-D
+// lattice-Boltzmann wind tunnel on the centre plane shows the air itself (lib/scene/wind-tunnel.js); without it, wind streaks.
 // Params (mm, ground at z = 0): label, shapes [{ id, label, cd, area (m²), mass (kg), crr, eta, ps, quoted? (km/h) }],
-// power { min, max } (PS), vmax (km/h, chart), nose [x, z], wheel [x, z], wind { x0, x1, y, z0, z1 }, time (× real),
-// ground? (z of the road, default 0, for cars whose origin is at axle height).
+// power { min, max } (PS), vmax (km/h, chart; also the flow's reference speed), nose [x, z], wheel [x, z], time (× real),
+// wind { x0, x1, y, z0, z1 } or flow (see wind-tunnel.js), ground? (z of the road, default 0, for cars whose origin is at
+// axle height).
 import * as THREE from "three";
 import { V, particles } from "../lib/scene/helpers.js";
 import { drag, rolling, powerNeeded, topSpeed, accelerate } from "../lib/model/aero.js";
+import { createWindTunnel } from "../lib/scene/wind-tunnel.js";
 
 const PS = 735.5, NS = "http://www.w3.org/2000/svg";
 
 export function create(ctx, p) {
   const { stage, carRoot, t } = ctx, m = v => v / 1000;
   const group = new THREE.Group(); carRoot.add(group);
-  const W = p.wind, wx0 = m(W.x0), wx1 = m(W.x1);
+  const F = p.flow, W = p.wind ?? { x0: F.x0, x1: F.show[0], y: 1000 }, wx0 = m(W.x0), wx1 = m(W.x1);
 
   const arrow = token => {
     const g = new THREE.Group(), mt = stage.tokenMat(token);
@@ -26,7 +29,8 @@ export function create(ctx, p) {
   dragA.position.set(m(p.nose[0]) + 0.05, 0, m(p.nose[1])); dragA.rotation.z = Math.PI;   // points backwards from the nose
   driveA.position.set(m(p.wheel[0]), 0, m(p.wheel[1]));
 
-  const NA = 220, wind = particles(NA, 0.022); group.add(wind.pts);
+  const tunnel = F && createWindTunnel(stage, group, F, p.ground ?? 0);
+  const NA = F ? 0 : 220, wind = particles(NA, 0.022); group.add(wind.pts);
   const seeds = Array.from({ length: NA }, () => [Math.random(), (Math.random() - 0.5) * 2 * m(W.y), m(W.z0) + Math.random() * (m(W.z1) - m(W.z0))]);
   const dashes = Array.from({ length: 10 }, (_, i) => {
     const d = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.06, 0.004), stage.tokenMat("--muted")); d.position.set(0, -m(W.y) - 0.1, m(p.ground ?? 0) + 0.002); d.userData.s = i / 10; group.add(d); return d;
@@ -44,7 +48,13 @@ export function create(ctx, p) {
     { svg: { id: "chart", viewBox: "0 0 280 150", aria: t("Power needed against speed, and the engine's power") } },
     { key: [["--accent", p.shapes.length > 1 ? t("power needed, this body") : t("power needed")], ...(p.shapes.length > 1 ? [["--muted", t("other body")]] : []), ["--l1", t("engine power")], ["--l2", t("now")]] },
     { buttons: [{ id: "again", label: t("Run again"), onClick: () => { v = 0; hold = 0; } }] },
-  ] }, { label: t("Forces"), items: [{ legend: [["--l1", t("Air drag at the nose")], ["--l3", t("Drive force at the wheels")], ["--muted", t("Air streaming past")]] }] }]);
+  ] }, ...(F ? [{ label: t("Wind tunnel"), items: [
+    { buttons: ["speed", "pressure", "swirl"].map((id, i) => ({ id, label: [t("Speed"), t("Pressure"), t("Swirl")][i], pressed: i === 0, onClick: () => setMode(id) })) },
+    { svg: { id: "scale", viewBox: "0 0 280 40", aria: t("Colour scale") }, only: "model" },
+    { readouts: [{ id: "push", label: t("Push on the front"), unit: "%" }, { id: "suction", label: t("Suction at the back"), unit: "%" }, { id: "friction", label: t("Skin friction"), unit: "%" }] },
+    { text: t("A 2-D slice along the car's centre line, computed live (lattice Boltzmann) in slow motion and at a much lower Reynolds number than the real car. The wheels stand outside the slice.") },
+  ] }] : []),
+  { label: t("Forces"), items: [{ legend: [["--l1", t("Air drag at the nose")], ["--l3", t("Drive force at the wheels")], [F ? "--fg" : "--muted", F ? t("Smoke lines: air streaming past") : t("Air streaming past")]] }] }]);
   function setShape(s) { shape = s; p.shapes.forEach(k => ui.toggle(k.id).set(k === s)); v = Math.min(v, topSpeed(s, ps * PS)); drawChart(); }
 
   const svg = ui.el("chart"), el = (tag, a, text) => { const e = document.createElementNS(NS, tag); for (const [k, x] of Object.entries(a)) e.setAttribute(k, x); if (text) e.textContent = text; svg.append(e); return e; };
@@ -69,19 +79,38 @@ export function create(ctx, p) {
   }
   drawChart();
 
+  // Colour scale for the wind-tunnel field: the ramp and what its ends mean, per mode.
+  const SCALES = {
+    speed: ["--cfd-1 --cfd-2 --cfd-3 --cfd-4 --cfd-5", t("still air"), t("{0} km/h past the car", (1.4 * p.vmax).toFixed(0))],
+    pressure: ["--cfd-2 --stage --cfd-5", t("suction"), t("pressing")],
+    swirl: ["--cfd-2 --stage --cfd-5", t("spinning one way"), t("the other way")],
+  };
+  function setMode(id) {
+    tunnel.setMode(id); ["speed", "pressure", "swirl"].forEach(k => ui.toggle(k).set(k === id));
+    const sv = ui.el("scale"), gid = `cfd-${Math.random().toString(36).slice(2, 8)}`, [stops, lo, hi] = SCALES[id];
+    const tag = (n, a, text) => { const e = document.createElementNS(NS, n); for (const [k, x] of Object.entries(a)) e.setAttribute(k, x); if (text) e.textContent = text; return e; };
+    const grad = tag("linearGradient", { id: gid });
+    stops.split(" ").forEach((tok, i, all) => grad.append(tag("stop", { offset: i / (all.length - 1), style: `stop-color:var(${tok})` })));
+    sv.replaceChildren(tag("defs", {}), tag("rect", { x: 2, y: 4, width: 276, height: 14, rx: 3, fill: `url(#${gid})`, stroke: "var(--rule)" }),
+      tag("text", { x: 2, y: 34, "font-size": 11, fill: "var(--muted)" }, lo), tag("text", { x: 278, y: 34, "text-anchor": "end", "font-size": 11, fill: "var(--muted)" }, hi));
+    sv.firstChild.append(grad);
+  }
+  if (F) setMode("speed");
+
   return {
-    layout({ active, onPhoto }) { group.visible = active; for (const d of dashes) d.visible = !onPhoto; },   // no road in the museum
+    layout({ active, onPhoto }) { group.visible = active; for (const d of dashes) d.visible = !onPhoto; tunnel?.layout(onPhoto); },   // no road in the museum
     update(dt) {
       const P = ps * PS, vt = topSpeed(shape, P);
-      if (v >= 0.995 * vt) { hold += dt; if (hold > 3) { v = 0; hold = 0; } }
+      if (v >= 0.995 * vt) { hold += dt; if (hold > (F ? 10 : 3)) { v = 0; hold = 0; } }
       else v = accelerate(shape, P, v, dt * p.time);
       const fd = drag(shape, v), fr = rolling(shape), maxF = drag(shape, vt) + fr;
       setArrow(dragA, 1.2 * fd / maxF); setArrow(driveA, 1.2 * Math.min(P * (shape.eta ?? 0.88) / Math.max(v, 0.5), 3 * maxF) / maxF);
-      phase += dt * (0.3 + v * 0.06);
+      phase += F ? tunnel.update(v / (p.vmax / 3.6)) : dt * (0.3 + v * 0.06);   // the road streams past with the air
       const span = wx0 - wx1, col = stage.color("--muted");
       seeds.forEach((s, i) => wind.set(i, q.set(wx0 - ((s[0] * span + phase) % span), s[1], s[2]), col));
       wind.flush();
       for (const d of dashes) d.position.x = wx0 - ((d.userData.s * span + phase) % span);
+      const sh = tunnel?.share(); if (sh) for (const k in sh) ui.set(k, (100 * sh[k]).toFixed(0));
       ui.set("v", (v * 3.6).toFixed(0)); ui.set("drag", fd.toFixed(0));
       ui.set("dkw", (fd * v / 1000).toFixed(0)); ui.set("rkw", (fr * v / 1000).toFixed(0));
       now.setAttribute("x1", X(v * 3.6).toFixed(1)); now.setAttribute("x2", X(v * 3.6).toFixed(1));

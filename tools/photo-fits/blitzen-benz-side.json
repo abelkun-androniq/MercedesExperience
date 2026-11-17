@@ -1,0 +1,179 @@
+{
+ "photo": "https://commons.wikimedia.org/wiki/File:Benz_200PS_1909_Blitzen-Benz_Bob_Burman_LSide_MBMuse_9June2013_(14797108977).jpg",
+ "note": "Side view used only to trace the body profile (tools/trace-profile.mjs); not shown on the page. Wheel radius 420 fitted best; the points are nearly coplanar, so the focal length is pinned near the same camera's 3/4 fit.",
+ "image": {
+  "width": 1200,
+  "height": 803
+ },
+ "aimAt": [
+  -1400,
+  0,
+  700
+ ],
+ "seeds": [
+  [
+   -1400,
+   5000,
+   3000
+  ],
+  [
+   -1400,
+   7000,
+   4000
+  ],
+  [
+   -1000,
+   4000,
+   2500
+  ],
+  [
+   -1800,
+   9000,
+   5000
+  ]
+ ],
+ "focalSeeds": [
+  900,
+  1300,
+  1800,
+  2500
+ ],
+ "rollPenalty": 100,
+ "groundZ": 0,
+ "points": [
+  {
+   "name": "LF hub",
+   "X": [
+    0,
+    700,
+    420
+   ],
+   "px": [
+    219,
+    534
+   ],
+   "w": 3
+  },
+  {
+   "name": "LF top",
+   "X": [
+    0,
+    650,
+    840
+   ],
+   "px": [
+    224,
+    441
+   ],
+   "w": 2
+  },
+  {
+   "name": "LF bottom",
+   "X": [
+    0,
+    650,
+    0
+   ],
+   "px": [
+    224,
+    595
+   ],
+   "w": 1
+  },
+  {
+   "name": "LF front",
+   "X": [
+    420,
+    650,
+    420
+   ],
+   "px": [
+    134,
+    520
+   ],
+   "w": 1
+  },
+  {
+   "name": "LF rear",
+   "X": [
+    -420,
+    650,
+    420
+   ],
+   "px": [
+    314,
+    520
+   ],
+   "w": 1
+  },
+  {
+   "name": "LR hub",
+   "X": [
+    -2800,
+    700,
+    420
+   ],
+   "px": [
+    852,
+    515
+   ],
+   "w": 3
+  },
+  {
+   "name": "LR top",
+   "X": [
+    -2800,
+    650,
+    840
+   ],
+   "px": [
+    850,
+    420
+   ],
+   "w": 2
+  },
+  {
+   "name": "LR bottom",
+   "X": [
+    -2800,
+    650,
+    0
+   ],
+   "px": [
+    850,
+    580
+   ],
+   "w": 1
+  },
+  {
+   "name": "LR front",
+   "X": [
+    -2380,
+    650,
+    420
+   ],
+   "px": [
+    752,
+    505
+   ],
+   "w": 1
+  },
+  {
+   "name": "LR rear",
+   "X": [
+    -3220,
+    650,
+    420
+   ],
+   "px": [
+    938,
+    505
+   ],
+   "w": 1
+  }
+ ],
+ "focalPrior": {
+  "f": 1566,
+  "w": 0.05
+ }
+}
