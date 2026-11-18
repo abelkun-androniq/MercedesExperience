@@ -18,6 +18,7 @@ export default {
         "Az első spoilert, a széles kerékíveket, a küszöbborításokat és az állítható hátsó szárnyat a szélcsatornában egyetlen rendszerként formálták. Az eredmény: kb. 0,29-es légellenállási tényező a 2.3-16 0,32-jével szemben, és nagy sebességnél jóval kisebb felhajtóerő.",
         "A levegő legyőzéséhez szükséges teljesítmény a sebesség köbével nő. 235 LE-vel az utcai autó kb. 250 km/h-t ér el.",
         "Ez Klaus Ludwig 1992-es DTM-autója; a versenyváltozatnak jóval több mint 350 LE-je volt. Hátsó szárnya a légellenállás árán leszorítóerőt ad.",
+        "A szélcsatorna az autó középvonalán vett metszetet mutatja. Nyomás nézetben a levegő az orrnak és a szélvédőnek feszül, a tető fölött felgyorsul, a csomagtartó mögött pedig leválik, és örvénylő nyomvizet hagy, amely visszahúzza az autót. A hátsó szárny kimaradt a metszetből.",
       ],
     },
   ],
@@ -25,7 +26,8 @@ export default {
   unverified: [
     "Homlokfelületek, tömegek, gördülési ellenállás és a hajtáslánc hatásfoka",
     "A versenyautó teljesítménye és beállítása",
-    "A jármű körvonala (az adatlap méreteiből vázolva, még nem a fotóról átrajzolva)",
+    "A jármű körvonala és középsíkú metszete: a megállóhely fotójáról (oldalnézet) átrajzolva az illesztett kamerán át, kb. ±10 cm; a metszetből a hátsó szárny kimaradt, az alja sík",
+    "Szélcsatorna: kétdimenziós metszet a valódinál jóval kisebb Reynolds-számmal (kb. 10⁴ a 10⁷ helyett), a kerekek kívül esnek rajta; az ellenállás megoszlása a metszetre vonatkozik",
     "Terem: Legenda 7",
   ],
 };

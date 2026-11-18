@@ -1,0 +1,15 @@
+{
+  "photo": "stops/190e-evo2/photo.jpg",
+  "image": { "width": 1200, "height": 803 },
+  "cam": { "c": [-1591.1, 5492.5, 1374.7], "yaw": -1.5703, "pitch": -0.1317, "roll": 0.0189, "f": 1150.2 },
+  "camFrom": "tools/photo-fits/190e-evo2.json (the stop photo is a true side view)",
+  "groups": [
+    { "name": "splitter and bumper front", "y": 0, "px": [[82, 525], [84, 470], [86, 430]] },
+    { "name": "bonnet crown", "y": 0, "px": [[105, 398], [180, 388], [260, 375], [340, 362]] },
+    { "name": "windscreen and roof", "y": 0, "px": [[380, 330], [440, 290], [500, 262], [600, 255], [700, 255], [780, 262]] },
+    { "name": "rear window", "y": 0, "px": [[830, 290], [880, 330], [920, 360]] },
+    { "name": "boot lid", "y": 0, "px": [[980, 368], [1040, 375]] },
+    { "name": "rear bumper", "y": 0, "px": [[1052, 410], [1058, 460], [1050, 510]] },
+    { "name": "sill (near side)", "y": 850, "px": [[1000, 530], [700, 540], [400, 545], [150, 535]] }
+  ]
+}

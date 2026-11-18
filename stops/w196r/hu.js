@@ -15,6 +15,7 @@ export default {
         "A szabadon forgó kerék felkavarja a levegőt, és nagy örvénylő nyomot hagy. A burkolat szélesebbé teszi a karosszériát, így több levegőt tol félre, a teljes légellenállás mégis csökken. Váltson karosszériát: ugyanazzal a 290 LE-vel ebben a modellben az áramvonalas kb. 20 km/h-val gyorsabb.",
         "Első versenyén győzött, Reimsben, 1954. július 4-én: Fangio Kling előtt. Két héttel később a szűk silverstone-i pályán a versenyzők nem tudták pontosan elhelyezni a burkolt első kerekeket a kanyarokban, és csak 4. és 7. helyen végeztek.",
         "1955-ben az áramvonalas csak egyszer versenyzett, Monzában, az új, meredek döntött kanyarokkal, ahol Fangio nyert. Az M 196 motor, egy közvetlen befecskendezéses, deszmodromikus szelepvezérlésű soros nyolchengeres, ekkor már 8500/min fordulaton 290 LE-t adott.",
+        "A szélcsatorna a középvonalon vett metszetet mutatja, a vezető fejtámla-burkolatán át: a levegő az alacsony orrnak feszül, a karosszéria fölött felgyorsul, a rövid far mögött pedig nyomvizet hagy. A kerekek kívül esnek a metszeten, így itt mindkét karosszéria ugyanazt a metszetet mutatja.",
       ],
     },
   ],
@@ -23,6 +24,8 @@ export default {
     "Légellenállási tényezők, homlokfelületek, tömegek és a hajtáslánc hatásfoka (végsebesség-adat nincs, így nincs mivel összevetni)",
     "A fotóillesztéshez használt nyomtávok, kerékméret és az orr helyzete (közelítő: a kerekek pontjai majdnem egy egyenesbe esnek)",
     "A jármű körvonala (a fotóról átrajzolva)",
+    "Középsíkú metszet: a körvonalból, a szélvédővel és a fejtámla-burkolattal; a légbeömlő zárva, az alja sík",
+    "Szélcsatorna: kétdimenziós metszet a valódinál jóval kisebb Reynolds-számmal (kb. 10⁴ a 10⁷ helyett), a kerekek kívül esnek rajta; az ellenállás megoszlása a metszetre vonatkozik",
     "Terem: Legenda 7",
   ],
 };

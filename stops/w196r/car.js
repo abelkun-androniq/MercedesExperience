@@ -38,13 +38,21 @@ export default {
           { id: "open", label: "Open wheels", cd: 0.7, area: 1.05, mass: 860, crr: 0.015, eta: 0.9, ps: 290 },
         ],
         power: { min: 100, max: 400 }, vmax: 340,
-        nose: [1380, 420], wheel: [-2350, 0], wind: { x0: 2500, x1: -5000, y: 1000, z0: 50, z1: 1400 }, time: 3,
+        nose: [1380, 420], wheel: [-2350, 0], time: 3,
+        // Centre-plane section for the 2-D wind tunnel, from the ghost outline: the screen and head fairing on the centre line,
+        // the mouth closed, the underside flat. The wheels stand outside the slice, so both bodies share it.
+        flow: {
+          x0: 2800, x1: -8100, top: 3200, cell: 50, show: [-6600, 2400], rake: [100, 2000, 20],
+          profile: [[1380, 260], [1380, 420], [1300, 540], [1100, 640], [900, 700], [600, 740], [-300, 760], [-700, 770], [-850, 1000], [-950, 1040],
+            [-1300, 1050], [-1600, 950], [-1900, 790], [-2350, 780], [-2800, 720], [-3150, 620], [-3280, 420], [-3300, 260], [-3150, 150], [1250, 150]],
+        },
       },
       talk: [
         "For the new 2.5-litre Formula 1 of 1954, Mercedes planned two bodies from the start: this streamlined one for very fast circuits, and a classic one with open wheels.",
         "A spinning, exposed wheel churns the air and leaves a big wake. Covering the wheels makes the body wider, so it pushes more air aside, yet the total drag still falls. Switch bodies: at the same 290 hp the streamliner is about 20 km/h faster in this model.",
         "It won first time out, at Reims on 4 July 1954: Fangio ahead of Kling. Two weeks later, on the tight Silverstone circuit, the drivers could not place the enclosed front wheels precisely in the corners and finished only 4th and 7th.",
         "In 1955 the streamliner raced only once, at Monza with its new steep banking, where Fangio won. The M 196 engine, a straight eight with direct injection and desmodromic valves, now gave 290 hp at 8,500 rpm.",
+        "The wind tunnel shows the slice along the centre line, through the driver's head fairing: the air presses on the low nose, speeds up over the body and leaves a wake behind the short tail. The wheels stand outside the slice, so both bodies show the same section here.",
       ],
     },
   ],
@@ -53,11 +61,14 @@ export default {
     "Drag coefficients, frontal areas, masses and driveline efficiency (no top speed is quoted, so none is compared)",
     "Tracks, wheel radius and nose position used for the photo fit (approximate: the wheels give a nearly straight line of points)",
     "Ghost-body outline (traced from the photo)",
+    "Centre-plane section: from the ghost outline, with the screen and head fairing; mouth closed, underside flat",
+    "Wind tunnel: a 2-D slice at a far lower Reynolds number than the real car (about 10⁴ against 10⁷), with the wheels outside it; its drag split is for the slice",
     "Room: Legend 7",
   ],
   sources: [
     { label: "Mercedes-Benz Classic archive: W 196 R streamlined racing car, 1955", url: "https://mercedes-benz-publicarchive.com/marsClassic/en/instance/ko/Mercedes-Benz-W-196-R-streamlined-racing-car-1955.xhtml?oid=6877" },
     { label: "Mercedes-Benz Classic archive: W 196 R streamlined racing car, 1954", url: "https://mercedes-benz-publicarchive.com/marsClassic/en/instance/ko/Mercedes-Benz-W-196-R-streamlined-racing-car-1954.xhtml?oid=6873" },
     { label: "Mercedes-Benz Classic archive: W 196 R, 1955", url: "https://mercedes-benz-publicarchive.com/marsClassic/en/instance/ko/Mercedes-Benz-W-196-R-1955.xhtml?oid=6876" },
+    { label: "D. Schroeder, Lattice-Boltzmann fluid dynamics in the browser", url: "https://physics.weber.edu/schroeder/fluids/" },
   ],
 };

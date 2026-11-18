@@ -38,8 +38,10 @@ test("flow: a block on stilts stops the air at its nose, speeds it over the top 
 });
 
 test("every flow config has a closed tunnel around its profile and runs stably", async () => {
-  for (const c of await loadCars()) for (const comp of c.components.filter(k => k.params.flow)) {
-    const F = comp.params.flow, grid = rasterize(F.profile, F), { nx, nz, solid } = grid;
+  for (const c of await loadCars()) for (const comp of c.components.filter(k => k.params.flow))
+  for (const profile of new Set([comp.params.flow.profile, ...comp.params.shapes.map(s => s.profile).filter(Boolean)])) {
+    const F = { ...comp.params.flow, profile, ground: comp.params.ground ?? 0 }, grid = rasterize(profile, F), { nx, nz, solid } = grid;
+    assert.ok(nx * nz <= 17000, `${c.slug}: ${nx * nz} cells, over the iPhone budget`);
     for (let i = 0; i < nx; i++) assert.equal(solid[(nz - 1) * nx + i], 0, `${c.slug}: body reaches the tunnel top`);
     for (let j = 0; j < nz; j++) assert.equal(solid[j * nx] + solid[j * nx + nx - 1], 0, `${c.slug}: body reaches the inlet or outlet`);
     assert.ok(solid.reduce((a, b) => a + b, 0) > 50, `${c.slug}: body has cells`);

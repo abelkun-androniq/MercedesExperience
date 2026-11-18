@@ -67,7 +67,7 @@ iPhone/iPad Safari (iOS 16.4+, import maps). No bundler: native ES modules; `too
   outline lines up. Subsystems fade their own opaque wheels and keep the body still when `onPhoto`. Tests find it via tour.js.
   Add `stops/<slug>/hu.js` (npm test lists missing text fields) and, for a new room, its name in `lib/app/i18n/hu.js`.
 - Add a mechanism: `lib/model/<x>.js` + `tests/unit/<x>.test.mjs` first, then `subsystems/<x>.js`.
-- Wind tunnel for an aero stop (Blitzen-Benz is the worked example; the other aero stops still show plain wind streaks):
+- Wind tunnel for an aero stop (every aero stop has one; Blitzen-Benz is the worked example; a shape may carry its own `profile`):
   find a near-square side photo (Commons) → `tools/photo-fits/<slug>-side.json` (wheel hubs, tyre tops/bottoms/fronts/rears;
   `focalPrior` as the points are coplanar) → read outline pixels off `node tools/photo-grid.mjs <photo> <out.png> x0 y0 x1 y1
   3 10` → `tools/profile-traces/<slug>.json` (each group on its plane y) → `node tools/trace-profile.mjs` → clean up into
@@ -114,6 +114,10 @@ true speed · Web Inspector over USB shows no errors. LAN (`http://<mac-ip>:8765
   exhibition). The Ponton stop shows a 1955 180 (research names the 220); the R 129 of Legend 6 is told with Princess
   Diana's 500 SL; the 540 K Streamliner is the existing 540k stop. Illustrative throughout: LP 333 axle spacings, Unimog
   portal sizes, O 302 heat balance, 600 hydraulic sizes, ABS and rollover parameters (each car.js `unverified`).
+- Wind-tunnel sections: Blitzen-Benz and 190 E Evo II are traced (the Evo II from its stop photo, a side view; rear wing
+  left out). Approximate: W 196 R, 540 K Cabriolet B and Blue Wonder (ghost outlines plus a few centre-line points on 3/4
+  photos); sketched: the 540 K Streamliner, the racing car on the Blue Wonder's deck and the boxy truck. A side photo per
+  the recipe would firm them up.
 - Not added from docs/research.md: the Vision R 320 CDI (its exhibition has ended) and the Vision Mercedes-Maybach 6
   (never shown at the museum).
 - The original single-file PoC pages are in git history at commit 468cc29 (`museum-tour-poc/`).

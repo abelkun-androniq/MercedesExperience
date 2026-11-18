@@ -86,21 +86,31 @@ export default {
       params: {
         label: "Full power on the autobahn",
         shapes: [                                              // area, mass, rolling resistance and efficiency illustrative
-          { id: "stream", label: "Streamliner (1938)", cd: 0.36, area: 2.3, mass: 2500, crr: 0.02, eta: 0.7, ps: 180, quoted: 185 },
+          { id: "stream", label: "Streamliner (1938)", cd: 0.36, area: 2.3, mass: 2500, crr: 0.02, eta: 0.7, ps: 180, quoted: 185,
+            profile: [[560, -150], [580, 100], [520, 350], [400, 560], [200, 700], [-1600, 880], [-1850, 940], [-2150, 1180], [-2500, 1250], [-2900, 1240],
+              [-3400, 1080], [-4000, 800], [-4600, 450], [-5000, 100], [-5050, -100], [-4900, -200], [400, -200]] },   // sketched
           { id: "cabrio", label: "Cabriolet B body", cd: 0.48, area: 2.3, mass: 2500, crr: 0.02, eta: 0.7, ps: 180, quoted: 170 },   // cd illustrative
         ],
         power: { min: 60, max: 360 }, vmax: 240,
-        nose: [250, 350], wheel: [-3290, -380], wind: { x0: 2500, x1: -6500, y: 1000, z0: -300, z1: 1300 }, ground: -380, time: 3,
+        nose: [250, 350], wheel: [-3290, -380], ground: -380, time: 3,
+        // Centre-plane sections for the 2-D wind tunnel (z from the axle; the road at -380): the Cabriolet B from the ghost outline
+        // and the photo, the Streamliner (its own profile) sketched from photos of the restored car. Underside flat.
+        flow: {
+          x0: 2000, x1: -9300, top: 3500, cell: 50, show: [-7800, 2700], rake: [150, 2500, 22],
+          profile: [[150, -200], [230, -40], [250, 300], [250, 700], [215, 800], [120, 840], [-1720, 860], [-1800, 900], [-1950, 1240], [-2100, 1270],
+            [-3250, 1260], [-3550, 1080], [-3850, 760], [-3950, 740], [-4250, 600], [-4420, 470], [-4480, 60], [-4300, -160], [-4200, -200]],
+        },
       },
       talk: [
         "In 1938 Mercedes built one 540 K with a closed, streamlined body so that Dunlop could test tyres at sustained high speed on the new autobahns.",
         "Mercedes-Benz Classic measured the restored car in the wind tunnel in May 2014: a drag coefficient of 0.36, remarkable for its time.",
         "With the same 180 PS it reaches about 185 km/h, against about 170 km/h for an open Cabriolet. Drag rises with the square of speed, so those 15 km/h take a lot of power: slide it and see.",
+        "In the wind tunnel, compare the two bodies. Behind the Cabriolet's upright windscreen and roof the air breaks away early into a wide wake; along the Streamliner's long, sloping tail it stays on the body for longer and leaves a smaller wake.",
       ],
     },
   ],
   note: "Geometry is illustrative: suspension hardpoints, blower layout, drive ratio, boost and spring rates are plausible values, not factory data.",
-  unverified: ["Suspension hardpoints and rates", "Blower layout, 2.6 drive ratio, 0.5 bar boost, carburettor position", "Ghost-body outline", "Whether the Cabriolet B or the 1938 Streamliner is on display", "Cabriolet B drag coefficient 0.48; frontal area, mass, rolling resistance and driveline efficiency of both bodies"],
+  unverified: ["Suspension hardpoints and rates", "Blower layout, 2.6 drive ratio, 0.5 bar boost, carburettor position", "Ghost-body outline", "Centre-plane sections: the Cabriolet B from the ghost outline and the photo; the Streamliner sketched from photos of the restored car", "Wind tunnel: a 2-D slice at a far lower Reynolds number than the real car (about 10⁴ against 10⁷), with the wheels outside it; its drag split is for the slice", "Whether the Cabriolet B or the 1938 Streamliner is on display", "Cabriolet B drag coefficient 0.48; frontal area, mass, rolling resistance and driveline efficiency of both bodies"],
   sources: [
     { label: "Motor Sport, April 1937", url: "https://www.motorsportmagazine.com/archive/article/april-1937/5/the-worlds-fastest-touring-car-2/" },
     { label: "Classic & Sports Car", url: "https://classicandsportscar.com/node/94450" },
@@ -109,5 +119,6 @@ export default {
     { label: "Petersen Automotive Museum: 1938 Mercedes-Benz 540 K Stromlinienwagen", url: "https://petersen.org/pages/petersen-vehicle/1938-mercedes-benz-540-k-stromlinienwagen" },
     { label: "kfz-tech.de: Mercedes Stromlinienwagen 1938", url: "https://kfz-tech.de/Engl/Hersteller/Mercedes/MercedesStromlinienwagen1938.htm" },
     { label: "Mercedes-Benz public archive: 380 (W 22)", url: "https://mercedes-benz-publicarchive.com/marsClassic/en/instance/ko/380-W-22-1933---1934.xhtml?oid=4148" },
+    { label: "D. Schroeder, Lattice-Boltzmann fluid dynamics in the browser", url: "https://physics.weber.edu/schroeder/fluids/" },
   ],
 };

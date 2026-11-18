@@ -18,6 +18,7 @@ export default {
         "A légellenállás a sebesség négyzetével nő, a legyőzéséhez szükséges teljesítmény a köbével. A sebesség megduplázásához kb. nyolcszoros teljesítmény kell, így az utolsó néhány km/h a legdrágább.",
         "Az alacsony, lekerekített orr és a kis homlokfelület teszi gyorssá. Váltson a szögletes teherautóra: ugyanaz a motor és tömeg, de kétszer akkora lapos homlok, és a végsebesség kb. 40 km/h-val csökken.",
         "A nyitott platón szállított versenyautó tömeget és légellenállást ad hozzá. Állítólag a szállító megrakva is elérte a kb. 160 km/h-t.",
+        "A szélcsatornában váltson a karosszériák között. A szögletes teherautó lapos homlokfala feltorlasztja a levegőt, és magas, örvénylő nyomvizet hagy a hátfala mögött. A szállító lekerekített fülkéje fölött a levegő simán áramlik, majd a nyitott plató fölött leválik; ezt a teret egy versenyautó részben kitölti.",
       ],
     },
   ],
@@ -27,6 +28,8 @@ export default {
     "A szögletes teherautó kitalált összehasonlítás, nem valódi jármű",
     "A fotóillesztéshez használt tengelytáv (2900 mm), nyomtáv és lámpahelyzetek",
     "A jármű körvonala (a fotóról átrajzolva)",
+    "Középsíkú metszetek: a szállító a körvonalból és a fotó középvonali pontjaiból; a platón álló versenyautó és a szögletes teherautó vázlatos",
+    "Szélcsatorna: kétdimenziós metszet a valódinál jóval kisebb Reynolds-számmal (kb. 10⁴ a 10⁷ helyett), a kerekek kívül esnek rajta; az ellenállás megoszlása a metszetre vonatkozik",
     "Terem: Gyűjtemény 2",
   ],
 };

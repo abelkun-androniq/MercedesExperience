@@ -13,8 +13,10 @@ export default {
   sun: [2, 3, 6],
   body: {
     ghost: [
-      { pts: [[850, 200], [880, 600], [450, 750], [-650, 850], [-3500, 850], [-3570, 600], [-3520, 220]], y: [-850, 850] },   // body
-      { pts: [[-650, 850], [-1150, 1360], [-2400, 1360], [-2950, 850]], y: [-720, 720] },                                       // roof and glass
+      { pts: [[935, 120], [935, 260], [915, 440], [870, 560], [798, 618], [435, 674], [48, 744], [-337, 814], [-3117, 860], [-3407, 844],
+        [-3696, 816], [-3760, 700], [-3800, 450], [-3790, 200], [-3700, 120]], y: [-850, 850] },   // body, traced from the photo (see flow)
+      { pts: [[-337, 814], [-530, 972], [-817, 1168], [-1102, 1305], [-1575, 1347], [-2049, 1356], [-2429, 1330], [-2671, 1203], [-2918, 1017],
+        [-3117, 860]], y: [-720, 720] },   // roof and glass
       { pts: [[-3200, 900], [-3250, 1120], [-3600, 1150], [-3600, 1050]], y: [-750, 750] },                                     // rear wing
       { torus: { R: 255, r: 80, pos: [0, 745, 320], rot: [90, 0, 0] }, mirror: true },                                         // wheels
       { torus: { R: 255, r: 80, pos: [-2665, 735, 320], rot: [90, 0, 0] }, mirror: true },
@@ -37,14 +39,23 @@ export default {
           { id: "evo2", label: "Evolution II body kit", cd: 0.29, area: 2.05, mass: 1420, crr: 0.013, eta: 0.82, ps: 235, quoted: 250 },   // area, mass, crr, eta illustrative
           { id: "base", label: "2.3-16 body", cd: 0.32, area: 1.95, mass: 1380, crr: 0.013, eta: 0.82, ps: 185, quoted: 230 },
         ],
-        power: { min: 100, max: 400 }, vmax: 300, nose: [850, 400], wheel: [-2665, 0],
-        wind: { x0: 2500, x1: -6500, y: 1000, z0: 0, z1: 1700 }, time: 3,
+        power: { min: 100, max: 400 }, vmax: 300, nose: [935, 400], wheel: [-2665, 0],
+        time: 3,
+        // Centre-plane section for the 2-D wind tunnel, traced from the stop photo (a true side view) through its fitted camera
+        // (tools/profile-traces/190e-evo2.json); the rear wing is left out and the underside flat. Within about ±10 cm.
+        flow: {
+          x0: 2300, x1: -8200, top: 3500, cell: 50, show: [-6800, 2600], rake: [100, 2300, 22],
+          profile: [[935, 260], [915, 440], [870, 560], [798, 618], [435, 674], [48, 744], [-337, 814], [-530, 972], [-817, 1168], [-1102, 1305],
+            [-1575, 1347], [-2049, 1356], [-2429, 1330], [-2671, 1203], [-2918, 1017], [-3117, 877], [-3407, 844], [-3696, 816], [-3760, 700], [-3800, 450],
+            [-3790, 200], [-3700, 120], [850, 120], [920, 170]],
+        },
       },
       talk: [
         "Touring-car racing rules required a road version of every racing car: 502 Evolution IIs were built in 1990 so that the DTM car could race with its body kit.",
         "The front spoiler, wide wheel arches, sill panels and adjustable rear wing were shaped in the wind tunnel as one system. The result: a drag coefficient of about 0.29 against the 2.3-16's 0.32, and much less lift at speed.",
         "The power needed to push through the air grows with the cube of the speed. With 235 hp the road car reaches about 250 km/h.",
         "This is Klaus Ludwig's DTM car of 1992; the race version had well over 350 hp. Its rear wing adds downforce at the cost of drag.",
+        "The wind tunnel shows the slice along the car's centre line. Under Pressure the air presses on the nose and the windscreen and speeds up over the roof; behind the boot it breaks away into a wake that pulls the car back. The rear wing is left out of the slice.",
       ],
     },
   ],
@@ -52,10 +63,12 @@ export default {
   unverified: [
     "Frontal areas, masses, rolling resistance and driveline efficiency",
     "Race-car power and set-up",
-    "Ghost-body outline (sketched from the data-sheet sizes, not yet traced from the photo)",
+    "Body outline and centre-plane section: traced from the stop photo (a side view) through its fitted camera, about ±10 cm; rear wing left out of the section, underside flat",
+    "Wind tunnel: a 2-D slice at a far lower Reynolds number than the real car (about 10⁴ against 10⁷), with the wheels outside it; its drag split is for the slice",
     "Room: Legend 7",
   ],
   sources: [
     { label: "Wikipedia: Mercedes-Benz 190 E 2.5-16 Evolution II", url: "https://en.wikipedia.org/wiki/Mercedes-Benz_190_E_2.5-16_Evolution_II" },
+    { label: "D. Schroeder, Lattice-Boltzmann fluid dynamics in the browser", url: "https://physics.weber.edu/schroeder/fluids/" },
   ],
 };
