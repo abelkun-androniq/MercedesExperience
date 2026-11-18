@@ -1,0 +1,139 @@
+{
+  "photo": "stops/230sl/photo.jpg",
+  "image": {
+    "width": 1200,
+    "height": 803
+  },
+  "frame": "mm; x forward, y left, z up; origin = front axle centre on the ground. Wheelbase 2,400 and tracks 1,482 / 1,485 from the data sheet; lamp and star positions assumed",
+  "aimAt": [
+    -800,
+    0,
+    450
+  ],
+  "seeds": [
+    [
+      3000,
+      2500,
+      1300
+    ],
+    [
+      3500,
+      1800,
+      1500
+    ],
+    [
+      4500,
+      2500,
+      1200
+    ],
+    [
+      2500,
+      2000,
+      1000
+    ]
+  ],
+  "focalSeeds": [
+    700,
+    1000,
+    1400
+  ],
+  "rollPenalty": 200,
+  "focalPrior": {
+    "f": 1000,
+    "w": 0.05
+  },
+  "groundZ": 0,
+  "points": [
+    {
+      "name": "LF wheel hub",
+      "X": [
+        0,
+        741,
+        325
+      ],
+      "px": [
+        771,
+        535
+      ],
+      "w": 3
+    },
+    {
+      "name": "LF tyre bottom",
+      "X": [
+        0,
+        741,
+        0
+      ],
+      "px": [
+        752,
+        660
+      ],
+      "w": 2
+    },
+    {
+      "name": "LR wheel hub",
+      "X": [
+        -2400,
+        742,
+        325
+      ],
+      "px": [
+        1021,
+        461
+      ],
+      "w": 3
+    },
+    {
+      "name": "LR tyre bottom",
+      "X": [
+        -2400,
+        742,
+        0
+      ],
+      "px": [
+        1010,
+        531
+      ],
+      "w": 2
+    },
+    {
+      "name": "L headlamp",
+      "X": [
+        650,
+        580,
+        680
+      ],
+      "px": [
+        575,
+        405
+      ],
+      "w": 1
+    },
+    {
+      "name": "R headlamp",
+      "X": [
+        650,
+        -580,
+        680
+      ],
+      "px": [
+        219,
+        395
+      ],
+      "w": 1
+    },
+    {
+      "name": "Grille star",
+      "X": [
+        850,
+        0,
+        620
+      ],
+      "px": [
+        320,
+        410
+      ],
+      "w": 1
+    }
+  ]
+}

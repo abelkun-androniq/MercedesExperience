@@ -4,7 +4,7 @@ export default {
   name: "Mercedes-Benz 190 E (W201)",
   summary: "Az ötlengőkaros hátsó tengely egy bukkanón és egy kátyún, és a forgó M102 négyhengeres.",
   eyebrow: "Mercedes-Benz 190 E (W201), 1984",
-  lede: "Ugyanannak az autónak két szerkezete, mindkettő működés közben: az ötlengőkaros hátsó tengely egy bukkanón és egy kátyún, és a forgó M102 négyhengeres. Váltson a múzeumi fotóra, és a valódi autón, a helyükön is láthatja őket.",
+  lede: "Ugyanannak az autónak két szerkezete, mindkettő működés közben: az ötlengőkaros hátsó tengely egy bukkanón és egy kátyún, és a forgó M102 négyhengeres. Görgessen tovább: a múzeumi fotón a tengelyt a valódi autón, a helyén is láthatja.",
   photo: { alt: "Fehér, 1984-es Mercedes-Benz 190 E a Mercedes-Benz Múzeumban, balról elölről nézve" },
   components: [
     {

@@ -1,0 +1,133 @@
+{
+  "photo": "stops/unimog/photo.jpg",
+  "image": {
+    "width": 1200,
+    "height": 803
+  },
+  "frame": "mm; x forward, y left, z up; origin = front axle centre on the ground. Wheel centres from the car's ghost (tyre size approximate); star position assumed",
+  "aimAt": [
+    -1540,
+    0,
+    600
+  ],
+  "seeds": [
+    [
+      3500,
+      2500,
+      1500
+    ],
+    [
+      3500,
+      2500,
+      2200
+    ],
+    [
+      3500,
+      5000,
+      1500
+    ],
+    [
+      3500,
+      5000,
+      2200
+    ],
+    [
+      6000,
+      2500,
+      1500
+    ],
+    [
+      6000,
+      2500,
+      2200
+    ],
+    [
+      6000,
+      5000,
+      1500
+    ],
+    [
+      6000,
+      5000,
+      2200
+    ]
+  ],
+  "focalSeeds": [
+    700,
+    1000,
+    1400
+  ],
+  "rollPenalty": 200,
+  "focalPrior": {
+    "f": 1000,
+    "w": 0.05
+  },
+  "groundZ": 0,
+  "points": [
+    {
+      "name": "front left hub",
+      "X": [
+        0,
+        930,
+        550
+      ],
+      "px": [
+        822,
+        540
+      ],
+      "w": 3
+    },
+    {
+      "name": "front left tyre bottom",
+      "X": [
+        0,
+        930,
+        0
+      ],
+      "px": [
+        808,
+        632
+      ],
+      "w": 2
+    },
+    {
+      "name": "second left hub",
+      "X": [
+        -3080,
+        930,
+        550
+      ],
+      "px": [
+        968,
+        478
+      ],
+      "w": 3
+    },
+    {
+      "name": "second left tyre bottom",
+      "X": [
+        -3080,
+        930,
+        0
+      ],
+      "px": [
+        966,
+        538
+      ],
+      "w": 2
+    },
+    {
+      "name": "Grille star",
+      "X": [
+        1200,
+        0,
+        1550
+      ],
+      "px": [
+        592,
+        410
+      ],
+      "w": 1
+    }
+  ]
+}

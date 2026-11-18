@@ -3,7 +3,8 @@
 // 300 SL frame, whose side trusses run deep through the door area (so the doors had to open upwards), with the same frame
 // cut down to a low sill for ordinary doors.
 // Params (mm, ground at z = 0): label, stations, bays (lib/model/truss.js; door: "high" marks the door bays), EA (N),
-// load (N at the front-left corner), exaggerate (× displacement), modes { high, low } (button labels).
+// load (N at the front-left corner), exaggerate (× displacement), modes { high, low } (button labels), compare? (label
+// of the stiffness-ratio readout: "high" is the reference).
 import * as THREE from "three";
 import { V, rod, place, ball } from "../lib/scene/helpers.js";
 import { tubeFrame, twistTest } from "../lib/model/truss.js";
@@ -33,7 +34,7 @@ export function create(ctx, p) {
   const ui = ctx.panel([{ label: p.label, items: [
     { buttons: [{ id: "high", label: p.modes.high, pressed: true, onClick: () => setMode("high") }, { id: "low", label: p.modes.low, pressed: false, onClick: () => setMode("low") }] },
     { readouts: [{ id: "load", label: t("Lift at the front wheel"), unit: t("N") }, { id: "twist", label: t("Frame twist"), unit: t("deg") },
-      { id: "stiff", label: t("Twist stiffness"), unit: t("N·m per degree") }, { id: "rel", label: t("Compared with the 300 SL frame"), unit: "%" },
+      { id: "stiff", label: t("Twist stiffness"), unit: t("N·m per degree") }, { id: "rel", label: p.compare ?? t("Compared with the 300 SL frame"), unit: "%" },
       { id: "maxF", label: t("Hardest-working tube"), unit: t("N") }] },
     { buttons: [{ id: "play", toggle: [t("Pause"), t("Play")], pressed: playing, onClick: v => (playing = v) }] },
     { key: [["--l1", t("tube in tension")], ["--l4", t("in compression")], ["--metal", t("hardly loaded")], ["--l2", t("lift")], ["--muted", t("held")]] },

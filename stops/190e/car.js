@@ -7,7 +7,7 @@ export default {
   year: 1984,
   summary: "Five-link rear axle meeting a bump and a pothole, and the M102 four-cylinder turning over.",
   eyebrow: "Mercedes-Benz 190 E (W201), 1984",
-  lede: "Two mechanisms of the same car, each shown working: the five-link rear axle meeting a bump and a pothole, and the M102 four-cylinder turning over. Switch to the museum photo to see them in place on the real car.",
+  lede: "Two mechanisms of the same car, each shown working: the five-link rear axle meeting a bump and a pothole, and the M102 four-cylinder turning over. Scroll on: the museum photo then shows the axle in place on the real car.",
   frame: { origin: "rear", wheelbase: 2665, wheelR: 292, halfTrackFront: 714, halfTrackRear: 708 },
   ride: { ms: 300, mu: 40, ks: 24000, cs: 1700, kt: 190000 },
   orbit: { min: 1.2, max: 14 },

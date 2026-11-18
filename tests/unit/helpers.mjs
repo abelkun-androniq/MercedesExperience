@@ -10,7 +10,8 @@ const TEXT = [
   "title", "name", "summary", "eyebrow", "lede", "note", "unverified.*", "photo.alt",
   "components.*.label", "components.*.talk.*",
   ...["label", "engineLabel", "legendTitle", "links.*.name", "shapes.*.label", "types.*.label", "presets.*.label",
-    "cases.*.label", "modes.*", "drive.gears.*.name", "legend.*.1"].map(p => `components.*.params.${p}`),
+    "cases.*.label", "modes.*", "drive.gears.*.name", "legend.*.1", "surfaces.*.label",
+    "consumers.*.label", "compare"].map(p => `components.*.params.${p}`),
 ];
 const RULES = TEXT.map(p => new RegExp(`^${p.replace(/\./g, "\\.").replace(/\*/g, "[^.]+")}$`));
 export const isText = path => RULES.some(r => r.test(path));

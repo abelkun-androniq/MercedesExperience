@@ -8,7 +8,7 @@ test("one visit stores the whole tour; another stop then opens offline", async (
   await context.setOffline(true);
   const slug = tour.at(-1).slug;
   await page.goto(`stop.html?s=${slug}&sw=1&debug`);
-  await page.waitForFunction(() => window.__tour?.stats.frames > 5, null, { timeout: 20_000 });
+  await page.waitForFunction(() => window.__tour?.stories[0].frames() > 5, null, { timeout: 20_000 });
   await page.goto("./?sw=1");
   await expect(page.locator('a[href^="stop.html?s="]')).toHaveCount(tour.length);
   await page.goto("teaser.html?sw=1");

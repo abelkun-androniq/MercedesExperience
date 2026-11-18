@@ -6,7 +6,8 @@
 // crankcase "open" | "flywheels", speed { min, max, value } (shown rpm, slow motion), realRpm? (readout note),
 // valvetrain "none" (valve gear not drawn), flywheelR? (mm; with "flywheels" it also sizes the round case), rot? [x, y, z] (deg, turns the whole engine about the crank
 // centre: [0, 90, 0] lays it flat with the cylinder pointing forward and the crank vertical), leans? [deg per cylinder]
-// (V engines: each bank leans its own way; cylinders whose crankpins coincide share one, rods side by side).
+// (V engines: each bank leans its own way; cylinders whose crankpins coincide share one, rods side by side), plugs? (spark
+// plugs per cylinder, drawn and lit at firing; 2 adds the dual-ignition card).
 import * as THREE from "three";
 import { V, Y, mat, rod, place, ball, glass, line } from "../lib/scene/helpers.js";
 import { layout, pinAngle, phaseOf, strokeOf, valveLifts, flashOf, injecting, injectingDiesel, compressionTemp } from "../lib/model/engine.js";
@@ -117,6 +118,14 @@ export function create(ctx, p) {
       c.flame.position.copy(at(x, deck - 0.03, -0.9 * bR - 0.07)); c.flame.quaternion.copy(axisQ); group.add(c.flame);
       stage.onTheme(() => { tubeMat.color.copy(stage.color("--l1")); c.flame.material.color.copy(stage.color("--l2")); });
     }
+    if (p.plugs) {
+      // Spark plugs through the head, fore and aft of the valves when there are two (dual ignition).
+      const plugMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+      c.plugs = Array.from({ length: p.plugs }, (_, j) => {
+        const dx = p.plugs === 1 ? 0 : (j ? 0.62 : -0.62) * bR, o = place(rod(plugMat, 0.0045), at(x + dx, deck + 0.05), at(x + dx, deck - 0.004));
+        group.add(o); return o;
+      });
+    }
     if (p.fuel === "prechamber") {
       // Diesel prechamber in the head between the valves: fuel is injected into it, burning starts there and jets out.
       c.pre = ball(new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.75 }), 0.24 * bR, at(x, deck + 0.42 * bR));
@@ -177,6 +186,7 @@ export function create(ctx, p) {
           v.lobe.quaternion.setFromAxisAngle(X, camA);
         }
       }
+      if (c.plugs) c.plugs[0].material.color.copy(stage.color(flash > 0.2 ? "--accent" : "--metal"));
       if (c.tube) { c.tube.material.color.copy(stage.color(flash > 0.2 ? "--l2" : "--l1")); c.flame.scale.set(1, 0.85 + 0.25 * Math.sin(tPhoto * 23 + c.i), 1); }
       if (c.pre) {
         c.spray.visible = injectingDiesel(ph);
@@ -206,9 +216,19 @@ export function create(ctx, p) {
     ctx.panel([{ label: t("Why no spark plug"), badge: { id: "ignites", text: "" }, items: [
       { slider: { id: "crs", label: t("Compression ratio"), min: p.compression.min, max: p.compression.max, step: 0.5, value: p.compression.value, onInput: showCr } },
       { readouts: [{ id: "cr", label: t("Ratio"), unit: ": 1" }, { id: "hot", label: t("Air after compression"), unit: t("°C, from 20 °C") }, { id: "ign", label: t("Diesel self-ignites"), unit: t("°C, approx."), value: String(IGNITE) }] },
-      { text: t("Petrol engines of the 1930s ran at about 6 : 1 and need a spark. At diesel ratios the air alone gets hot enough; glow plugs in the prechambers help a cold start.") },
+      { text: p.fuel === "direct" ? t("A petrol engine of the time ran at about 8 : 1 and needs a spark. At diesel ratios the air alone gets hot enough to light the fuel sprayed straight into the cylinder.")
+        : t("Petrol engines of the 1930s ran at about 6 : 1 and need a spark. At diesel ratios the air alone gets hot enough; glow plugs in the prechambers help a cold start.") },
     ] }]);
     showCr(p.compression.value);
+  }
+  if (p.plugs === 2) {
+    // Two sparks at opposite sides of the chamber: each flame front only has to cross half the bore. Flame speed illustrative.
+    const FLAME = 15, path = [p.bore, p.bore / 2];
+    ctx.panel([{ label: t("Two spark plugs per cylinder"), items: [
+      { readouts: [{ id: "one", label: t("Flame path, one plug"), unit: t("mm"), value: path[0].toFixed(0) }, { id: "two", label: t("Flame path, two plugs"), unit: t("mm"), value: path[1].toFixed(1) },
+        { id: "t1", label: t("Burn time, one plug"), unit: t("ms at {0} m/s", FLAME), value: (path[0] / FLAME).toFixed(1) }, { id: "t2", label: t("Burn time, two plugs"), unit: t("ms"), value: (path[1] / FLAME).toFixed(1) }] },
+      { text: t("One plug is fired by a magneto, the other by a battery coil: the mixture burns through faster, and the engine keeps running if either system fails.") },
+    ] }]);
   }
   pose();
 

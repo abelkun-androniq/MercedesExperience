@@ -7,7 +7,7 @@ export default {
   year: 1937,
   summary: "Independent wishbone front suspension, the Roots blower that only joins in at full pedal, and the streamlined body.",
   eyebrow: "Mercedes-Benz 540 K (W 29), 1936–1940",
-  lede: "Three things about the supercharged 540 K, each shown working: the independent front suspension meeting a bump and a pothole, the Roots blower that only joins in when the driver floors the pedal, and what a streamlined body does for top speed. Switch to the museum photo to see the first two in place on the real car.",
+  lede: "Three things about the supercharged 540 K, each shown working: the independent front suspension meeting a bump and a pothole, the Roots blower that only joins in when the driver floors the pedal, and what a streamlined body does for top speed. Scroll on: the museum photo then shows the suspension in place on the real car.",
   frame: { origin: "front", wheelbase: 3290, wheelR: 380, halfTrackFront: 757, halfTrackRear: 751 },
   ride: { ms: 450, mu: 65, ks: 30000, cs: 2000, kt: 200000 },
   orbit: { min: 0.8, max: 16 },

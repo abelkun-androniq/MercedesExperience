@@ -1,0 +1,172 @@
+{
+  "photo": "stops/lp333/photo.jpg",
+  "image": {
+    "width": 1200,
+    "height": 803
+  },
+  "frame": "mm; x forward, y left, z up; origin = first front axle centre on the ground. Wheel centres from the car's ghost (axle spacings illustrative); lamp and star positions assumed",
+  "aimAt": [
+    -2600,
+    0,
+    600
+  ],
+  "seeds": [
+    [
+      3500,
+      2500,
+      1500
+    ],
+    [
+      3500,
+      2500,
+      2200
+    ],
+    [
+      3500,
+      5000,
+      1500
+    ],
+    [
+      3500,
+      5000,
+      2200
+    ],
+    [
+      6000,
+      2500,
+      1500
+    ],
+    [
+      6000,
+      2500,
+      2200
+    ],
+    [
+      6000,
+      5000,
+      1500
+    ],
+    [
+      6000,
+      5000,
+      2200
+    ]
+  ],
+  "focalSeeds": [
+    700,
+    1000,
+    1400
+  ],
+  "rollPenalty": 200,
+  "focalPrior": {
+    "f": 1000,
+    "w": 0.05
+  },
+  "groundZ": 0,
+  "points": [
+    {
+      "name": "front left hub",
+      "X": [
+        0,
+        1000,
+        520
+      ],
+      "px": [
+        575,
+        628
+      ],
+      "w": 3
+    },
+    {
+      "name": "front left tyre bottom",
+      "X": [
+        0,
+        1000,
+        0
+      ],
+      "px": [
+        590,
+        736
+      ],
+      "w": 2
+    },
+    {
+      "name": "second left hub",
+      "X": [
+        -1400,
+        1000,
+        520
+      ],
+      "px": [
+        740,
+        578
+      ],
+      "w": 3
+    },
+    {
+      "name": "second left tyre bottom",
+      "X": [
+        -1400,
+        1000,
+        0
+      ],
+      "px": [
+        746,
+        668
+      ],
+      "w": 2
+    },
+    {
+      "name": "third left hub",
+      "X": [
+        -5200,
+        900,
+        520
+      ],
+      "px": [
+        1000,
+        505
+      ],
+      "w": 2
+    },
+    {
+      "name": "third left tyre bottom",
+      "X": [
+        -5200,
+        900,
+        0
+      ],
+      "px": [
+        998,
+        563
+      ],
+      "w": 1
+    },
+    {
+      "name": "L headlamp",
+      "X": [
+        1300,
+        760,
+        1050
+      ],
+      "px": [
+        298,
+        532
+      ],
+      "w": 1
+    },
+    {
+      "name": "Grille star",
+      "X": [
+        1350,
+        0,
+        1150
+      ],
+      "px": [
+        197,
+        510
+      ],
+      "w": 1
+    }
+  ]
+}

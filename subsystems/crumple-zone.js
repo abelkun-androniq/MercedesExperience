@@ -3,7 +3,9 @@
 // in a shorter distance, so the force (and the deceleration on the occupants) is far higher, and the cell is pushed in.
 // Params (mm, ground at z = 0): label, mass (kg), speed { min, max, value } (km/h), slow (× slower than real),
 // cases [{ id, label, zone, cellK }] (lib/model/crash.js; first = safety body), folds (number of fold rings),
-// body { bumper, firewall, cellRear, tail, w (half width), sill, belt, roof }, wheels { front, rear, R }.
+// body { bumper, firewall, cellRear, tail, w (half width), sill, belt, roof }, wheels { front, rear, R }, engine? { front,
+// back, z0, z1, w (half width), ramp (deg) }: an engine block the folding front reaches and pushes back; in a case with
+// `slide: true` (A-Class sandwich floor) it slides down the ramp under the cell floor instead of against the firewall.
 import * as THREE from "three";
 import { V, rod, place, ball, tyre, mat } from "../lib/scene/helpers.js";
 import { simulateCrash } from "../lib/model/crash.js";
@@ -35,6 +37,9 @@ export function create(ctx, p) {
   const dummyMat = stage.tokenMat("--accent");
   occ.add(place(rod(dummyMat, 0.09), V(0, 0, 0), V(0, 0, 0.5)), ball(dummyMat, 0.1, V(0, 0, 0.62)));
 
+  // Engine block, pushed back once the folding front reaches it.
+  const E = p.engine, eng = E ? new THREE.Mesh(new THREE.BoxGeometry(m(E.front - E.back), 2 * m(E.w), m(E.z1 - E.z0)), stage.tokenMat("--l4", { metalness: 0.3 })) : null;
+  if (eng) car.add(eng);
   // Front structure: fold rings and four longitudinal rails that buckle outwards between them.
   const corners = [[w * 0.7, zs], [-w * 0.7, zs], [w * 0.7, zb], [-w * 0.7, zb]];
   const rings = Array.from({ length: N + 1 }, () => corners.map(() => { const r = rod(ringMat, 0.008); car.add(r); return r; }));
@@ -52,7 +57,7 @@ export function create(ctx, p) {
     { key: [["--accent", t("this body")], ["--muted", t("the other one")], ["--l2", t("now")]] },
     { buttons: [{ id: "play", toggle: [t("Pause"), t("Play")], pressed: playing, onClick: v => (playing = v) }, { id: "again", label: t("Replay"), onClick: () => (clock = 0) }] },
     { text: t("Shown {0}× slower than real. One mass and two force laws: an illustration, not a crash simulation.", p.slow) },
-  ] }, { label: t("Parts"), items: [{ legend: [["--l2", t("Longitudinal members (fold up)")], ["--metal", t("Fold rings")], ["--l3", t("Passenger cell, intact")], ["--l1", t("Cell pushed in")], ["--accent", t("Occupant")]] }] }]);
+  ] }, { label: t("Parts"), items: [{ legend: [["--l2", t("Longitudinal members (fold up)")], ["--metal", t("Fold rings")], ["--l3", t("Passenger cell, intact")], ["--l1", t("Cell pushed in")], ["--accent", t("Occupant")], ...(E ? [["--l4", t("Engine")]] : [])] }] }]);
 
   const svg = ui.el("trace"), el = (tag, a) => { const e = document.createElementNS(NS, tag); for (const [k, v] of Object.entries(a)) e.setAttribute(k, v); svg.append(e); return e; };
   el("line", { x1: 10, y1: 110, x2: 275, y2: 110, stroke: "var(--rule)" });
@@ -97,6 +102,11 @@ export function create(ctx, p) {
       place(pair[k][0], a, mid); place(pair[k][1], mid, b);
     }));
     cell.position.x = xf - intr; cell.scale.x = xf - intr - xc;
+    if (eng) {
+      const push = Math.max(0, d - (xb - m(E.front))), ramp = (E.ramp * Math.PI) / 180, home = [(m(E.front) + m(E.back)) / 2, (m(E.z0) + m(E.z1)) / 2];
+      if (p.cases[kase].slide) eng.position.set(home[0] - push * Math.cos(ramp), 0, Math.max(home[1] - push * Math.sin(ramp), m(E.z1 - E.z0) / 2 + 0.03));
+      else eng.position.set(home[0] - Math.min(push, m(E.back) - xf + intr), 0, home[1]);
+    }
     cellEdge.color.copy(cEdge.copy(stage.color(intr > 0.002 ? "--l1" : "--l3")));
     occ.rotation.y = Math.min(0.6, g / 60);
     ui.set("now", g.toFixed(0));

@@ -1,7 +1,7 @@
 // Front steering seen from above: Benz's double-pivot (stub-axle) trapezoid against the older centre-pivot turntable axle,
 // with each front wheel's axis drawn out to the rear-axle line (where they meet = the turning centre).
 // Params (mm, deg): label, kingpinHalf, arm, wheelbase, frontR, rearR, halfTrackRear, stub (kingpin → wheel centre),
-// maxSteer. Vehicle frame: rear axle at x = 0, front axle at x = wheelbase.
+// maxSteer, start? ("dp" | "cp": the layout shown first, default double pivot). Vehicle frame: rear axle at x = 0, front axle at x = wheelbase.
 import * as THREE from "three";
 import { V, mat, rod, place, ball, spokedWheel } from "../lib/scene/helpers.js";
 import { createDoublePivot, centrePivot } from "../lib/model/steering.js";
@@ -47,14 +47,14 @@ export function create(ctx, p) {
   const setLine = (l, a, b) => { const pos = l.geometry.attributes.position; pos.setXYZ(0, a.x, a.y, a.z); pos.setXYZ(1, b.x, b.y, b.z); pos.needsUpdate = true; };
   const G = 0.01;   // line height above the ground
 
-  let mode = "dp", steer = 0, auto = !ctx.reducedMotion, clock = 0;
+  let mode = p.start ?? "dp", steer = 0, auto = !ctx.reducedMotion, clock = 0;
   const maxS = p.maxSteer ?? 30;
   const setMode = md => { mode = md; ui.toggle("dp").set(md === "dp"); ui.toggle("cp").set(md === "cp"); };
 
   const ui = ctx.panel([
     { label: p.label, items: [
-      { buttons: [{ id: "dp", label: t("Double-pivot (Benz, 1893)"), pressed: true, onClick: () => setMode("dp") },
-        { id: "cp", label: t("Centre-pivot axle"), pressed: false, onClick: () => setMode("cp") }] },
+      { buttons: [{ id: "dp", label: t("Double-pivot (Benz, 1893)"), pressed: mode === "dp", onClick: () => setMode("dp") },
+        { id: "cp", label: t("Centre-pivot axle"), pressed: mode === "cp", onClick: () => setMode("cp") }] },
       { slider: { id: "steer", label: t("Steering angle (+ = left)"), min: -maxS, max: maxS, value: 0, onInput: v => { auto = false; ui.toggle("auto").set(false); steer = v * D; } } },
       { readouts: [{ id: "inner", label: t("Inner wheel"), unit: t("deg") }, { id: "outer", label: t("Outer wheel"), unit: t("deg") },
         { id: "ideal", label: t("Ideal outer"), unit: t("deg, all axes meet") }, { id: "miss", label: t("Axes miss by"), unit: t("m at the rear axle") },

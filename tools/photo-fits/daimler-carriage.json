@@ -1,0 +1,162 @@
+{
+  "photo": "stops/daimler-carriage/photo.jpg",
+  "image": {
+    "width": 1200,
+    "height": 803
+  },
+  "frame": "mm; x forward, y left, z up; origin = REAR axle centre on the ground. Wheelbase 1,300 (Wikipedia); tracks and wheel radii (front 430, rear 560) are the illustrative values of car.js",
+  "aimAt": [
+    650,
+    0,
+    600
+  ],
+  "seeds": [
+    [
+      -2000,
+      -5000,
+      1500
+    ],
+    [
+      -2000,
+      -3000,
+      2500
+    ],
+    [
+      1000,
+      -5000,
+      1500
+    ],
+    [
+      1000,
+      -3000,
+      2500
+    ],
+    [
+      3500,
+      -5000,
+      1500
+    ],
+    [
+      3500,
+      -3000,
+      2500
+    ]
+  ],
+  "focalSeeds": [
+    700,
+    1000,
+    1400
+  ],
+  "rollPenalty": 200,
+  "focalPrior": {
+    "f": 1000,
+    "w": 0.05
+  },
+  "groundZ": 0,
+  "points": [
+    {
+      "name": "second right hub",
+      "X": [
+        0,
+        -640,
+        560
+      ],
+      "px": [
+        412,
+        632
+      ],
+      "w": 3
+    },
+    {
+      "name": "second right tyre bottom",
+      "X": [
+        0,
+        -640,
+        0
+      ],
+      "px": [
+        458,
+        796
+      ],
+      "w": 2
+    },
+    {
+      "name": "second left hub",
+      "X": [
+        0,
+        640,
+        560
+      ],
+      "px": [
+        277,
+        483
+      ],
+      "w": 2
+    },
+    {
+      "name": "second left tyre bottom",
+      "X": [
+        0,
+        640,
+        0
+      ],
+      "px": [
+        318,
+        625
+      ],
+      "w": 1
+    },
+    {
+      "name": "front right hub",
+      "X": [
+        1300,
+        -560,
+        430
+      ],
+      "px": [
+        760,
+        565
+      ],
+      "w": 3
+    },
+    {
+      "name": "front right tyre bottom",
+      "X": [
+        1300,
+        -560,
+        0
+      ],
+      "px": [
+        777,
+        700
+      ],
+      "w": 2
+    },
+    {
+      "name": "rear right rim top",
+      "X": [
+        0,
+        -640,
+        1120
+      ],
+      "px": [
+        383,
+        474
+      ],
+      "w": 1
+    },
+    {
+      "name": "front right rim top",
+      "X": [
+        1300,
+        -560,
+        860
+      ],
+      "px": [
+        741,
+        431
+      ],
+      "w": 1
+    }
+  ]
+}

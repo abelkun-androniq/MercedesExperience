@@ -1,0 +1,159 @@
+{
+  "photo": "stops/a-class/photo.jpg",
+  "image": {
+    "width": 1200,
+    "height": 2133
+  },
+  "frame": "mm; x forward, y left, z up; origin = front axle centre on the ground. Wheelbase and track from the data sheet; lamp, star and plate positions assumed",
+  "aimAt": [
+    650,
+    -500,
+    700
+  ],
+  "seeds": [
+    [
+      1800,
+      -700,
+      1400
+    ],
+    [
+      1800,
+      -700,
+      2000
+    ],
+    [
+      1800,
+      -1500,
+      1400
+    ],
+    [
+      1800,
+      -1500,
+      2000
+    ],
+    [
+      2800,
+      -700,
+      1400
+    ],
+    [
+      2800,
+      -700,
+      2000
+    ],
+    [
+      2800,
+      -1500,
+      1400
+    ],
+    [
+      2800,
+      -1500,
+      2000
+    ]
+  ],
+  "focalSeeds": [
+    700,
+    1000,
+    1400
+  ],
+  "rollPenalty": 20,
+  "focalPrior": {
+    "f": 1600,
+    "w": 0.1
+  },
+  "groundZ": 0,
+  "points": [
+    {
+      "name": "front right hub",
+      "X": [
+        0,
+        -740,
+        300
+      ],
+      "px": [
+        279,
+        1114
+      ],
+      "w": 3
+    },
+    {
+      "name": "front right tyre bottom",
+      "X": [
+        0,
+        -740,
+        0
+      ],
+      "px": [
+        300,
+        1300
+      ],
+      "w": 2
+    },
+    {
+      "name": "second right hub",
+      "X": [
+        -2423,
+        -740,
+        300
+      ],
+      "px": [
+        79,
+        564
+      ],
+      "w": 2
+    },
+    {
+      "name": "second right tyre bottom",
+      "X": [
+        -2423,
+        -740,
+        0
+      ],
+      "px": [
+        100,
+        671
+      ],
+      "w": 1
+    },
+    {
+      "name": "R headlamp",
+      "X": [
+        500,
+        -560,
+        850
+      ],
+      "px": [
+        579,
+        1057
+      ],
+      "w": 1
+    },
+    {
+      "name": "Grille star",
+      "X": [
+        700,
+        0,
+        700
+      ],
+      "px": [
+        921,
+        1214
+      ],
+      "w": 1
+    },
+    {
+      "name": "Plate centre",
+      "X": [
+        740,
+        0,
+        420
+      ],
+      "px": [
+        843,
+        1360
+      ],
+      "w": 1
+    }
+  ]
+}

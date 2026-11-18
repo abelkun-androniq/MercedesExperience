@@ -4,7 +4,9 @@
 // Params (mm, ground at z = 0): label, front (x of the front axle), wheelbase, halfTrack, wheelR,
 // corners { front: { mass, extra }, rear: { mass, extra } } (kg sprung per corner; kg added per corner when loaded),
 // air { area (m²), volume (m³), n }, steel { front, rear } (N/m), damping (N·s/m), bellows { r, h, z0 } (mm),
-// load { heads: [[x, y, z]], boot: [x, z] } (mm, what is drawn when loaded).
+// load { heads: [[x, y, z]], boot: [x, z] } (mm, what is drawn when loaded), level? "air" (default) | "torsion": steel
+// springs all round plus a rear torsion bar whose preload an electric motor winds up under load (300, W 186), with
+// motorRate (N/s per corner); it restores the ride height but not the stiffness, so the rear ride frequency drops.
 import * as THREE from "three";
 import { V, mat, ball, tyre, helix } from "../lib/scene/helpers.js";
 import { createCorner } from "../lib/model/air-spring.js";
@@ -27,29 +29,33 @@ export function create(ctx, p) {
     const coil = new THREE.Mesh(helix(V(0, 0, 0), V(0, 0, 1), 6, br * 0.85, 0.012), coilMat); coil.position.set(x, y, bz0); world.add(coil);
     return { axle, bellows, rolls, coil };
   }));
+  const lev = p.level ?? "air", torsion = lev === "torsion";
+  const bar = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 2 * yT - 0.5, 12), airMat); bar.position.set(xF - wb, 0, bz0 + 0.05); bar.visible = false; world.add(bar);   // cylinder axis is y: across the car
   const loadGroup = new THREE.Group(); carRoot.add(loadGroup);
   const loadMat = stage.tokenMat("--accent");
   for (const hd of p.load.heads) loadGroup.add(ball(loadMat, 0.1, V(m(hd[0]), m(hd[1]), m(hd[2]))));
   const boot = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.8, 0.3), stage.tokenMat("--l2")); boot.position.set(m(p.load.boot[0]), 0, m(p.load.boot[1])); loadGroup.add(boot);
 
   // Four corner models: front/rear × air/steel; both systems run all the time so switching shows each one's state.
-  const make = (kind, axle) => createCorner({ kind, air: p.air, k: p.steel[axle], emptyMass: p.corners[axle].mass, damping: p.damping });
+  // "air" is the levelling system shown, whichever kind it is: bellows, or (torsion) the levelled rear on steel springs.
+  const kindOf = (kind, axle) => (kind === "air" && torsion ? (axle === "rear" ? "torsion" : "steel") : kind);
+  const make = (kind, axle) => createCorner({ kind: kindOf(kind, axle), air: p.air, k: p.steel[axle], emptyMass: p.corners[axle].mass, damping: p.damping, motorRate: p.motorRate });
   const sims = { air: { front: make("air", "front"), rear: make("air", "rear") }, steel: { front: make("steel", "front"), rear: make("steel", "rear") } };
   let mode = "air", loaded = false, auto = !ctx.reducedMotion, clock = 0;
   const ui = ctx.panel([{ label: p.label, badge: { id: "valve", text: "" }, items: [
-    { buttons: [{ id: "air", label: t("Air suspension, self-levelling"), pressed: true, onClick: () => setMode("air") }, { id: "steel", label: t("Steel springs"), pressed: false, onClick: () => setMode("steel") }] },
+    { buttons: [{ id: "air", label: torsion ? t("Torsion-bar levelling") : t("Air suspension, self-levelling"), pressed: true, onClick: () => setMode("air") }, { id: "steel", label: t("Steel springs"), pressed: false, onClick: () => setMode("steel") }] },
     { buttons: [{ id: "load", toggle: [t("Loaded: 4 people + luggage"), t("Driver only")], pressed: false, onClick: v => { auto = false; ui.toggle("auto").set(false); loaded = v; } }] },
     { readouts: [{ id: "front", label: t("Front sits lower by"), unit: t("mm") }, { id: "rear", label: t("Rear sits lower by"), unit: t("mm") },
-      { id: "bar", label: t("Rear bellows pressure"), unit: t("bar") }, { id: "hz", label: t("Rear ride frequency"), unit: t("Hz (bounce rate)") }, { id: "pitch", label: t("Nose up"), unit: t("deg") }] },
+      torsion ? { id: "bar", label: t("Extra preload in the bar"), unit: t("kg per rear wheel") } : { id: "bar", label: t("Rear bellows pressure"), unit: t("bar") }, { id: "hz", label: t("Rear ride frequency"), unit: t("Hz (bounce rate)") }, { id: "pitch", label: t("Nose up"), unit: t("deg") }] },
     { buttons: [{ id: "auto", toggle: [t("Auto demo on"), t("Auto demo off")], pressed: auto, onClick: v => (auto = v) }] },
-    { key: [["--l4", t("air bellows")], ["--metal", t("steel coil spring")], ["--accent", t("passengers")], ["--l2", t("luggage")]] },
+    { key: [["--l4", torsion ? t("levelling torsion bar") : t("air bellows")], ["--metal", t("steel coil spring")], ["--accent", t("passengers")], ["--l2", t("luggage")]] },
   ] }]);
   function setMode(md) { mode = md; ui.toggle("air").set(md === "air"); ui.toggle("steel").set(md === "steel"); }
 
   const massOf = axle => p.corners[axle].mass + (loaded ? p.corners[axle].extra : 0);
   function rideHz(axle) {
     const c = sims[mode][axle], mass = massOf(axle);
-    const k = mode === "air" ? p.air.n * (c.pressure() + PATM) * p.air.area ** 2 / (p.air.volume - p.air.area * c.z) : p.steel[axle];
+    const k = mode === "air" && !torsion ? p.air.n * (c.pressure() + PATM) * p.air.area ** 2 / (p.air.volume - p.air.area * c.z) : p.steel[axle];
     return Math.sqrt(k / mass) / (2 * Math.PI);
   }
   return {
@@ -63,13 +69,15 @@ export function create(ctx, p) {
       if (!onPhoto) { carRoot.rotation.y = Math.asin(sin); carRoot.position.z = -zF + xF * sin; }   // the photo's car stays put
       for (const c of corners) {
         const sag = sims[mode][c.axle].z, k = Math.max(0.2, (bh - sag) / bh);
-        c.bellows.visible = mode === "air"; c.coil.visible = mode === "steel";
+        c.bellows.visible = mode === "air" && !torsion; c.coil.visible = mode === "steel" || torsion;
         c.rolls.forEach((r, i) => (r.position.z = bh * k * (i + 0.5) / 3)); c.coil.scale.set(1, 1, bh * k);
       }
       const valve = sims.air.rear.valve === "level" ? sims.air.front.valve : sims.air.rear.valve;
-      ui.badge("valve").set(mode === "steel" ? t("No levelling") : valve === "filling" ? t("Valves: letting air in") : valve === "venting" ? t("Valves: letting air out") : t("At ride height"), mode === "air" && valve === "level");
+      bar.visible = torsion && mode === "air";
+      const busy = torsion ? (valve === "filling" ? t("Motor winding the bar up") : t("Motor letting the bar back")) : valve === "filling" ? t("Valves: letting air in") : t("Valves: letting air out");
+      ui.badge("valve").set(mode === "steel" ? t("No levelling") : valve === "level" ? t("At ride height") : busy, mode === "air" && valve === "level");
       ui.set("front", (zF * 1000).toFixed(0)); ui.set("rear", (zR * 1000).toFixed(0));
-      ui.set("bar", mode === "air" ? (sims.air.rear.pressure() / 1e5).toFixed(2) : "–");
+      ui.set("bar", mode !== "air" ? "–" : torsion ? (sims.air.rear.preload / 9.81).toFixed(0) : (sims.air.rear.pressure() / 1e5).toFixed(2));
       ui.set("hz", rideHz("rear").toFixed(2)); ui.set("pitch", (-Math.asin(sin) * 180 / Math.PI).toFixed(2));
     },
   };

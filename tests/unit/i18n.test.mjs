@@ -57,7 +57,7 @@ for (const [i, s] of tour.entries()) {
     assert.deepEqual([...text.keys()].filter(p => !got.get(p)?.trim()), [], "untranslated");
     assert.deepEqual([...got.keys()].filter(p => !text.has(p)), [], "not a text field of car.js");
     assert.deepEqual(leaves(merge(car, over)).filter(([p]) => !isText(p)), leaves(car).filter(([p]) => !isText(p)));
-    // Hungarian writes a decimal comma; model names such as "300 SEL 6.3" keep their point.
-    assert.deepEqual([...got.values()].filter(v => /\d\.\d/.test(v.replace(/SEL 6\.3|SLC 5\.0/g, ""))), [], "decimal point");
+    // Hungarian writes a decimal comma; model names such as "300 SEL 6.3" or "190 E 2.5-16" keep their point.
+    assert.deepEqual([...got.values()].filter(v => /\d\.\d/.test(v.replace(/SEL 6\.3|SLC 5\.0|\b2\.[35]-16/g, ""))), [], "decimal point");
   });
 }

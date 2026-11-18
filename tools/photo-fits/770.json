@@ -1,0 +1,139 @@
+{
+  "photo": "stops/770/photo.jpg",
+  "image": {
+    "width": 1200,
+    "height": 803
+  },
+  "frame": "mm; x forward, y left, z up; origin = front axle centre on the ground. Front track from the car's ghost; lamp, mascot and bumper positions assumed (nearly head-on photo, hubs hidden)",
+  "aimAt": [
+    -1875,
+    0,
+    600
+  ],
+  "seeds": [
+    [
+      5500,
+      1200,
+      1500
+    ],
+    [
+      7000,
+      2000,
+      1300
+    ],
+    [
+      4500,
+      500,
+      1700
+    ],
+    [
+      6000,
+      0,
+      1400
+    ]
+  ],
+  "focalSeeds": [
+    700,
+    1000,
+    1400
+  ],
+  "rollPenalty": 200,
+  "focalPrior": {
+    "f": 1000,
+    "w": 0.05
+  },
+  "groundZ": 0,
+  "points": [
+    {
+      "name": "front left tyre bottom",
+      "X": [
+        0,
+        780,
+        0
+      ],
+      "px": [
+        818,
+        762
+      ],
+      "w": 2
+    },
+    {
+      "name": "front right tyre bottom",
+      "X": [
+        0,
+        -780,
+        0
+      ],
+      "px": [
+        300,
+        684
+      ],
+      "w": 2
+    },
+    {
+      "name": "L headlamp",
+      "X": [
+        350,
+        430,
+        1020
+      ],
+      "px": [
+        688,
+        368
+      ],
+      "w": 2
+    },
+    {
+      "name": "R headlamp",
+      "X": [
+        350,
+        -430,
+        1020
+      ],
+      "px": [
+        395,
+        358
+      ],
+      "w": 2
+    },
+    {
+      "name": "Mascot",
+      "X": [
+        450,
+        0,
+        1380
+      ],
+      "px": [
+        548,
+        228
+      ],
+      "w": 1
+    },
+    {
+      "name": "L bumper end",
+      "X": [
+        800,
+        800,
+        450
+      ],
+      "px": [
+        828,
+        648
+      ],
+      "w": 1
+    },
+    {
+      "name": "R bumper end",
+      "X": [
+        800,
+        -800,
+        450
+      ],
+      "px": [
+        208,
+        588
+      ],
+      "w": 1
+    }
+  ]
+}

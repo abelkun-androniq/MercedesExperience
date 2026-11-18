@@ -4,28 +4,35 @@ Static GitHub Pages site: one page per exhibit showing its mechanism working (th
 iPhone/iPad Safari (iOS 16.4+, import maps). No bundler: native ES modules; `tools/build.mjs` only stamps the service worker.
 
 ## Map
-- `index.html` route (lib/app/index.js) · `teaser.html` the three `teaser` stops as scroll stories (lib/app/teaser.js,
-  own manifest): each car's stage pins while its steps (intro on the photo, one per component with its cards, background
-  with the outline) scroll past and set what it shows · `stop.html?s=<slug>[&r=teaser]` shell for every stop
-  (lib/app/shell.js; r=teaser pages among the teaser stops and links back to teaser.html) · `sw.js` offline cache (new root files also go in tools/build.mjs ENTRIES)
+- `index.html` route (lib/app/index.js) · `stop.html?s=<slug>[&r=teaser]` one stop as a scroll story (lib/app/shell.js;
+  r=teaser pages among the teaser stops and links back to teaser.html): the car's stage pins while its steps (intro on the
+  photo, one per component with its cards, background with the outline) scroll past and set what it shows ·
+  `teaser.html` the three `teaser` stops' stories one after another (lib/app/teaser.js, own manifest) · `sw.js` offline
+  cache (new root files also go in tools/build.mjs ENTRIES)
 - `stops/tour.js` route order, room, level, and `teaser` (slugs): single source for order and prev/next ·
   `stops/<slug>/car.js` pure data (+ photo.jpg)
 - `lib/model/` pure maths, Node-tested: linkage (multi-link closure), quarter-car (ride), engine (N-cylinder slider-crank,
-  timing, diesel), blower, valvetrain (spring float, desmo), steering (double-pivot trapezoid, centre pivot), differential,
-  gearbox (sliding gears), aero (drag, top speed), truss (space frame twist), crash, air-spring (levelling), wankel, cooling,
-  belt (two-speed flat-belt drive, hill climbing), hoist (car-transporter deck: cylinder, pulley block, cables), flow (2-D
-  lattice-Boltzmann wind tunnel: D2Q9 + Smagorinsky, moving road, drag split)
+  timing, diesel), blower, valvetrain (spring float, desmo), steering (double-pivot trapezoid, centre pivot, twin steered
+  axles), differential (one axle; traction4: four-wheel drive with locks or brake traction control), gearbox (sliding
+  gears), aero (drag, top speed), truss (space frame twist), crash, air-spring (levelling: air, or a motor-wound torsion
+  bar), wankel, cooling, belt (two-speed flat-belt drive, hill climbing), hoist (car-transporter deck: cylinder, pulley
+  block, cables), flow (2-D lattice-Boltzmann wind tunnel: D2Q9 + Smagorinsky, moving road, drag split), abs (tyre slip
+  curves, braking with and without ABS), rollover (tip angle, rolling pendulum, roll-bar timing), hydraulics (gas
+  accumulator, pump, cylinders), climate (cabin heat balance), portal (portal-axle clearance), roof (folding hardtop)
 - `lib/scene/` stage (renderer, cameras, lights, theme tokens, loop), helpers, ghost-body, road, wind-tunnel (CFD view of
   `flow` on the centre plane: speed/pressure/swirl field, body section, smoke streaklines; `--cfd-*` tokens)
-- `lib/app/` shell, teaser, viewer (one stop's stage, subsystems, photo view and loop: shared by shell and teaser), panel
+- `lib/app/` shell, teaser, story (scroll stories: shared by shell and teaser), viewer (one car's stage, subsystems,
+  photo view and loop: one per story), panel
   (declarative widgets, API in its header), dom (`h`, `link`), offline, index, theme.css (look after
   mercedes-benz.com: black bar/hero, white page, condensed serif, black photo cards, pills), fonts/ (Instrument Serif, OFL;
   latin + latin-ext for ő/ű), lang.js (head script: saved EN/HU choice or browser language → `<html lang>`), i18n.js
   (`t`, `num`, `loadCar`, `localizePage`), i18n/hu.js (UI catalog keyed by the English text)
 - `subsystems/<id>.js` one mechanism each (params documented in each file's header): linkage-suspension, inline-engine,
   roots-blower, desmo-valvetrain, steering, differential, gearbox, radiator, aero, space-frame, crumple-zone,
-  air-suspension, wankel, belt-drive, hoist. inline-engine also draws V engines (`leans`: one bank per lean angle,
-  opposite cylinders sharing a crankpin)
+  air-suspension, wankel, belt-drive, hoist, abs, rollover, comfort-hydraulics, cabin-climate, portal-axle,
+  four-wheel-drive, twin-steer, vario-roof. inline-engine also draws V engines (`leans`: one bank per lean angle,
+  opposite cylinders sharing a crankpin) and twin ignition (`plugs: 2`); crumple-zone can carry an engine block that
+  slides under the floor (`engine`)
 - `tools/` build, vendor-three, camera (shared pinhole maths), fit-photo-camera (+ photo-fits/*.json), trace-profile
   (+ profile-traces/*.json: side-photo pixels → mm profile), photo-grid (crop + pixel grid + projected profile overlay, PNG
   via Playwright), stop-shot (stage screenshot + fps + page errors; needs `npm run serve`) · `docs/TOUR-POC.md` (model maths §6), `docs/research.md`
@@ -50,8 +57,8 @@ iPhone/iPad Safari (iOS 16.4+, import maps). No bundler: native ES modules; `too
   components: [{ id, label, subsystem, view: { pos, target }, ghost?: { fill, edge }, params, talk }], note, unverified, sources }`
 - Subsystem: `export function create(ctx, params)` with ctx `{ stage, carRoot, frame, ride, panel, reducedMotion, t }`, returns
   `{ layout({ active, onPhoto }), update(dt, { onPhoto }) }`. lib/app/viewer.js owns photo view, outline, ghost body and
-  the loop (the stop page's switches or the teaser's scroll choose what it shows), and resets carRoot's pose each frame
-  before calling the active component's `update`.
+  the loop (the story's step at the reading line chooses what it shows; a car without a photo shows its model), and
+  resets carRoot's pose each frame before calling the active component's `update`.
 
 ## Recipes
 - Add a stop: entry in `stops/tour.js` + `stops/<slug>/car.js` (copy the closest sibling). Photo (every stop has one): 1200 px
@@ -76,7 +83,7 @@ iPhone/iPad Safari (iOS 16.4+, import maps). No bundler: native ES modules; `too
 - `npm run build` → `_site/` · deploy: push to main; `.github/workflows/pages.yml` tests, then deploys.
 
 ## Real-device checklist (iPhone and iPad Safari, from the Pages URL)
-Portrait and landscape · light and dark · EN/HU switch · teaser: each stage stays pinned while its steps scroll · orbit, pinch, sliders · photo overlay lines up with Car outline on · airplane mode
+Portrait and landscape · light and dark · EN/HU switch · stop pages and teaser: each stage stays pinned while its steps scroll · orbit, pinch, sliders · photo overlay lines up with Car outline on · airplane mode
 after one visit: index → every stop · Add to Home Screen, launch offline · iPad Split View · Low Power Mode still animates at
 true speed · Web Inspector over USB shows no errors. LAN (`http://<mac-ip>:8765`) checks layout only: service workers need HTTPS.
 
@@ -96,6 +103,17 @@ true speed · Web Inspector over USB shows no errors. LAN (`http://<mac-ip>:8765
   Collection 4, the Gallery of Names (research: Legend 4; since 2017 it is astronaut David Scott's 1959 car, while the
   2013 photo shows the car before it); 500 SLC and W 196 R in Legend 7. Bus year 1907 (museum sources) vs 1904 (research).
   Whether the Reitwagen replica is on show or on loan; whether the 500 SLC is the 1980 Bandama winner.
+- Stops added from research_pt2.md (20): rooms follow its galleries (buses Collection 1, lorries 2, helpers 3, celebrities
+  4) and eras; all to confirm on site, as is Collection 3 on level 5. All but the SLK have their photo (fetched through Chrome after
+  scripted downloads met HTTP 429). Fits rest on the near wheels plus assumed lamp, star and plate positions (each fit's
+  `frame` says which): RMS 5–34 px; roughest the Ponton, 300, 600, LO 1112, the A-Class (a tilted phone photo, kept
+  portrait so its principal point stays central) and the carriage, whose wheel planes do not line up. Their `body.ghost`
+  outlines are still sketched, not traced: wheels line up on the photos, bodies only roughly (trace per the recipe). The
+  SLK has no photo: the Commons file first chosen shows an SLK rebuilt with a 300 SL-style body; its car.js header
+  names a candidate. Photos not from the museum floor: SLS (outside the museum), G-Class “Otto” (the 2019–20 G-Class
+  exhibition). The Ponton stop shows a 1955 180 (research names the 220); the R 129 of Legend 6 is told with Princess
+  Diana's 500 SL; the 540 K Streamliner is the existing 540k stop. Illustrative throughout: LP 333 axle spacings, Unimog
+  portal sizes, O 302 heat balance, 600 hydraulic sizes, ABS and rollover parameters (each car.js `unverified`).
 - Not added from docs/research.md: the Vision R 320 CDI (its exhibition has ended) and the Vision Mercedes-Maybach 6
   (never shown at the museum).
 - The original single-file PoC pages are in git history at commit 468cc29 (`museum-tour-poc/`).

@@ -1,0 +1,173 @@
+{
+  "photo": "stops/190e-evo2/photo.jpg",
+  "image": {
+    "width": 1200,
+    "height": 803
+  },
+  "frame": "mm; x forward, y left, z up; origin = front axle centre on the ground. Wheel centres and radii from the car's ghost; nearly side-on, so focalPrior",
+  "aimAt": [
+    -1332.5,
+    0,
+    600
+  ],
+  "seeds": [
+    [
+      -1300,
+      6000,
+      900
+    ],
+    [
+      -1300,
+      8000,
+      1200
+    ],
+    [
+      -1300,
+      4500,
+      700
+    ]
+  ],
+  "focalSeeds": [
+    700,
+    1000,
+    1400
+  ],
+  "rollPenalty": 200,
+  "focalPrior": {
+    "f": 1150,
+    "w": 0.3
+  },
+  "groundZ": 0,
+  "points": [
+    {
+      "name": "front left hub",
+      "X": [
+        0,
+        745,
+        320
+      ],
+      "px": [
+        220,
+        494
+      ],
+      "w": 3
+    },
+    {
+      "name": "front left tyre bottom",
+      "X": [
+        0,
+        745,
+        0
+      ],
+      "px": [
+        224,
+        568
+      ],
+      "w": 2
+    },
+    {
+      "name": "second left hub",
+      "X": [
+        -2665,
+        735,
+        320
+      ],
+      "px": [
+        852,
+        507
+      ],
+      "w": 3
+    },
+    {
+      "name": "second left tyre bottom",
+      "X": [
+        -2665,
+        735,
+        0
+      ],
+      "px": [
+        855,
+        577
+      ],
+      "w": 2
+    },
+    {
+      "name": "front tyre front",
+      "X": [
+        320,
+        745,
+        320
+      ],
+      "px": [
+        150,
+        494
+      ],
+      "w": 1
+    },
+    {
+      "name": "front tyre rear",
+      "X": [
+        -320,
+        745,
+        320
+      ],
+      "px": [
+        293,
+        494
+      ],
+      "w": 1
+    },
+    {
+      "name": "front tyre top",
+      "X": [
+        0,
+        745,
+        640
+      ],
+      "px": [
+        219,
+        421
+      ],
+      "w": 1
+    },
+    {
+      "name": "rear tyre front",
+      "X": [
+        -2345,
+        735,
+        320
+      ],
+      "px": [
+        785,
+        507
+      ],
+      "w": 1
+    },
+    {
+      "name": "rear tyre rear",
+      "X": [
+        -2985,
+        735,
+        320
+      ],
+      "px": [
+        920,
+        507
+      ],
+      "w": 1
+    },
+    {
+      "name": "rear tyre top",
+      "X": [
+        -2665,
+        735,
+        640
+      ],
+      "px": [
+        852,
+        436
+      ],
+      "w": 1
+    }
+  ]
+}
