@@ -1,7 +1,7 @@
 {
   "name": "Mercedes-Benz Museum: three highlights",
   "short_name": "Highlights",
-  "description": "Three highlights of an unofficial technical tour, mechanisms shown working. Works offline after one visit.",
+  "description": "Three cars of the Mercedes-Benz Museum, their mechanisms shown working. Works offline after one visit.",
   "start_url": "teaser.html",
   "scope": "./",
   "display": "standalone",
