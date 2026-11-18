@@ -3,10 +3,13 @@
 export default {
   slug: "300sl",
   title: "Why the doors open upwards",
-  name: "Mercedes-Benz 300 SL",
+  name: "Mercedes-Benz 300 SL Gullwing",
   year: 1954,
   summary: "A frame of thin welded tubes that runs high through the door area, so the doors had to hinge from the roof; and the first four-stroke petrol engine with direct injection in a production car.",
   eyebrow: "Mercedes-Benz 300 SL Coupé (W 198), 1954–1957",
+  question: "Why do its doors open upwards?",
+  look: "Look at the high sill beneath the open door. Imagine climbing over it.",
+  takeaway: "Look again at the metal you would have to step over: that sill is the frame doing its job.",
   lede: "Twist the 300 SL's tube frame as if one front wheel rode up a kerb, then cut its sides down for ordinary doors and twist it again. Then turn over its straight-six, laid over on its side, with fuel sprayed straight into the cylinders.",
   frame: { origin: "front", wheelbase: 2400, wheelR: 330 },
   orbit: { min: 0.6, max: 14 },
@@ -28,6 +31,9 @@ export default {
   components: [
     {
       id: "frame", label: "Space frame", subsystem: "space-frame",
+      prompt: "What would happen if those tubes were low enough for an ordinary door? Switch the frame and compare.",
+      answer: "With the sides cut down, this model keeps only about a third of its stiffness. The tall tubes give the real car its high sill, so the doors hinge from the roof.",
+      more: "Frame loads and stiffness",
       view: { pos: [1.4, -3.3, 2.5], target: [-1.15, 0, 0.35] },
       ghost: { fill: 0.03, edge: 0.3 },
       params: {
@@ -50,6 +56,9 @@ export default {
     },
     {
       id: "engine", label: "Engine", subsystem: "inline-engine",
+      prompt: "Now follow the bonnet towards the nose. How did a tall six-cylinder engine fit under that low line?",
+      answer: "It lies 45° over to the left, so the bonnet could sit low. Fuel is sprayed straight into each cylinder: watch for the spray.",
+      more: "Fuel injection and engine timing",
       view: { pos: [0.55, -0.95, 1.25], target: [-0.35, 0.1, 0.45] },
       ghost: { fill: 0.03, edge: 0.3 },
       params: {

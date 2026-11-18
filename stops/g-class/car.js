@@ -20,6 +20,7 @@ export default {
   },
   photo: {
     src: "photo.jpg", w: 1200, h: 799,
+    caption: "Photographed at the museum's 2019–20 G-Class exhibition",
     alt: "Blue Mercedes-Benz 300 GD “Otto”, Gunther Holtorf's round-the-world car, with its roof rack and boxes, seen from the front right",
     cam: { c: [2109.2, -3637.6, 1745.4], yaw: 2.2485, pitch: -0.1627, roll: -0.0265, f: 1259 }, // tools/photo-fits/g-class.json
     credit: { author: "Thilo Parg", license: "CC BY-SA 4.0", url: "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_300_GD_Otto_1.jpg" },

@@ -15,6 +15,7 @@ test("tour slugs are unique, safe and match their config", () => {
     assert.match(s.slug, /^[a-z0-9-]+$/);
     assert.equal(cars[i].slug, s.slug);
     assert.ok(s.room && Number.isInteger(s.level), `${s.slug}: room and level`);
+    assert.ok(s.check === undefined || ["room", "level"].includes(s.check), `${s.slug}: check is "room" or "level"`);
   });
 });
 
@@ -29,7 +30,10 @@ for (const car of cars) {
     assert.ok(Number.isInteger(car.year));
     assert.ok(car.components.length > 0);
     assert.equal(new Set(car.components.map(c => c.id)).size, car.components.length, "component ids unique");
+    for (const k of ["question", "look", "takeaway"]) assert.ok(car[k] === undefined || car[k].length > 10, `${k}: a sentence`);
     for (const c of car.components) {
+      for (const k of ["prompt", "answer", "more"]) assert.ok(c[k] === undefined || c[k].length > 5, `${c.id}.${k}: text`);
+      assert.ok(!c.answer || c.prompt, `${c.id}: an answer needs its prompt`);
       assert.match(c.subsystem, /^[a-z0-9-]+$/);
       assert.ok(exists(`subsystems/${c.subsystem}.js`), `subsystems/${c.subsystem}.js`);
       assert.ok(c.label && c.view?.pos?.length === 3 && c.view?.target?.length === 3, `${c.id}: label and view`);

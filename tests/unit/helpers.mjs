@@ -8,7 +8,8 @@ export const loadCars = () => Promise.all(tour.map(async s => (await import(`../
 // Paths use "*" for any array index; legend entries are [token, text] pairs, so only their text is translated.
 const TEXT = [
   "title", "name", "summary", "eyebrow", "lede", "note", "unverified.*", "photo.alt",
-  "components.*.label", "components.*.talk.*",
+  "question", "look", "takeaway", "photo.caption",
+  "components.*.label", "components.*.talk.*", "components.*.prompt", "components.*.answer", "components.*.more",
   ...["label", "engineLabel", "legendTitle", "links.*.name", "shapes.*.label", "types.*.label", "presets.*.label",
     "cases.*.label", "modes.*", "drive.gears.*.name", "legend.*.1", "surfaces.*.label",
     "consumers.*.label", "compare"].map(p => `components.*.params.${p}`),

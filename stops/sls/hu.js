@@ -5,7 +5,7 @@ export default {
   summary: "A visszatért sirályszárnyas ajtó, zsanéronként egy kis töltettel, hogy a tetején fekvő autóból is ki lehessen szállni.",
   eyebrow: "Mercedes-Benz SLS AMG, 2010",
   lede: "A sirályszárnyas ajtók felfelé nyílnak, és ez gond, ha az autó a tetején fekszik: az út felé nyílnának. Ezért az SLS borulás érzékelésekor minden zsanérban begyújt egy kis töltetet, és az ajtók kitolhatók. Botoljon meg egy padkán, és nézze meg lassítva.",
-  photo: { alt: "Ezüst Mercedes-Benz SLS AMG a Mercedes-Benz Múzeum előtt, balról elölről nézve" },
+  photo: { caption: "A múzeum előtt fotózva", alt: "Ezüst Mercedes-Benz SLS AMG a Mercedes-Benz Múzeum előtt, balról elölről nézve" },
   components: [
     {
       label: "Zsanércsavarok",

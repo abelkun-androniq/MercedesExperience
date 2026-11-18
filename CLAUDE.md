@@ -9,7 +9,8 @@ iPhone/iPad Safari (iOS 16.4+, import maps). No bundler: native ES modules; `too
   photo, one per component with its cards, background with the outline) scroll past and set what it shows ·
   `teaser.html` the three `teaser` stops' stories one after another (lib/app/teaser.js, own manifest) · `sw.js` offline
   cache (new root files also go in tools/build.mjs ENTRIES)
-- `stops/tour.js` route order, room, level, and `teaser` (slugs): single source for order and prev/next ·
+- `stops/tour.js` route order, room, level, `check` ("room" or "level": not yet confirmed on site, shown as a qualifier),
+  and `teaser` (slugs): single source for order and prev/next ·
   `stops/<slug>/car.js` pure data (+ photo.jpg)
 - `lib/model/` pure maths, Node-tested: linkage (multi-link closure), quarter-car (ride), engine (N-cylinder slider-crank,
   timing, diesel), blower, valvetrain (spring float, desmo), steering (double-pivot trapezoid, centre pivot, twin steered
@@ -23,7 +24,8 @@ iPhone/iPad Safari (iOS 16.4+, import maps). No bundler: native ES modules; `too
   `flow` on the centre plane: speed/pressure/swirl field, body section, smoke streaklines; `--cfd-*` tokens)
 - `lib/app/` shell, teaser, story (scroll stories: shared by shell and teaser), viewer (one car's stage, subsystems,
   photo view and loop: one per story), panel
-  (declarative widgets, API in its header), dom (`h`, `link`), offline, index, theme.css (look after
+  (declarative widgets, API in its header; `detail: true` on a card or widget moves it under the step's disclosure when
+  the component has `more`), dom (`h`, `link`), offline, index, theme.css (look after
   mercedes-benz.com: black bar/hero, white page, condensed serif, black photo cards, pills), fonts/ (Instrument Serif, OFL;
   latin + latin-ext for ő/ű), lang.js (head script: saved EN/HU choice or browser language → `<html lang>`), i18n.js
   (`t`, `num`, `loadCar`, `localizePage`), i18n/hu.js (UI catalog keyed by the English text)
@@ -53,8 +55,11 @@ iPhone/iPad Safari (iOS 16.4+, import maps). No bundler: native ES modules; `too
   tests/unit/helpers.mjs `TEXT`), null keeps the original; sources and credits stay untranslated.
 
 ## Contracts
-- car.js: `{ slug, title, name, year, summary, eyebrow, lede, frame?, ride?, orbit?, sun?, body?: { ghost }, photo?,
-  components: [{ id, label, subsystem, view: { pos, target }, ghost?: { fill, edge }, params, talk }], note, unverified, sources }`
+- car.js: `{ slug, title, name, year, summary, question?, eyebrow, lede, look?, takeaway?, frame?, ride?, orbit?, sun?,
+  body?: { ghost }, photo?: { …, caption? }, components: [{ id, label, subsystem, view: { pos, target }, ghost?: { fill, edge },
+  params, talk, prompt?, answer?, more? }], note, unverified, sources }`. `question` replaces the summary on the index
+  card; `look`/`takeaway` open and close the story at the car; a component with `prompt` shows prompt → key controls →
+  `answer`, and `more` names the disclosure holding the detail widgets and the facts (piloted on 300sl, slk, 540k).
 - Subsystem: `export function create(ctx, params)` with ctx `{ stage, carRoot, frame, ride, panel, reducedMotion, t }`, returns
   `{ layout({ active, onPhoto }), update(dt, { onPhoto }) }`. lib/app/viewer.js owns photo view, outline, ghost body and
   the loop (the story's step at the reading line chooses what it shows; a car without a photo shows its model), and

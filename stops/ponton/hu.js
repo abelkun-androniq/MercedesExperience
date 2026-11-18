@@ -5,7 +5,7 @@ export default {
   summary: "Az első önhordó karosszériás Mercedes-Benz limuzinok: a padló, az oszlopok és a tető egyetlen, a terhelést viselő héjjá hegesztve.",
   eyebrow: "Mercedes-Benz 180, 1955",
   lede: "A régebbi autók karosszériája külön alvázon ült. A Ponton karosszériája maga az alváz: a küszöböket, az oszlopokat és a tetőt egyetlen héjjá hegesztették. Csavarja meg úgy, ahogy egy padkára felhajtó kerék teszi, és hasonlítsa össze egy lapos alvázzal, amelynek karosszériája semmit sem visel.",
-  photo: { alt: "Fekete, 1955-ös Mercedes-Benz 180 „Ponton” a Mercedes-Benz Múzeumban, jobbról elölről nézve" },
+  photo: { caption: "Egy 1955-ös 180, az első Ponton modell", alt: "Fekete, 1955-ös Mercedes-Benz 180 „Ponton” a Mercedes-Benz Múzeumban, jobbról elölről nézve" },
   components: [
     {
       label: "Önhordó karosszéria",

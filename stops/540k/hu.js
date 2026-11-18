@@ -4,11 +4,17 @@ export default {
   name: "Mercedes-Benz 540 K (W 29)",
   summary: "Független, kettős keresztlengőkaros első felfüggesztés, a csak padlógáznál bekapcsoló Roots-kompresszor és az áramvonalas karosszéria.",
   eyebrow: "Mercedes-Benz 540 K (W 29), 1936–1940",
+  question: "Mit jelent a K, és mikor lépett működésbe?",
+  look: "Nézze meg a bal első kereket: saját lengőkarpáron függ. Az alábbi három lépés egy úton kíséri végig az autót.",
+  takeaway: "Nézze meg a meredek szélvédőt és a lehajtott vászontetőt: ez az a légellenállás, amely nélkül az 1938-as áramvonalas autó elboldogult.",
   lede: "Három dolog a kompresszoros 540 K-ról, mindegyik működés közben: a független első felfüggesztés egy bukkanón és egy kátyún, a Roots-kompresszor, amely csak akkor kapcsolódik be, ha a vezető padlóig nyomja a gázt, és hogy mit ad az áramvonalas karosszéria a végsebességhez. Görgessen tovább: a múzeumi fotón a felfüggesztést a valódi autón, a helyén is láthatja.",
   photo: { alt: "Fekete-fehér, 1937-es Mercedes-Benz 540 K Cabriolet B a Mercedes-Benz Múzeumban, balról elölről nézve" },
   components: [
     {
-      label: "Első felfüggesztés",
+      label: "Bukkanón át",
+      prompt: "Figyelje, ahogy a bal első kerék megemelkedik a bukkanón, és változik a narancssárga keréktehergörbe.",
+      answer: "Mindkét első kerék önállóan mozog, így az egyik kerék alatti bukkanó már nem billenti meg a másikat.",
+      more: "Az első felfüggesztés geometriája",
       params: {
         label: "Bal első kerék · 25 km/h, 5× lassítva",
         links: [{ name: "Alsó lengőkar, első szár" }, { name: "Alsó lengőkar, hátsó szár" }, { name: "Felső lengőkar, első szár" }, { name: "Felső lengőkar, hátsó szár" }, { name: "Nyomtávrúd" }],
@@ -22,7 +28,10 @@ export default {
       ],
     },
     {
-      label: "Kompresszor",
+      label: "Az egyenesen",
+      prompt: "Nyomja meg a „Padlógáz” gombot, és figyelje a tengelykapcsolót: mikor lép működésbe a kompresszor?",
+      answer: "Csak teljes gázállásnál: a tengelykapcsoló bekapcsolja a kompresszort, és a teljesítmény 115-ről 180 LE-re nő, rövid időre. A K a Kompressor rövidítése.",
+      more: "A kompresszor belseje",
       params: { engineLabel: "5,4 literes soros nyolchengeres" },
       talk: [
         "A K a Kompressor rövidítése. Az 5,4 literes soros nyolchengeres magában 115 LE-t, működő kompresszorral 180 LE-t ad.",
@@ -31,7 +40,10 @@ export default {
       ],
     },
     {
-      label: "Légellenállás",
+      label: "Nagy sebességnél",
+      prompt: "A múzeumi fotón a Cabriolet B látható. Ugyanazzal a 180 LE-vel váltson közte és az 1938-as áramvonalas autó között.",
+      answer: "Ugyanaz a motor az áramvonalas autót kb. 15 km/h-val gyorsabbra viszi: autópálya-sebességnél a karosszéria formája annyit számít, mint a kompresszor.",
+      more: "Honnan ered a légellenállás",
       params: { label: "Teljes teljesítmény az autópályán", shapes: [{ label: "Áramvonalas (1938)" }, { label: "Cabriolet B karosszéria" }] },
       talk: [
         "1938-ban a Mercedes egyetlen 540 K-t épített zárt, áramvonalas karosszériával, hogy a Dunlop tartós nagy sebességen tesztelhesse abroncsait az új autópályákon.",

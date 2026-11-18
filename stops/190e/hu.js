@@ -1,7 +1,7 @@
 // Hungarian text for car.js, merged over it by loadCar (lib/app/i18n.js): same shape, strings only, null keeps the original.
 export default {
   title: "A 190-es karosszériája alatt",
-  name: "Mercedes-Benz 190 E (W201)",
+  name: "Mercedes-Benz 190 E (W201) „Baby-Benz”",
   summary: "Az ötlengőkaros hátsó tengely egy bukkanón és egy kátyún, és a forgó M102 négyhengeres.",
   eyebrow: "Mercedes-Benz 190 E (W201), 1984",
   lede: "Ugyanannak az autónak két szerkezete, mindkettő működés közben: az ötlengőkaros hátsó tengely egy bukkanón és egy kátyún, és a forgó M102 négyhengeres. Görgessen tovább: a múzeumi fotón a tengelyt a valódi autón, a helyén is láthatja.",

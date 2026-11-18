@@ -5,7 +5,7 @@ export default {
   summary: "A G-osztály, amellyel Gunther Holtorf 26 évig járta a világot: kézzel kapcsolható összkerékhajtás, elöl és hátul differenciálzár.",
   eyebrow: "Mercedes-Benz 300 GD, 1988",
   lede: "A nyitott differenciálmű mindig egyforma nyomatékot küld mindkét oldalra, így a jégen álló kerék a párját is korlátozza. A G-osztály összekapcsolhatja tengelyeit, majd mindkét differenciálművet zárhatja. Tegyen két kereket jégre, és kapcsoljon be egyenként egy-egy zárat, amíg az autó fel nem kapaszkodik.",
-  photo: { alt: "Gunther Holtorf kék, világkörüli Mercedes-Benz 300 GD-je, „Otto”, tetőcsomagtartóval és ládákkal, jobbról elölről nézve" },
+  photo: { caption: "A múzeum 2019–20-as G-osztály kiállításán fotózva", alt: "Gunther Holtorf kék, világkörüli Mercedes-Benz 300 GD-je, „Otto”, tetőcsomagtartóval és ládákkal, jobbról elölről nézve" },
   components: [
     {
       label: "Összkerékhajtás és zárak",

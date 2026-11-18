@@ -1,5 +1,7 @@
 // The museum route, in walking order (the museum is visited from level 8 downwards; Legend n is on level 9 − n).
 // Single source for stop order and prev/next. Each slug has stops/<slug>/car.js. Rooms/levels: confirm on site.
+// check: what is known to be doubtful until someone has seen the exhibit ("level": the room's level is a guess, "room":
+// the car may stand in another room); the route and the stop page say so next to the room name.
 export default [
   { slug: "daimler-engine", room: "Legend 1", level: 8 },
   { slug: "reitwagen", room: "Legend 1", level: 8 },
@@ -29,16 +31,16 @@ export default [
   { slug: "300slr", room: "Legend 4", level: 5 },
   { slug: "unimog", room: "Collection 3", level: 5 },
   { slug: "g-class", room: "Collection 3", level: 5 },
-  { slug: "220s", room: "Legend 5", level: 4 },
+  { slug: "220s", room: "Legend 5", level: 4, check: "room" },   // may be in Legend 4
   { slug: "230sl", room: "Legend 5", level: 4 },
   { slug: "600", room: "Legend 5", level: 4 },
   { slug: "300sel63", room: "Legend 5", level: 4 },
   { slug: "c111", room: "Legend 5", level: 4 },
   { slug: "esf22", room: "Legend 5", level: 4 },
-  { slug: "190sl", room: "Collection 4", level: 4 },
-  { slug: "papamobil", room: "Collection 4", level: 4 },
-  { slug: "ml320", room: "Collection 4", level: 4 },
-  { slug: "500sl-diana", room: "Collection 4", level: 4 },
+  { slug: "190sl", room: "Collection 4", level: 4, check: "level" },
+  { slug: "papamobil", room: "Collection 4", level: 4, check: "level" },
+  { slug: "ml320", room: "Collection 4", level: 4, check: "level" },
+  { slug: "500sl-diana", room: "Collection 4", level: 4, check: "level" },
   { slug: "190e", room: "Legend 6", level: 3 },
   { slug: "slk", room: "Legend 6", level: 3 },
   { slug: "a-class", room: "Legend 6", level: 3 },

@@ -12,6 +12,9 @@ export default {
   year: 1996,
   summary: "A coupé and a roadster in one: the steel “Vario-roof” folds itself into the boot in about 25 seconds.",
   eyebrow: "Mercedes-Benz SLK, 1996",
+  question: "Where does a steel roof go when you open it?",
+  look: "Find the join between the roof and the rear window: that is where the roof folds.",
+  takeaway: "Look at the boot lid: the whole steel roof fits under it, and the owner gives up that much luggage space with the roof down.",
   lede: "Press a button and the steel roof unlatches, the boot lid swings up, and roof and rear window fold back into the boot as one pack before the lid closes over them. Watch the sequence from the side.",
   orbit: { min: 0.5, max: 14 },
   sun: [2, 3, 6],
@@ -26,6 +29,7 @@ export default {
   },
   photo: {
     src: "photo.jpg", w: 1200, h: 662,
+    caption: "Reference photo of the same generation, not the museum's car",
     alt: "Silver first-generation Mercedes-Benz SLK with its steel roof closed, parked in a street, seen from the front left",
     cam: { c: [9821.6, 6160.6, 1071.1], yaw: 3.6683, pitch: -0.0335, roll: 0.0204, f: 4854.1 }, // tools/photo-fits/slk.json
     credit: { author: "IFCAR", license: "Public domain", url: "https://commons.wikimedia.org/wiki/File:1st_Mercedes-Benz_SLK.jpg" },
@@ -33,6 +37,9 @@ export default {
   components: [
     {
       id: "roof", label: "Vario-roof", subsystem: "vario-roof",
+      prompt: "Which moves first, the boot lid or the roof? Press “Open the roof” and watch the steps light up.",
+      answer: "The lid goes up first; then the rear window turns back, the roof folds onto it, and the pack drops into the boot before the lid closes. The price: with the roof down, much of the boot is taken.",
+      more: "How the roof folds",
       view: { pos: [-1.6, -5.4, 1.6], target: [-2, 0, 0.9] },
       ghost: { fill: 0.06, edge: 0.5 },
       params: {

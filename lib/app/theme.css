@@ -91,10 +91,13 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid 
 .stage .hint { position: absolute; left: 14px; bottom: 10px; font-size: 12px; color: var(--muted); pointer-events: none; }
 .stage .credit { position: absolute; right: 10px; bottom: 8px; font-size: 10px; color: #f1f3f5; background: rgba(0,0,0,.55); padding: 2px 8px; border-radius: 9999px; }
 .stage .credit a { color: inherit; }
-.stage .fail { position: absolute; inset: 0; margin: 0; padding: 16px; }
+.stage .caption { position: absolute; left: 10px; top: 8px; max-width: calc(100% - 20px); font-size: 11px; color: var(--band-fg); background: color-mix(in srgb, var(--band) 60%, transparent); padding: 2px 8px; border-radius: 9999px; }
+/* 3D failed (story.js): the message sits under the photo, which still identifies the car. */
+.story-stage .fail { max-width: 62ch; margin: 8px auto 0; font-size: 14px; text-align: center; }
 .panel { background: var(--panel); border-radius: var(--radius); padding: 20px; display: grid; gap: 12px; min-width: 0; }
 .readouts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 8px; }
 .readouts div { display: grid; gap: 1px; }
+.readouts div:only-child { grid-column: 1 / -1; }
 .readouts output { font: 300 24px/1.2 var(--body); font-variant-numeric: tabular-nums; }
 .readouts small { font-size: 12px; color: var(--muted); }
 .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
@@ -136,17 +139,27 @@ footer ul { margin: 4px 0 0; padding-left: 18px; }
 .hero .copy > * { max-width: 560px; }
 .hero .eyebrow, .hero .status { color: var(--band-muted); }
 .hero h1 { font-size: clamp(44px, 5.6vw, 72px); }
-.hero .pill { margin-top: 32px; }
+.hero .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+.hero .pill:not(.primary) { color: var(--band-fg); border-color: var(--band-edge); }
 @media (max-width: 700px) {
   .hero { display: block; min-height: 0; text-align: center; }
   .hero img { position: relative; height: auto; aspect-ratio: 3 / 2; }
   .hero::after { inset: 0 0 auto; aspect-ratio: 3 / 2; background: linear-gradient(to top, var(--band) 0%, transparent 45%); }
   .hero .copy { margin-top: -40px; padding-top: 0; padding-bottom: 48px; }
   .hero .copy > * { margin-left: auto; margin-right: auto; }
+  .hero .actions { justify-content: center; }
 }
 .status { font-size: 14px; color: var(--muted); margin: 20px 0 0; }
 .status::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--band-edge); margin-right: 8px; vertical-align: 1px; }
 .status.ready::before { background: var(--l3); }
+
+/* Jump to a room (index.js): native fragment links to the room sections, room name and level in each pill. */
+.jump { display: grid; gap: 12px; }
+.jump h2 { margin: 0; }
+.jump ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.jump a { gap: 8px; padding: 8px 16px; }
+.jump small { font-weight: 400; color: var(--muted); }
+.room { scroll-margin-top: 16px; }
 
 /* Index route: one section per room, black photo cards whose picture fades into the card under the title. */
 .route { list-style: none; margin: 0; padding: 0; display: grid; gap: 72px; }
@@ -163,6 +176,8 @@ footer ul { margin: 4px 0 0; padding-left: 18px; }
 .stop small { font-size: 12px; color: var(--band-fg); border: 1px solid var(--band-edge); border-radius: 4px; padding: 2px 8px; }
 .stop b { font-family: var(--display); font-weight: 400; font-size: 32px; line-height: 1.15; letter-spacing: 0; }
 .stop .text > p { margin: 0 0 8px; font-size: 15px; color: var(--band-muted); }
+.stop .text > p.question { font-size: 19px; line-height: 1.35; color: var(--band-fg); }
+.stop .text > p.caption { margin-top: -4px; font-size: 12px; font-style: italic; }
 .stop .pill { margin-top: auto; text-align: left; }
 .stop .pill i { font-style: normal; margin-left: 8px; transition: transform .3s; }
 @media (hover: hover) {
@@ -181,6 +196,18 @@ footer ul { margin: 4px 0 0; padding-left: 18px; }
 .step h1, .step h2 { font-size: clamp(36px, 4.4vw, 48px); margin: 0; }
 .step h3 { font-family: var(--display); font-weight: 400; font-size: 32px; line-height: 1.15; letter-spacing: 0; margin: 0; color: var(--fg); }
 .step footer .pill { justify-self: start; margin-top: 8px; }
+/* A component step as one experiment (story.js): prompt, key cards, answer, then the depth under a named disclosure. */
+.step .cards { display: grid; gap: 16px; min-width: 0; }
+.step .prompt { margin: 0; font-size: 18px; max-width: 62ch; }
+.step .answer { margin: 0; font-size: 17px; max-width: 62ch; padding-left: 14px; border-left: 3px solid var(--accent); }
+.step details.more { border-top: 1px solid var(--rule); }
+.step details.more > summary { min-height: 44px; display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 700; font-size: 15px; }
+.step details.more > summary { list-style: none; }
+.step details.more > summary::-webkit-details-marker { display: none; }
+.step details.more > summary::after { content: "+"; margin-left: auto; font-size: 22px; font-weight: 400; color: var(--muted); }
+.step details.more[open] > summary::after { content: "−"; }
+.step details.more[open] > summary { margin-bottom: 8px; }
+.look { margin: 0; max-width: 62ch; padding: 12px 16px; background: var(--panel); border-radius: var(--radius); }
 @media (orientation: landscape) and (min-width: 600px) {
   .story { display: grid; grid-template-columns: minmax(0, 1fr) clamp(280px, 32vw, 400px); gap: 32px; align-items: start; }
   .story-stage { height: 100svh; display: grid; place-items: center; padding: 16px 0; background: none; }

@@ -7,6 +7,9 @@ export default {
   year: 1937,
   summary: "Independent wishbone front suspension, the Roots blower that only joins in at full pedal, and the streamlined body.",
   eyebrow: "Mercedes-Benz 540 K (W 29), 1936–1940",
+  question: "What does the K stand for, and when did it join in?",
+  look: "Look at the left front wheel: it hangs on its own pair of arms. The three steps below follow this car on a drive.",
+  takeaway: "Look at the upright windscreen and the folded soft top: that is the drag the 1938 Streamliner did without.",
   lede: "Three things about the supercharged 540 K, each shown working: the independent front suspension meeting a bump and a pothole, the Roots blower that only joins in when the driver floors the pedal, and what a streamlined body does for top speed. Scroll on: the museum photo then shows the suspension in place on the real car.",
   frame: { origin: "front", wheelbase: 3290, wheelR: 380, halfTrackFront: 757, halfTrackRear: 751 },
   ride: { ms: 450, mu: 65, ks: 30000, cs: 2000, kt: 200000 },
@@ -33,7 +36,10 @@ export default {
   },
   components: [
     {
-      id: "susp", label: "Front suspension", subsystem: "linkage-suspension",
+      id: "susp", label: "Over a bump", subsystem: "linkage-suspension",
+      prompt: "Watch the left front wheel rise over the bump, and the orange tyre-load trace change.",
+      answer: "Each front wheel moves on its own, so a bump under one no longer tilts the other.",
+      more: "Front suspension geometry",
       view: { pos: [2.0, 2.5, 0.75], target: [-0.3, 0.25, -0.12] },
       ghost: { fill: 0.06, edge: 0.5 },
       params: {
@@ -65,7 +71,10 @@ export default {
       ],
     },
     {
-      id: "blower", label: "Supercharger", subsystem: "roots-blower",
+      id: "blower", label: "On the straight", subsystem: "roots-blower",
+      prompt: "Press “Floor it” and watch the clutch: when does the blower join in?",
+      answer: "Only at full pedal: the clutch couples the blower in and the power rises from 115 to 180 PS, for short bursts. K stands for Kompressor.",
+      more: "Inside the blower",
       view: { pos: [1.35, 0.75, 1.05], target: [-0.38, 0.02, 0.28] },
       ghost: { fill: 0, edge: 0 },
       params: {
@@ -80,7 +89,10 @@ export default {
       ],
     },
     {
-      id: "aero", label: "Air drag", subsystem: "aero",
+      id: "aero", label: "At speed", subsystem: "aero",
+      prompt: "The museum photo shows the Cabriolet B. With the same 180 PS, switch between it and the 1938 Streamliner.",
+      answer: "The same engine takes the Streamliner about 15 km/h faster: at autobahn speed, the body's shape counts as much as the blower.",
+      more: "Where the drag comes from",
       view: { pos: [3.4, -6.2, 2.4], target: [-1.9, 0, 0.1] },
       ghost: { fill: 0.06, edge: 0.5 },
       params: {

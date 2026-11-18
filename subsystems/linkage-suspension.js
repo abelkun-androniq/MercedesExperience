@@ -103,12 +103,12 @@ export function create(ctx, p) {
   let playing = !ctx.reducedMotion, photoT = 0, frameN = 0;
   const ui = ctx.panel([
     { label: p.label, items: [
-      { readouts: p.readouts.map(id => ({ id, label: READOUTS[id][0], unit: READOUTS[id][1] })) },
+      { readouts: p.readouts.map(id => ({ id, label: READOUTS[id][0], unit: READOUTS[id][1] })), detail: true },
       { trace: { id: "trace", series: [{ token: "--accent", min: -60, max: 60 }, { token: "--l1", min: 0, max: 200 }], top: t("bump / 200 %"), bottom: t("rebound / 0 %"), aria: t("Wheel travel and tyre load over the last six seconds") }, only: "model" },
       { key: [["--accent", t("travel (±60 mm)")], ["--l1", t("tyre load (0–200 %)")]], only: "model" },
       { buttons: [{ id: "play", toggle: [t("Pause"), t("Play")], pressed: playing, onClick: v => (playing = v) }] },
     ] },
-    { label: p.legendTitle ?? t("Parts"), items: [{ legend: p.legend ?? p.links.map(l => [l.tok, l.name]) }] },
+    { label: p.legendTitle ?? t("Parts"), detail: true, items: [{ legend: p.legend ?? p.links.map(l => [l.tok, l.name]) }] },
   ]);
   const trace = ui.trace("trace");
   const fmt = { travel: v => v.toFixed(0), camber: v => v.toFixed(2), toe: v => v.toFixed(2), track: v => v.toFixed(1) };

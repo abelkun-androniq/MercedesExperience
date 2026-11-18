@@ -33,12 +33,12 @@ export function create(ctx, p) {
   let mode = "high", clock = 0, playing = !ctx.reducedMotion, f = 0.5;
   const ui = ctx.panel([{ label: p.label, items: [
     { buttons: [{ id: "high", label: p.modes.high, pressed: true, onClick: () => setMode("high") }, { id: "low", label: p.modes.low, pressed: false, onClick: () => setMode("low") }] },
-    { readouts: [{ id: "load", label: t("Lift at the front wheel"), unit: t("N") }, { id: "twist", label: t("Frame twist"), unit: t("deg") },
-      { id: "stiff", label: t("Twist stiffness"), unit: t("N·m per degree") }, { id: "rel", label: p.compare ?? t("Compared with the 300 SL frame"), unit: "%" },
-      { id: "maxF", label: t("Hardest-working tube"), unit: t("N") }] },
-    { buttons: [{ id: "play", toggle: [t("Pause"), t("Play")], pressed: playing, onClick: v => (playing = v) }] },
-    { key: [["--l1", t("tube in tension")], ["--l4", t("in compression")], ["--metal", t("hardly loaded")], ["--l2", t("lift")], ["--muted", t("held")]] },
+    { readouts: [{ id: "rel", label: p.compare ?? t("Compared with the 300 SL frame"), unit: "%" }] },
     { text: t("Bending drawn {0}× larger than it is. Tube sizes and frame shape are simplified.", p.exaggerate) },
+    { buttons: [{ id: "play", toggle: [t("Pause"), t("Play")], pressed: playing, onClick: v => (playing = v) }] },
+    { readouts: [{ id: "load", label: t("Lift at the front wheel"), unit: t("N") }, { id: "twist", label: t("Frame twist"), unit: t("deg") },
+      { id: "stiff", label: t("Twist stiffness"), unit: t("N·m per degree") }, { id: "maxF", label: t("Hardest-working tube"), unit: t("N") }], detail: true },
+    { key: [["--l1", t("tube in tension")], ["--l4", t("in compression")], ["--metal", t("hardly loaded")], ["--l2", t("lift")], ["--muted", t("held")]], detail: true },
   ] }]);
   function setMode(md) { mode = md; ui.toggle("high").set(md === "high"); ui.toggle("low").set(md === "low"); }
 

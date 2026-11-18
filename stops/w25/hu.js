@@ -1,7 +1,7 @@
 // Hungarian text for car.js, merged over it by loadCar (lib/app/i18n.js): same shape, strings only, null keeps the original.
 export default {
   title: "Az első Ezüstnyíl",
-  name: "Mercedes-Benz W 25",
+  name: "Mercedes-Benz W 25 Ezüstnyíl",
   summary: "A 750 kg-os súlyhatárra épített Grand Prix-autó feltöltött, 3,4 literes soros nyolchengeressel és két felül fekvő vezérműtengellyel.",
   eyebrow: "Mercedes-Benz W 25, 1934",
   lede: "Az 1934-es Grand Prix-szabályok nem a motort korlátozták, csak a súlyt: 750 kg vezető, tüzelőanyag, olaj, víz és gumik nélkül. A W 25 ezért könnyű, magas fordulatú soros nyolchengerest kapott két felül fekvő vezérműtengellyel. Figyelje, ahogy a bütykök nyitják a szelepeket, miközben a nyolc henger sorban gyújt.",

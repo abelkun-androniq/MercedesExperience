@@ -44,19 +44,20 @@ export function create(ctx, p) {
   const pmax = p.power.max * PS / 1000, X = kmh => 34 + kmh / p.vmax * 236, Yk = kw => 128 - kw / pmax * 116;
   const ui = ctx.panel([{ label: p.label, items: [
     ...(p.shapes.length > 1 ? [{ buttons: p.shapes.map((s, i) => ({ id: s.id, label: s.label, pressed: i === 0, onClick: () => setShape(s) })) }] : []),
-    { slider: { id: "ps", label: t("Engine power (PS)"), min: p.power.min, max: p.power.max, step: 5, value: ps, onInput: x => { ps = x; drawChart(); } } },
-    { readouts: [{ id: "v", label: t("Speed"), unit: t("km/h") }, { id: "drag", label: t("Air drag"), unit: t("N") }, { id: "dkw", label: t("Power into drag"), unit: t("kW") },
-      { id: "rkw", label: t("Into rolling"), unit: t("kW") }, { id: "top", label: t("Model top speed"), unit: t("km/h") }, { id: "quoted", label: t("Quoted"), unit: t("km/h") }] },
-    { svg: { id: "chart", viewBox: "0 0 280 150", aria: t("Power needed against speed, and the engine's power") } },
-    { key: [["--accent", p.shapes.length > 1 ? t("power needed, this body") : t("power needed")], ...(p.shapes.length > 1 ? [["--muted", t("other body")]] : []), ["--l1", t("engine power")], ["--l2", t("now")]] },
+    { readouts: [{ id: "top", label: t("Model top speed"), unit: t("km/h") }, { id: "quoted", label: t("Quoted"), unit: t("km/h") }] },
     { buttons: [{ id: "again", label: t("Run again"), onClick: () => { v = 0; hold = 0; } }] },
-  ] }, { label: t("Wind tunnel"), items: [
+    { slider: { id: "ps", label: t("Engine power (PS)"), min: p.power.min, max: p.power.max, step: 5, value: ps, onInput: x => { ps = x; drawChart(); } }, detail: true },
+    { readouts: [{ id: "v", label: t("Speed"), unit: t("km/h") }, { id: "drag", label: t("Air drag"), unit: t("N") }, { id: "dkw", label: t("Power into drag"), unit: t("kW") },
+      { id: "rkw", label: t("Into rolling"), unit: t("kW") }], detail: true },
+    { svg: { id: "chart", viewBox: "0 0 280 150", aria: t("Power needed against speed, and the engine's power") }, detail: true },
+    { key: [["--accent", p.shapes.length > 1 ? t("power needed, this body") : t("power needed")], ...(p.shapes.length > 1 ? [["--muted", t("other body")]] : []), ["--l1", t("engine power")], ["--l2", t("now")]], detail: true },
+  ] }, { label: t("Wind tunnel"), detail: true, items: [
     { buttons: ["speed", "pressure", "swirl"].map((id, i) => ({ id, label: [t("Speed"), t("Pressure"), t("Swirl")][i], pressed: i === 0, onClick: () => setMode(id) })) },
     { svg: { id: "scale", viewBox: "0 0 280 40", aria: t("Colour scale") }, only: "model" },
     { readouts: [{ id: "push", label: t("Push on the front"), unit: "%" }, { id: "suction", label: t("Suction at the back"), unit: "%" }, { id: "friction", label: t("Skin friction"), unit: "%" }] },
     { text: t("A 2-D slice along the car's centre line, computed live (lattice Boltzmann) in slow motion and at a much lower Reynolds number than the real car. The wheels stand outside the slice.") },
   ] },
-  { label: t("Forces"), items: [{ legend: [["--l1", t("Air drag at the nose")], ["--l3", t("Drive force at the wheels")], ["--fg", t("Smoke lines: air streaming past")]] }] }]);
+  { label: t("Forces"), detail: true, items: [{ legend: [["--l1", t("Air drag at the nose")], ["--l3", t("Drive force at the wheels")], ["--fg", t("Smoke lines: air streaming past")]] }] }]);
   function setShape(s) { shape = s; showTunnel(s); p.shapes.forEach(k => ui.toggle(k.id).set(k === s)); v = Math.min(v, topSpeed(s, ps * PS)); drawChart(); }
 
   const svg = ui.el("chart"), el = (tag, a, text) => { const e = document.createElementNS(NS, tag); for (const [k, x] of Object.entries(a)) e.setAttribute(k, x); if (text) e.textContent = text; svg.append(e); return e; };

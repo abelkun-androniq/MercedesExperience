@@ -3,7 +3,7 @@
 export default {
   slug: "blue-wonder",
   title: "The fastest truck of its day",
-  name: "Mercedes-Benz racing car transporter",
+  name: "Mercedes-Benz racing car transporter “Blue Wonder”",
   year: 1955,
   summary: "A one-off transporter with a 300 SL engine that could carry a racing car at 160 km/h.",
   eyebrow: "Racing car transporter \"Blue Wonder\", 1955",

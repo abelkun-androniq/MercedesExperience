@@ -34,10 +34,10 @@ export function create(ctx, p) {
     { buttons: [{ id: "open", label: t("Open the roof"), pressed: false, onClick: () => { stopDemo(); go(1); } }, { id: "close", label: t("Close the roof"), pressed: false, onClick: () => { stopDemo(); go(-1); } }] },
     { cells: { id: "phase", labels: PHASES.map(k => names[k]) } },
     { meter: { id: "progress" } },
-    { readouts: [{ id: "time", label: t("Elapsed"), unit: t("s of {0}", T) }, { id: "rear", label: t("Rear section turned"), unit: t("deg") }, { id: "fold", label: t("Roof folded on it"), unit: t("deg") }, { id: "lid", label: t("Boot lid open"), unit: t("deg") }] },
     { buttons: [{ id: "auto", toggle: [t("Demo on"), t("Demo off")], pressed: demo, onClick: v => (demo = v) }] },
     { text: t("The maker quotes about {0} s; pivot positions and the order of the movements are simplified.", p.quoted) },
-  ] }, { label: t("Parts"), items: [{ legend: [["--l1", t("Roof panel")], ["--l2", t("Rear-window section")], ["--l4", t("Boot lid")], ["--fg", t("Pivots")], ["--muted", t("Boot space it stows in")]] }] }]);
+    { readouts: [{ id: "time", label: t("Elapsed"), unit: t("s of {0}", T) }, { id: "rear", label: t("Rear section turned"), unit: t("deg") }, { id: "fold", label: t("Roof folded on it"), unit: t("deg") }, { id: "lid", label: t("Boot lid open"), unit: t("deg") }], detail: true },
+  ] }, { label: t("Parts"), detail: true, items: [{ legend: [["--l1", t("Roof panel")], ["--l2", t("Rear-window section")], ["--l4", t("Boot lid")], ["--fg", t("Pivots")], ["--muted", t("Boot space it stows in")]] }] }]);
   function stopDemo() { if (demo) { demo = false; ui.toggle("auto").set(false); } }
   function go(d) { dir = d; ui.toggle("open").set(d > 0); ui.toggle("close").set(d < 0); }
 

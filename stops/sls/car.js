@@ -21,6 +21,7 @@ export default {
   },
   photo: {
     src: "photo.jpg", w: 1200, h: 675,
+    caption: "Photographed outside the museum",
     alt: "Silver Mercedes-Benz SLS AMG outside the Mercedes-Benz Museum, seen from the front left",
     cam: { c: [2338.9, 5014.2, -45.6], yaw: -2.1139, pitch: 0.1989, roll: -0.0457, f: 1205.3 }, // tools/photo-fits/sls.json
     credit: { author: "Julian Herzog", license: "CC BY 4.0", url: "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_C197_SLS_AMG_Mercedes-Benz_Museum_2012.jpg" },

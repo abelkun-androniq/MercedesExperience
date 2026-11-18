@@ -21,6 +21,7 @@ export default {
   },
   photo: {
     src: "photo.jpg", w: 1200, h: 803,
+    caption: "A 1955 180, the first Ponton model",
     alt: "Black 1955 Mercedes-Benz 180 “Ponton” in the Mercedes-Benz Museum, seen from the front right",
     cam: { c: [2138.9, -1956.4, 1279.3], yaw: 2.4964, pitch: -0.1947, roll: -0.1464, f: 961.4 }, // tools/photo-fits/ponton.json
     credit: { author: "Valder137", license: "CC BY 2.0", url: "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_180_1955_Ponton_RSideFront_MBMuse_9June2013_(14980535181).jpg" },

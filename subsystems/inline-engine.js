@@ -200,10 +200,10 @@ export function create(ctx, p) {
   // ---------- panel ----------
   let playing = !ctx.reducedMotion, rpm = p.speed.value;
   const ui = ctx.panel([{ label: p.label, items: [
-    { cells: { id: "cyls", labels: xs.map((_, i) => (n === 1 ? t("Cylinder") : t("Cyl {0}", i + 1))) } },
-    { key: [["--l1", t("power")], ["--metal", t("exhaust")], ["--l4", t("intake")], ["--l2", t("compression")], ...(p.fuel === "direct" ? [["--l3", t("fuel injection")]] : [])] },
-    { readouts: [{ id: "crank", label: t("Crank angle"), unit: t("deg") }, { id: "cam", label: t("Camshaft"), unit: t("deg, half speed") }, ...(p.realRpm ? [{ id: "real", label: t("Real engine"), unit: t("rpm"), value: String(p.realRpm) }] : [])] },
-    { slider: { id: "rpm", label: t("Speed (slow motion)"), min: p.speed.min, max: p.speed.max, value: rpm, onInput: v => (rpm = v) } },
+    { cells: { id: "cyls", labels: xs.map((_, i) => (n === 1 ? t("Cylinder") : t("Cyl {0}", i + 1))) }, detail: true },
+    { key: [["--l1", t("power")], ["--metal", t("exhaust")], ["--l4", t("intake")], ["--l2", t("compression")], ...(p.fuel === "direct" ? [["--l3", t("fuel injection")]] : [])], detail: true },
+    { readouts: [{ id: "crank", label: t("Crank angle"), unit: t("deg") }, { id: "cam", label: t("Camshaft"), unit: t("deg, half speed") }, ...(p.realRpm ? [{ id: "real", label: t("Real engine"), unit: t("rpm"), value: String(p.realRpm) }] : [])], detail: true },
+    { slider: { id: "rpm", label: t("Speed (slow motion)"), min: p.speed.min, max: p.speed.max, value: rpm, onInput: v => (rpm = v) }, detail: true },
     { buttons: [{ id: "play", toggle: [t("Pause"), t("Play")], pressed: playing, onClick: v => (playing = v) }] },
   ] }]);
   if (p.compression) {

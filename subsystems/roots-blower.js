@@ -114,15 +114,16 @@ export function create(ctx, p) {
   const setAuto = on => { auto = on; ui.toggle("auto").set(on); };
   const ui = ctx.panel([
     { label: t("Accelerator"), badge: { id: "clutch", text: t("Clutch open") }, items: [
-      { slider: { id: "throttle", label: t("Pedal position"), min: 0, max: 100, value: 30, onInput: v => { setAuto(false); pedal = v / 100; } } },
-      { readouts: [{ id: "pedal", label: t("Pedal"), unit: "%" }, { id: "rotor", label: t("Rotor speed"), unit: t("× crank") },
-        { id: "boost", label: t("Boost"), unit: t("bar, illustrative") }, { id: "power", label: t("Full-load power"), unit: t("PS") }] },
-      { meter: { id: "boostMeter" } },
       { buttons: [{ id: "auto", toggle: [t("Auto demo on"), t("Auto demo off")], pressed: auto, onClick: v => { auto = v; autoT = 0; } },
         { id: "floor", label: t("Floor it"), onClick: () => { setAuto(false); pedal = 1; ui.slider("throttle").set(100); } }] },
+      { readouts: [{ id: "power", label: t("Full-load power"), unit: t("PS") }] },
       { key: [["--l4", t("air, blower bypassed")], ["--l1", t("air, pressurised by blower")]] },
+      { slider: { id: "throttle", label: t("Pedal position"), min: 0, max: 100, value: 30, onInput: v => { setAuto(false); pedal = v / 100; } }, detail: true },
+      { readouts: [{ id: "pedal", label: t("Pedal"), unit: "%" }, { id: "rotor", label: t("Rotor speed"), unit: t("× crank") },
+        { id: "boost", label: t("Boost"), unit: t("bar, illustrative") }], detail: true },
+      { meter: { id: "boostMeter" }, detail: true },
     ] },
-    { label: t("End view of the rotors"), items: [{ svg: { id: "rotors", viewBox: "-140 -95 280 190", aria: t("End view of the two-lobe Roots rotors turning in opposite directions, carrying pockets of air from the inlet at the bottom to the outlet at the top") } }] },
+    { label: t("End view of the rotors"), detail: true, items: [{ svg: { id: "rotors", viewBox: "-140 -95 280 190", aria: t("End view of the two-lobe Roots rotors turning in opposite directions, carrying pockets of air from the inlet at the bottom to the outlet at the top") } }] },
   ]);
 
   // ---------- rotor end view (same profile and phasing as the 3-D rotors; y → right, z → up; 1 unit = 1 mm) ----------

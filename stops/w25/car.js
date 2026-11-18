@@ -3,7 +3,7 @@
 export default {
   slug: "w25",
   title: "The first Silver Arrow",
-  name: "Mercedes-Benz W 25",
+  name: "Mercedes-Benz W 25 Silver Arrow",
   year: 1934,
   summary: "The Grand Prix car built to a 750 kg weight limit, with a supercharged 3.4-litre straight-eight and two camshafts over its valves.",
   eyebrow: "Mercedes-Benz W 25, 1934",

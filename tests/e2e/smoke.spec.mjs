@@ -45,6 +45,31 @@ test("index lists every stop in walking order", async ({ page }) => {
   expect(errors).toEqual([]);
 });
 
+test("index: room jump links reach their rooms; highlights and back again", async ({ page }) => {
+  const errors = watchErrors(page);
+  await page.goto("./");
+  const jumps = page.locator(".jump a");
+  await expect(jumps).toHaveCount(new Set(tour.map(s => `${s.room} ${s.level}`)).size);
+  for (const href of await jumps.evaluateAll(as => as.map(a => a.getAttribute("href")))) await expect(page.locator(href)).toHaveClass("room");
+  await page.locator('.jump a[href="#room-legend-6"]').click();
+  await expect(page.locator("#room-legend-6 h2")).toBeInViewport();
+  await page.getByRole("link", { name: "Three highlights" }).click();
+  await expect(page).toHaveURL(/teaser\.html$/);
+  await expect(page.getByRole("link", { name: "See the full route" })).toHaveAttribute("href", "./#route");
+  expect(errors).toEqual([]);
+});
+
+test("the stop's photo, credit and introduction show even when 3D cannot load", async ({ page }) => {
+  await page.route(/vendor\/three\//, r => r.abort());
+  await page.goto("stop.html?s=slk");
+  await expect(page.locator(".story-stage .fail")).toBeVisible();
+  await expect(page.locator(".stage img")).toBeVisible();
+  await expect(page.locator(".stage .credit")).toBeVisible();
+  await expect(page.locator(".stage .caption")).toHaveText("Reference photo of the same generation, not the museum's car");
+  await expect(page.locator("h1")).toBeVisible();
+  await expect(page.locator(".step .look").first()).toBeVisible();
+});
+
 test("unknown stop shows the not-found message and loads no 3D code", async ({ page }) => {
   const three = [];
   page.on("request", r => { if (/vendor\/three|subsystems\//.test(r.url())) three.push(r.url()); });

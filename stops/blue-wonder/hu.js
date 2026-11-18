@@ -1,7 +1,7 @@
 // Hungarian text for car.js, merged over it by loadCar (lib/app/i18n.js): same shape, strings only, null keeps the original.
 export default {
   title: "Kora leggyorsabb teherautója",
-  name: "Mercedes-Benz versenyautó-szállító",
+  name: "Mercedes-Benz versenyautó-szállító, a „Kék csoda”",
   summary: "Egyedi szállítójármű 300 SL motorral, amely 160 km/h-val tudott vinni egy versenyautót.",
   eyebrow: "„Blue Wonder” (Kék Csoda) versenyautó-szállító, 1955",
   lede: "A versenyrészleg azt akarta, hogy autói egyetlen éjszaka alatt a pályára vagy vissza a gyárba jussanak. Ezért épített egy teherautót sportautómotorral és alacsony, lekerekített orral. Hasonlítsa össze egy szögletes teherautóval: ezeken a sebességeken szinte az egész teljesítmény a levegő félretolására megy el.",

@@ -3,7 +3,7 @@
 export default {
   slug: "190e",
   title: "Under the skin of the 190",
-  name: "Mercedes-Benz 190 E (W201)",
+  name: "Mercedes-Benz 190 E (W201) “Baby-Benz”",
   year: 1984,
   summary: "Five-link rear axle meeting a bump and a pothole, and the M102 four-cylinder turning over.",
   eyebrow: "Mercedes-Benz 190 E (W201), 1984",
