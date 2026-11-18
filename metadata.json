@@ -1,0 +1,45 @@
+{
+  "cli_version": "0.13.4",
+  "checkpoint_id": "01M7R24VXQTTBPVF4T8WB6YP5J",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "CLAUDE.md",
+    "stops/slk/car.js",
+    "stops/slk/hu.js",
+    "stops/slk/photo.jpg",
+    "tools/photo-fits/slk.json",
+    "tools/profile-traces/slk.json"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 146,
+    "cache_creation_tokens": 201712,
+    "cache_read_tokens": 10516979,
+    "output_tokens": 48297,
+    "api_call_count": 72
+  },
+  "redaction": {
+    "replacements": 2,
+    "layers": {
+      "betterleaks": 0,
+      "connection_string": 0,
+      "credential_key": 0,
+      "credential_value": 0,
+      "credentialed_uri": 0,
+      "entropy": 2,
+      "key_context": 0,
+      "provider_token": 0,
+      "shell_stdin": 0
+    }
+  }
+}
