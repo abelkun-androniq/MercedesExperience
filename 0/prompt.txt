@@ -1,0 +1,5 @@
+Review the current museum tour and rate it from the visitor standpoint. What could be upgraded that does not compromise the user experience (currently it loads fast and is quick to react)? What could be added, what is missing? Is there enough information or too much? Create the proposal in an .md file
+
+---
+
+points 1 and 2 sound good. Go more in depth in point 2 - the car cards do have much information right now so it could be grouped more intuitively so that there is a good flow for each car showoff.
