@@ -1,0 +1,52 @@
+{
+  "cli_version": "0.13.4",
+  "checkpoint_id": "01M7QRY9JSFQVZFCXDK06H5VB8",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "CLAUDE.md",
+    "lib/app/i18n/hu.js",
+    "lib/scene/wind-tunnel.js",
+    "stops/190e-evo2/car.js",
+    "stops/190e-evo2/hu.js",
+    "stops/540k/car.js",
+    "stops/540k/hu.js",
+    "stops/blue-wonder/car.js",
+    "stops/blue-wonder/hu.js",
+    "stops/w196r/car.js",
+    "stops/w196r/hu.js",
+    "subsystems/aero.js",
+    "tests/unit/flow.test.mjs"
+  ],
+  "sessions": [
+    {
+      "metadata": "/0/metadata.json",
+      "transcript": "/0/full.jsonl",
+      "compact_transcript": "/0/transcript.jsonl",
+      "content_hash": "/0/content_hash.txt",
+      "prompt": "/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 104,
+    "cache_creation_tokens": 317859,
+    "cache_read_tokens": 7811673,
+    "output_tokens": 54876,
+    "api_call_count": 52
+  },
+  "redaction": {
+    "replacements": 0,
+    "layers": {
+      "betterleaks": 0,
+      "connection_string": 0,
+      "credential_key": 0,
+      "credential_value": 0,
+      "credentialed_uri": 0,
+      "entropy": 0,
+      "key_context": 0,
+      "provider_token": 0,
+      "shell_stdin": 0
+    }
+  }
+}
