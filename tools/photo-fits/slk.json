@@ -1,0 +1,169 @@
+{
+  "photo": "stops/slk/photo.jpg",
+  "image": {
+    "width": 1200,
+    "height": 662
+  },
+  "frame": "mm; x forward, y left, z up; origin = front axle centre on the ground. Wheelbase, tracks and tyre size from the data sheet; lamp, star and plate positions assumed. Focal length left free: front face and side are not coplanar (long zoom, cropped frame)",
+  "aimAt": [
+    -1200,
+    0,
+    550
+  ],
+  "seeds": [
+    [
+      4800,
+      0,
+      1200
+    ],
+    [
+      3043,
+      4243,
+      1200
+    ],
+    [
+      -1200,
+      6000,
+      1200
+    ],
+    [
+      -5443,
+      4243,
+      1200
+    ],
+    [
+      -7200,
+      0,
+      1200
+    ],
+    [
+      -5443,
+      -4243,
+      1200
+    ],
+    [
+      -1200,
+      -6000,
+      1200
+    ],
+    [
+      3043,
+      -4243,
+      1200
+    ]
+  ],
+  "focalSeeds": [
+    1000,
+    2000,
+    3000,
+    4500
+  ],
+  "rollPenalty": 200,
+  "groundZ": 0,
+  "points": [
+    {
+      "name": "front left hub",
+      "X": [
+        0,
+        745,
+        310
+      ],
+      "px": [
+        703,
+        506
+      ],
+      "w": 3
+    },
+    {
+      "name": "front left tyre bottom",
+      "X": [
+        0,
+        745,
+        0
+      ],
+      "px": [
+        712,
+        623
+      ],
+      "w": 2
+    },
+    {
+      "name": "rear left hub",
+      "X": [
+        -2400,
+        735,
+        310
+      ],
+      "px": [
+        1125,
+        459
+      ],
+      "w": 3
+    },
+    {
+      "name": "rear left tyre bottom",
+      "X": [
+        -2400,
+        735,
+        0
+      ],
+      "px": [
+        1131,
+        565
+      ],
+      "w": 2
+    },
+    {
+      "name": "L headlamp",
+      "X": [
+        640,
+        560,
+        620
+      ],
+      "px": [
+        506,
+        367
+      ],
+      "w": 1
+    },
+    {
+      "name": "R headlamp",
+      "X": [
+        640,
+        -560,
+        620
+      ],
+      "px": [
+        78,
+        342
+      ],
+      "w": 1
+    },
+    {
+      "name": "Grille star",
+      "X": [
+        790,
+        0,
+        560
+      ],
+      "px": [
+        255,
+        380
+      ],
+      "w": 1
+    },
+    {
+      "name": "Plate centre",
+      "X": [
+        840,
+        0,
+        400
+      ],
+      "px": [
+        230,
+        467
+      ],
+      "w": 1
+    }
+  ]
+}

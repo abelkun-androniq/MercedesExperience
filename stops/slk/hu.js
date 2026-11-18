@@ -5,6 +5,7 @@ export default {
   summary: "Kupé és roadster egyben: az acél „Vario-tető” kb. 25 másodperc alatt magától a csomagtartóba hajtogatja magát.",
   eyebrow: "Mercedes-Benz SLK, 1996",
   lede: "Egy gombnyomás, és az acéltető kiold, a csomagtartófedél felnyílik, a tető és a hátsó ablak egy csomagként hátrahajlik a csomagtartóba, majd a fedél rázáródik. Nézze meg a folyamatot oldalról.",
+  photo: { alt: "Ezüst első generációs Mercedes-Benz SLK zárt acéltetővel, utcán parkolva, balról elölről nézve" },
   components: [
     {
       label: "Vario-tető",
@@ -17,10 +18,10 @@ export default {
       ],
     },
   ],
-  note: "Szabad licencű múzeumi fotó nem volt elérhető az SLK-ról; ez a kép egy máshol fotózott SLK 230 Kompressort mutat.",
+  note: "Szabad licencű fotó a múzeumban kiállított SLK-ról nem volt elérhető; ez a kép egy 1997–2000-es SLK-t mutat egy washingtoni utcán.",
   unverified: [
     "A tetőelemek pontjai, a csuklók helye, a mozgások sorrendje és időzítése",
-    "A jármű körvonala (az adatlap méreteiből vázolva, még nem a fotóról átrajzolva)",
+    "A jármű körvonala (a fotóról átrajzolva; a képen kívül eső farrész az adatlap szerinti hosszból)",
     "A fotó nem a múzeumban készült",
     "Terem: Legenda 6",
   ],

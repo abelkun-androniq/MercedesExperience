@@ -1,0 +1,20 @@
+{
+  "photo": "stops/slk/photo.jpg",
+  "image": { "width": 1200, "height": 662 },
+  "cam": { "c": [9821.6, 6160.6, 1071.1], "yaw": 3.6683, "pitch": -0.0335, "roll": 0.0204, "f": 4854.1 },
+  "camFrom": "tools/photo-fits/slk.json (front-left three-quarter view: nose on the centre plane, side and sill on the near side)",
+  "groups": [
+    { "name": "bumper bottom (centre)", "y": 0, "px": [[228, 530]] },
+    { "name": "bumper and grille (centre)", "y": 0, "px": [[230, 467], [236, 425], [255, 335]] },
+    { "name": "cowl (centre)", "y": 0, "px": [[600, 228]] },
+    { "name": "windscreen top (centre)", "y": 0, "px": [[650, 103]] },
+    { "name": "roof crown", "y": 300, "px": [[760, 96], [860, 98]] },
+    { "name": "roof rear (near side)", "y": 650, "px": [[985, 120], [1052, 212]] },
+    { "name": "rear deck (near side)", "y": 780, "px": [[1161, 221], [1181, 252]] },
+    { "name": "tail (near side)", "y": 800, "px": [[1186, 330], [1182, 420]] },
+    { "name": "sill (near side)", "y": 830, "px": [[1064, 463], [830, 494]] },
+    { "name": "front bumper corner bottom", "y": 750, "px": [[595, 530]] },
+    { "name": "A-pillar (near side)", "y": 650, "px": [[857, 240], [848, 108]] },
+    { "name": "fender shoulder (near side)", "y": 800, "px": [[700, 280], [590, 330]] }
+  ]
+}

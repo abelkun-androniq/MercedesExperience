@@ -104,14 +104,15 @@ true speed · Web Inspector over USB shows no errors. LAN (`http://<mac-ip>:8765
   2013 photo shows the car before it); 500 SLC and W 196 R in Legend 7. Bus year 1907 (museum sources) vs 1904 (research).
   Whether the Reitwagen replica is on show or on loan; whether the 500 SLC is the 1980 Bandama winner.
 - Stops added from research_pt2.md (20): rooms follow its galleries (buses Collection 1, lorries 2, helpers 3, celebrities
-  4) and eras; all to confirm on site, as is Collection 3 on level 5. All but the SLK have their photo (fetched through Chrome after
+  4) and eras; all to confirm on site, as is Collection 3 on level 5. All have their photo (fetched through Chrome after
   scripted downloads met HTTP 429). Fits rest on the near wheels plus assumed lamp, star and plate positions (each fit's
   `frame` says which): RMS 5–34 px; roughest the Ponton, 300, 600, LO 1112, the A-Class (a tilted phone photo, kept
   portrait so its principal point stays central) and the carriage, whose wheel planes do not line up. Their `body.ghost`
-  outlines are still sketched, not traced: wheels line up on the photos, bodies only roughly (trace per the recipe). The
-  SLK has no photo: the Commons file first chosen shows an SLK rebuilt with a 300 SL-style body; its car.js header
-  names a candidate. Photos not from the museum floor: SLS (outside the museum), G-Class “Otto” (the 2019–20 G-Class
-  exhibition). The Ponton stop shows a 1955 180 (research names the 220); the R 129 of Legend 6 is told with Princess
+  outlines are still sketched, not traced: wheels line up on the photos, bodies only roughly (trace per the recipe); the
+  SLK's is traced (tools/profile-traces/slk.json). Photos not from the museum floor: SLS (outside the museum), G-Class
+  “Otto” (the 2019–20 G-Class exhibition), SLK (a public-domain street photo: no free photo of the museum's SLK was found
+  on Commons or Flickr CC, Nov 2026; the yellow SLK 230 of the 2025 Youngtimer exhibition is on all-rights-reserved
+  Flickr photos only). The Ponton stop shows a 1955 180 (research names the 220); the R 129 of Legend 6 is told with Princess
   Diana's 500 SL; the 540 K Streamliner is the existing 540k stop. Illustrative throughout: LP 333 axle spacings, Unimog
   portal sizes, O 302 heat balance, 600 hydraulic sizes, ABS and rollover parameters (each car.js `unverified`).
 - Wind-tunnel sections: Blitzen-Benz and 190 E Evo II are traced (the Evo II from its stop photo, a side view; rear wing

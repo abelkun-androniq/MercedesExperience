@@ -1,8 +1,10 @@
 // Mercedes-Benz SLK (R 170), 1996–2004. Frame: mm, x forward, y left, z up; origin = front axle centre on the ground.
 // Wheelbase and body size from the data sheet; roof panel points, pivot positions and the order of the movements
 // illustrative (side view, sized to the body).
-// No photo yet: the Commons file first chosen (52573339856) shows an SLK rebuilt with a 300 SL-style body. Candidate:
-// https://commons.wikimedia.org/wiki/File:1997_Mercedes-Benz_R170_SLK_230_Kompressor,_front_right,_07-28-2024.jpg (CC BY-SA 4.0)
+// Photo: no freely licensed photo of an SLK in the museum was found (Commons, Flickr CC; the yellow SLK 230 of the
+// 2025 Youngtimer exhibition is only on all-rights-reserved photos), so a public-domain street photo of a 1997–2000 car
+// stands in. Ghost outline traced from it (tools/profile-traces/slk.json); the tail is out of frame, so the rear end
+// comes from the data-sheet length (3995 mm).
 export default {
   slug: "slk",
   title: "A roof in the boot",
@@ -15,11 +17,18 @@ export default {
   sun: [2, 3, 6],
   body: {
     ghost: [
-      { pts: [[800, 280], [820, 600], [450, 720], [-700, 870], [-3000, 900], [-3195, 820], [-3180, 300]], y: [-857, 857] },   // body
-      { pts: [[-700, 870], [-1050, 1240], [-1150, 1240], [-850, 870]], y: [-660, 660] },                                       // windscreen
+      { pts: [[865, 250], [860, 390], [840, 480], [770, 680], [150, 820], [-760, 920], [-2050, 975], [-2490, 958],
+        [-3000, 920], [-3150, 840], [-3150, 320], [-1780, 320], [-450, 305], [520, 265]], y: [-857, 857] },                   // body (rear from the length)
+      { pts: [[-760, 920], [-1005, 1240], [-1100, 1245], [-860, 920]], y: [-660, 660] },                                       // windscreen
       { torus: { R: 245, r: 70, pos: [0, 745, 310], rot: [90, 0, 0] }, mirror: true },                                         // wheels
       { torus: { R: 245, r: 75, pos: [-2400, 735, 310], rot: [90, 0, 0] }, mirror: true },
     ],
+  },
+  photo: {
+    src: "photo.jpg", w: 1200, h: 662,
+    alt: "Silver first-generation Mercedes-Benz SLK with its steel roof closed, parked in a street, seen from the front left",
+    cam: { c: [9821.6, 6160.6, 1071.1], yaw: 3.6683, pitch: -0.0335, roll: 0.0204, f: 4854.1 }, // tools/photo-fits/slk.json
+    credit: { author: "IFCAR", license: "Public domain", url: "https://commons.wikimedia.org/wiki/File:1st_Mercedes-Benz_SLK.jpg" },
   },
   components: [
     {
@@ -44,10 +53,10 @@ export default {
       ],
     },
   ],
-  note: "No museum photo of the SLK was available under a free licence; this photo shows an SLK 230 Kompressor photographed elsewhere.",
+  note: "No freely licensed photo of the SLK in the museum was available; this photo shows a 1997–2000 SLK photographed in a street in Washington, D.C.",
   unverified: [
     "Roof panel points, pivot positions and the order and timing of the movements",
-    "Ghost-body outline (sketched from the data-sheet sizes, not yet traced from the photo)",
+    "Ghost-body outline (traced from the photo; the tail, out of frame, from the data-sheet length)",
     "Photo not taken in the museum",
     "Room: Legend 6",
   ],
