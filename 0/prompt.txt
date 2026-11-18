@@ -1,0 +1,5 @@
+On the deployed teaser: take out the "mit mondjunk az autónál" part, in english too and write there instead "technical facts about the car" or something like that, both in HUngarian. Also, dont employ phrasing that reads like a cheat sheet for a tour guide - it is a teaser for all museum visitor friends. Fix the phrasing in both languages and then deploy the page locally so I can check
+
+---
+
+Perfect! Commit push and redeploy.
