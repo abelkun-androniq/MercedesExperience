@@ -10,6 +10,10 @@ export default {
     {
       label: "Kompresszor",
       params: { engineLabel: "7,1 literes soros hathengeres" },
+      real: {
+        alt: "1928-as rajz egy szétszedett Mercedes-kompresszorról: balra a ház, jobbra a két álló forgórész, alattuk a tengelykapcsoló",
+        caption: "Szétszedett Mercedes-kompresszor egy 1928-as kézikönyv rajzán. A ház (balra) a két álló forgórészre (jobbra) illeszkedik; alattuk a tengelykapcsoló, amely teljes gáznál bekapcsolja a kompresszort.",
+      },
       talk: [
         "Az SSK jelentése Super Sport Kurz, vagyis rövid alvázas Super Sport. Teljes neve a teljesítményt adja meg: 27 adó-lóerő, 170 LE magában és 225 LE működő kompresszorral.",
         "A kompresszor nem mindig jár. A vezető padlóig nyomja a pedált, aztán még egy kicsit tovább; ekkor a főtengely orrán ülő tengelykapcsoló bekapcsolja a kompresszort. Ha felengedi, újra kiold. Rövid nekiiramodásokra szánták.",

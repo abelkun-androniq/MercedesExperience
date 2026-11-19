@@ -10,6 +10,10 @@ export default {
     {
       label: "Portáltengely",
       params: { label: "Első tengely elölről" },
+      real: {
+        alt: "Zöld katonai tengely felvágott kerékagyházzal: egy kis fogaskerék egy nagyobb fölött",
+        caption: "Felvágott portálagy (egy BTR-70 katonai járművön). A féltengely fent érkezik, és egy fogaskerékpár viszi le a hajtást a kerék közepére: ez a lépcső adja a nagyobb hasmagasságot.",
+      },
       talk: [
         "A Unimog a Universal-Motor-Gerät, azaz univerzális motoros eszköz rövidítése: a háború után kis traktornak tervezték, amely úton is gyorsan halad, és a Daimler-Benz 1951 óta gyártja.",
         "Tengelyei portáltengelyek. A féltengelyek a kerékközép felett futnak, és az agyban egy homlokfogaskerék-pár hajtja a kerekeket, így a tengelycső és a differenciálmű a fogaskerekek eltolásával magasabban ül, és több hely marad alatta.",

@@ -10,6 +10,7 @@ const TEXT = [
   "title", "name", "summary", "eyebrow", "lede", "note", "unverified.*", "photo.alt",
   "question", "look", "takeaway", "photo.caption",
   "components.*.label", "components.*.talk.*", "components.*.prompt", "components.*.answer", "components.*.more",
+  "components.*.real.alt", "components.*.real.caption",
   ...["label", "engineLabel", "legendTitle", "links.*.name", "shapes.*.label", "types.*.label", "presets.*.label",
     "cases.*.label", "modes.*", "drive.gears.*.name", "legend.*.1", "surfaces.*.label",
     "consumers.*.label", "compare"].map(p => `components.*.params.${p}`),

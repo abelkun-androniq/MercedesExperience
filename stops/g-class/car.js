@@ -47,6 +47,12 @@ export default {
           { id: "all", label: "+ front lock", centre: true, rear: true, front: true },
         ],
       },
+      real: {   // the part in real life (not this car)
+        src: "parts/differential-zf.jpg", w: 800, h: 600,
+        alt: "A ZF Multitrac axle drive cut open at a trade fair: bevel gears inside the crown wheel, a pack of friction plates beside them",
+        caption: "An axle drive cut open (ZF Multitrac, Bauma trade fair 2004). The differential's bevel gears sit inside the crown wheel; the pack of plates beside them can lock the two sides together.",
+        credit: { author: "Aconcagua", license: "CC BY-SA 3.0", url: "https://commons.wikimedia.org/wiki/File:BAUMA_2004_ZF_Differentialgetriebe.jpg" },
+      },
       talk: [
         "An open differential lets the wheels on an axle turn at different speeds in a corner, but it always splits the torque equally. The wheel with the least grip sets the limit for both.",
         "On this W 460 the driver engages the front axle by hand. That joins the front and rear propeller shafts rigidly, like a locked centre differential: an axle with a wheel on ice can no longer rob the other.",

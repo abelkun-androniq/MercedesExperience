@@ -35,6 +35,12 @@ export default {
         order: [1, 5, 3, 6, 2, 4],
         engineLabel: "7.1-litre straight-six",
       },
+      real: {   // the part in real life (not this car)
+        src: "parts/roots-blower.jpg", w: 644, h: 493,
+        alt: "1928 drawing of a dismantled Mercedes supercharger: the casing on the left, the two upright rotors with the clutch beneath them on the right",
+        caption: "A Mercedes supercharger taken apart, drawn for a 1928 handbook. The casing (left) fits over the two upright rotors (right); beneath them is the clutch that brings the blower in at full throttle.",
+        credit: { author: "Montagu, Cars and Motor-Cycles (1928)", license: "Public domain", url: "https://commons.wikimedia.org/wiki/File:Mercedes_type_vertical_Roots_blower,_dismantled_(Montagu,_Cars_and_Motor-Cycles,_1928).jpg" },
+      },
       talk: [
         "SSK means Super Sport Kurz, the short-chassis Super Sport. Its full name gives the power: 27 tax horsepower, 170 PS on its own and 225 PS with the blower working.",
         "The blower is not always on. The driver pushes the pedal to the floor and then a little further; a clutch on the nose of the crankshaft couples the blower in. Lift off and it lets go again. It was meant for short bursts.",

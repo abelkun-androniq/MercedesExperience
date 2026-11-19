@@ -10,6 +10,10 @@ export default {
     {
       label: "Blokkolásgátló fék",
       params: { label: "Vészfékezés, bal első kerék", surfaces: [{ label: "Száraz út" }, { label: "Nedves út" }] },
+      real: {
+        alt: "Kábeles, henger alakú érzékelő egy fogazott gyűrű mellett, a féktárcsa mögött",
+        caption: "ABS-kerékfordulatszám-érzékelő (itt egy motorkerékpáron) a kerékkel együtt forgó fogazott gyűrű mellett. Minden elhaladó fog egy impulzus, így a vezérlő tudja, milyen gyorsan forog az egyes kerék.",
+      },
       talk: [
         "A gumi akkor tapad a legjobban, ha kicsit lassabban forog, mint ahogy alatta az út halad: kb. 10–20 % csúszásnál. A blokkoló kerék 100 % csúszással csúszik, kevésbé tapad, és nem tud felvenni oldalerőt, amely kormányozná az autót.",
         "A blokkolásgátló minden kerék fordulatát figyeli. Ha az egyik túl gyorsan lassul, blokkolni készül: egy szelep visszatartja a féknyomást, amíg a kerék újra fel nem gyorsul, aztán ismét felépíti.",

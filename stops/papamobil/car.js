@@ -34,6 +34,12 @@ export default {
         halfTrack: 712, wheelR: 360, axleX: -2850, wheel: "tyre", tyreW: 105, ringR: 120, drive: "crown",
         grip: { torque: 1500, normal: 5400, muLow: 0.1, muHigh: 0.8, resist: 2500, surface: "ice", locks: true },   // illustrative
       },
+      real: {   // the part in real life (not this car)
+        src: "parts/differential.jpg", w: 800, h: 600,
+        alt: "A car's rear differential with part of its casing cut away, showing the crown wheel and the small bevel gears inside it",
+        caption: "A rear differential cut open. Inside the big crown wheel, small bevel gears let the two half-shafts turn at different speeds; a differential lock stops them doing that.",
+        credit: { author: "DrJunge", license: "CC BY-SA 3.0", url: "https://commons.wikimedia.org/wiki/File:Differentialgetriebe2.jpg" },
+      },
       talk: [
         "Pearl white with gold trim and a transparent rear superstructure, this 230 G was lent to the Vatican for Pope John Paul II's visit to Germany in 1980. From 1981 it had bullet-proof glass.",
         "Underneath it is a G-Class, the off-road vehicle built with Steyr-Daimler-Puch from 1979, with four-wheel drive engaged by the driver.",

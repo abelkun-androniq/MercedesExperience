@@ -70,6 +70,38 @@ test("the stop's photo, credit and introduction show even when 3D cannot load", 
   await expect(page.locator(".step .look").first()).toBeVisible();
 });
 
+test("a real-part photo swaps places with the stage; a tap on the 3D view or scrolling away swaps them back", async ({ page }) => {
+  const errors = watchErrors(page);
+  await page.goto("stop.html?s=540k&debug");
+  await page.waitForFunction(() => window.__tour?.stories[0].frames() > 2, null, { timeout: 20_000 });
+  const swapped = () => page.evaluate(() => window.__tour.stories[0].swapped());
+  const pane = page.locator(".story-stage"), fig = page.locator("figure.real").first();
+  // The photo just below the pinned stage, as a visitor sees it before tapping.
+  await page.evaluate(() => scrollBy(0, document.querySelector("figure.real").getBoundingClientRect().top - document.querySelector(".story-stage").getBoundingClientRect().height - 20));
+  const height = (await pane.boundingBox()).height;
+
+  await fig.locator(".real-open").click();
+  expect(await swapped()).toBe(true);
+  await expect(pane.locator(".real-open img")).toBeVisible();
+  await expect(fig.locator(".stage canvas")).toBeVisible();
+  expect((await pane.boundingBox()).height, "the pinned area keeps its size").toBeCloseTo(height, 0);
+
+  const box = await fig.locator(".stage").boundingBox();
+  await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+  expect(await swapped()).toBe(false);
+  await expect(pane.locator(".stage canvas")).toBeVisible();
+
+  await fig.locator(".real-open").click();
+  await pane.locator(".real-open").click();   // the big photo swaps back too
+  expect(await swapped()).toBe(false);
+
+  await fig.locator(".real-open").click();
+  await page.evaluate(() => scrollBy(0, 2 * innerHeight));
+  await expect.poll(swapped).toBe(false);
+  await expect(pane.locator(":scope > .stage")).toHaveCount(1);
+  expect(errors).toEqual([]);
+});
+
 test("unknown stop shows the not-found message and loads no 3D code", async ({ page }) => {
   const three = [];
   page.on("request", r => { if (/vendor\/three|subsystems\//.test(r.url())) three.push(r.url()); });

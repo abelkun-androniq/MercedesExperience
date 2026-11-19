@@ -10,6 +10,10 @@ export default {
     {
       label: "Forgódugattyús motor",
       params: { label: "Négyrotoros Wankel-motor" },
+      real: {
+        alt: "Felix Wankel 1957-es DKM 54 forgódugattyús motorja levett fedéllel: a háromszög alakú forgódugattyú a házában",
+        caption: "Felix Wankel első forgódugattyús motorja, az 1957-es DKM 54, nyitott fedéllel: a háromszög alakú forgódugattyú a házában. (Ennél a korai típusnál a ház is forgott.)",
+      },
       talk: [
         "Felix Wankel motorjában kamracsoportonként egyetlen mozgó alkatrész van: egy excenteren forgó, ívelt oldalú háromszög. Csúcsai egy kövér nyolcasra emlékeztető házhoz tömítenek.",
         "A rotor a tengely minden három fordulatára egyszer fordul körbe. Mindhárom oldala rotorfordulatonként egy munkaütemet ad, így minden rotor tengelyfordulatonként egyszer gyújt.",

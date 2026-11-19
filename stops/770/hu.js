@@ -19,6 +19,10 @@ export default {
     {
       label: "Kompresszor",
       params: { engineLabel: "7,7 literes soros nyolchengeres" },
+      real: {
+        alt: "1928-as rajz egy szétszedett Mercedes-kompresszorról: balra a ház, jobbra a két álló forgórész, alattuk a tengelykapcsoló",
+        caption: "Szétszedett Mercedes-kompresszor egy 1928-as kézikönyv rajzán. A ház (balra) a két álló forgórészre (jobbra) illeszkedik; alattuk a tengelykapcsoló, amely teljes gáznál bekapcsolja a kompresszort.",
+      },
       talk: [
         "Az SSK-éhoz hasonlóan a 770 Roots-kompresszora is csak akkor működik, ha szükség van rá. Ha a gázpedált tövig nyomják, egy tengelykapcsoló a főtengelyhez kapcsolja, és nyomás alatt fújja a levegőt a porlasztóba.",
         "Ütemenként több levegő több tüzelőanyag elégetését teszi lehetővé: kompresszor nélkül 150 LE, vele 200 LE. Ha a vezető visszavesz, a tengelykapcsoló újra leválasztja, kímélve a motort és a tüzelőanyagot.",

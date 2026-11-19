@@ -36,6 +36,12 @@ export default {
         speed: 100, slow: 6, at: [0, 760],
         surfaces: [{ id: "dry", label: "Dry road" }, { id: "wet", label: "Wet road" }],
       },
+      real: {   // the part in real life (not this car)
+        src: "parts/abs-sensor.jpg", w: 800, h: 598,
+        alt: "A cylindrical sensor with a cable, mounted next to a toothed ring behind a brake disc",
+        caption: "An ABS wheel-speed sensor (here on a motorcycle) beside the toothed ring that turns with the wheel. Each passing tooth gives a pulse, so the controller knows how fast every wheel turns.",
+        credit: { author: "NSX-Racer", license: "CC BY-SA 2.5", url: "https://commons.wikimedia.org/wiki/File:ABS-Sensor.jpg" },
+      },
       talk: [
         "A tyre grips best when it turns a little slower than the road passes under it: about 10 to 20 % slip. A locked wheel slides at 100 % slip, with less grip, and it can no longer take the side force that steers the car.",
         "The anti-lock system watches each wheel's speed. When one slows too quickly, it is about to lock: a valve holds back the brake pressure until the wheel speeds up again, then lets it build once more.",

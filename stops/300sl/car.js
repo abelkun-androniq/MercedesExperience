@@ -47,6 +47,12 @@ export default {
         load: 3000, exaggerate: 8,
         modes: { high: "300 SL frame: deep sides", low: "Cut down for normal doors" },
       },
+      real: {   // the part in real life (not this car)
+        src: "parts/300sl-frame.jpg", w: 800, h: 533,
+        alt: "The bare black tube frame of a 300 SL on display in the Mercedes-Benz Museum",
+        caption: "The bare frame of a 300 SL, photographed in this museum in 2013. See how high the side tubes run where a door would be.",
+        credit: { author: "Morio", license: "CC BY-SA 3.0", url: "https://commons.wikimedia.org/wiki/File:Mercedes-Benz_W198_space_frame_chassis_front-left_2013_Mercedes-Benz_Museum.jpg" },
+      },
       talk: [
         "Rudolf Uhlenhaut's engineers built the 1952 racing 300 SL around a frame of thin welded steel tubes, arranged in triangles so that each tube is only pulled or pushed, never bent. The road car of 1954 kept it.",
         "Red tubes are in tension, blue in compression. The sides stay stiff only because their triangles run deep, right up through where a door would be.",

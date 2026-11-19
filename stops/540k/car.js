@@ -82,6 +82,12 @@ export default {
         order: [1, 6, 2, 5, 8, 3, 7, 4],             // straight-eight crank for the drawing; illustrative
         engineLabel: "5.4-litre straight-eight",
       },
+      real: {   // the part in real life (not this car)
+        src: "parts/roots-blower.jpg", w: 644, h: 493,
+        alt: "1928 drawing of a dismantled Mercedes supercharger: the casing on the left, the two upright rotors with the clutch beneath them on the right",
+        caption: "A Mercedes supercharger taken apart, drawn for a 1928 handbook. The casing (left) fits over the two upright rotors (right); beneath them is the clutch that brings the blower in at full throttle.",
+        credit: { author: "Montagu, Cars and Motor-Cycles (1928)", license: "Public domain", url: "https://commons.wikimedia.org/wiki/File:Mercedes_type_vertical_Roots_blower,_dismantled_(Montagu,_Cars_and_Motor-Cycles,_1928).jpg" },
+      },
       talk: [
         "K stands for Kompressor. The 5.4-litre straight-eight makes 115 PS on its own and 180 PS with the blower working.",
         "The blower is not always on. Push the pedal through to the floor and a multi-plate clutch on the nose of the crankshaft couples it in; the engine's normal air inlet closes at the same moment. It was meant for short bursts.",

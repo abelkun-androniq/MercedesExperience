@@ -16,6 +16,10 @@ export default {
       answer: "Levágott oldalakkal ez a modell merevségének csak kb. harmadát tartja meg. A magas csövek adják a valódi autó magas küszöbét, ezért az ajtók a tetőn csuklósak.",
       more: "A váz terhelése és merevsége",
       params: { label: "A váz megcsavarása", modes: { high: "300 SL váz: magas oldalfalak", low: "Lecsökkentve szokásos ajtókhoz" } },
+      real: {
+        alt: "Egy 300 SL csupasz, fekete csőváza a Mercedes-Benz Múzeumban kiállítva",
+        caption: "Egy 300 SL csupasz csőváza, ebben a múzeumban fényképezve 2013-ban. Figyelje meg, milyen magasan futnak az oldalsó csövek ott, ahol egy ajtó lenne.",
+      },
       talk: [
         "Rudolf Uhlenhaut mérnökei az 1952-es 300 SL versenyautót vékony, hegesztett acélcsövekből álló váz köré építették; a csövek háromszögekbe rendezve csak húzást vagy nyomást kapnak, hajlítást soha. Az 1954-es közúti autó megtartotta.",
         "A piros csövek húzottak, a kékek nyomottak. Az oldalak csak azért maradnak merevek, mert háromszögeik magasra érnek, egészen át azon a részen, ahol az ajtó lenne.",

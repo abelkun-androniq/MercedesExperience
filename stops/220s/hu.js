@@ -10,6 +10,10 @@ export default {
     {
       label: "Töréspróba",
       params: { label: "Frontális ütközés merev falnak", cases: [{ label: "Biztonsági karosszéria: gyűrődőzóna" }, { label: "Merev orr" }] },
+      real: {
+        alt: "Narancssárga, töréspróbán átesett Mercedes C-osztály összegyűrt orral és ép utastérrel",
+        caption: "Egy Mercedes C-osztály töréspróba után, évtizedekkel később: az orr összegyűrődött és elnyelte az ütközést, az utascella és az ajtók megtartották alakjukat. Ugyanaz az elv, mint a 220 S-ben.",
+      },
       talk: [
         "A magyar származású Barényi Béla 1951-ben szabadalmaztatta az ötletet (DBP 854 157): merev utascella, előtte és mögötte szabályozottan összegyűrődő részekkel.",
         "Az 1959-es W 111 limuzin volt az első így épített autó. 1959. szeptember 10-én a Mercedes Sindelfingenben elvégezte első töréspróbáját: egy W 111-et vezettek egy szilárd akadálynak.",

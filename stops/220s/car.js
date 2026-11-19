@@ -42,6 +42,12 @@ export default {
         body: { bumper: 950, firewall: -250, cellRear: -2350, tail: -3950, w: 880, sill: 250, belt: 900, roof: 1450 },
         wheels: { front: 0, rear: -2750, R: 340 },
       },
+      real: {   // the part in real life (not this car)
+        src: "parts/crash-test.jpg", w: 800, h: 559,
+        alt: "An orange crash-test Mercedes C-Class with its front crushed and its cabin intact",
+        caption: "A Mercedes C-Class after a crash test, decades later: the front has folded up and taken the blow, while the passenger cell and its doors kept their shape. The same idea as in the 220 S.",
+        credit: { author: "Kalispera Dell", license: "CC BY 3.0", url: "https://commons.wikimedia.org/wiki/File:Crash_test_car_from_the_West_Germany_USA_zone_before_120278145_(cropped).jpg" },
+      },
       talk: [
         "Béla Barényi patented the idea in 1951 (DBP 854 157): a rigid passenger cell, with front and rear sections built to fold up in a controlled way.",
         "The W 111 saloon of 1959 was the first car built that way. On 10 September 1959 Mercedes ran its first crash test at Sindelfingen, driving a W 111 into a solid barrier.",

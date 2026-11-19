@@ -10,6 +10,10 @@ export default {
     {
       label: "Differenciálzár",
       params: { label: "Hátsó tengely, egyik kerék jégen" },
+      real: {
+        alt: "Személyautó hátsó differenciálműve részben kivágott házzal: látszik a tányérkerék és benne a kis kúpkerekek",
+        caption: "Felvágott hátsó differenciálmű. A nagy tányérkerékben kis kúpkerekek engedik, hogy a két féltengely eltérő sebességgel forogjon; a differenciálzár ezt akadályozza meg.",
+      },
       talk: [
         "Gyöngyházfehér, arany díszítéssel és átlátszó hátsó felépítménnyel: ezt a 230 G-t II. János Pál pápa 1980-as németországi látogatására adták kölcsön a Vatikánnak. 1981-től golyóálló üvege volt.",
         "Alatta egy G-osztály, a Steyr-Daimler-Puch-hal közösen, 1979-től épített terepjáró, a vezető által bekapcsolható összkerékhajtással.",

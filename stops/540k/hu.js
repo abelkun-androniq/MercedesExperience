@@ -33,6 +33,10 @@ export default {
       answer: "Csak teljes gázállásnál: a tengelykapcsoló bekapcsolja a kompresszort, és a teljesítmény 115-ről 180 LE-re nő, rövid időre. A K a Kompressor rövidítése.",
       more: "A kompresszor belseje",
       params: { engineLabel: "5,4 literes soros nyolchengeres" },
+      real: {
+        alt: "1928-as rajz egy szétszedett Mercedes-kompresszorról: balra a ház, jobbra a két álló forgórész, alattuk a tengelykapcsoló",
+        caption: "Szétszedett Mercedes-kompresszor egy 1928-as kézikönyv rajzán. A ház (balra) a két álló forgórészre (jobbra) illeszkedik; alattuk a tengelykapcsoló, amely teljes gáznál bekapcsolja a kompresszort.",
+      },
       talk: [
         "A K a Kompressor rövidítése. Az 5,4 literes soros nyolchengeres magában 115 LE-t, működő kompresszorral 180 LE-t ad.",
         "A kompresszor nem mindig jár. Nyomja a pedált padlóig és még tovább, és a főtengely orrán ülő többtárcsás tengelykapcsoló bekapcsolja; ugyanabban a pillanatban a motor normál levegőbeömlője bezárul. Rövid nekiiramodásokra szánták.",

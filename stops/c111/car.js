@@ -38,6 +38,12 @@ export default {
         origin: [-1700, 0, 420],
         speed: { min: 5, max: 60, value: 15 }, realRpm: 7000,
       },
+      real: {   // the part in real life (not this car)
+        src: "parts/wankel-dkm54.jpg", w: 800, h: 656,
+        alt: "Felix Wankel's DKM 54 rotary engine of 1957 with its cover off, showing the triangular rotor in its housing",
+        caption: "Felix Wankel's first rotary engine, the DKM 54 of 1957, opened up: the triangular rotor inside its housing. (In this early type the housing turned as well.)",
+        credit: { author: "Ralf Pfeifer", license: "CC BY-SA 3.0", url: "https://commons.wikimedia.org/wiki/File:DrehkolbenmotorDKM54.JPG" },
+      },
       talk: [
         "Felix Wankel's engine has one moving part per chamber group: a curved triangle turning on an eccentric. Its tips seal against a housing shaped like a fat figure eight.",
         "The rotor turns once for every three turns of the shaft. Each of its three faces makes a power stroke once per rotor turn, so each rotor fires once per shaft turn.",

@@ -14,6 +14,10 @@ export default {
         links: [{ name: "Kerékdőlés-rúd" }, { name: "Húzórúd" }, { name: "Tolórúd" }, { name: "Rugótartó lengőkar" }, { name: "Nyomtávrúd" }],
         legendTitle: "Az öt lengőkar",
       },
+      real: {
+        alt: "Komplett többlengőkaros hátsó futómű fékekkel egy kiállítási állványon: vékony fekete lengőkarok futnak a segédvázból a kerékhordozókhoz",
+        caption: "Modern ötlengőkaros hátsó tengely, autó nélkül (Toyota Supra, 2019): külön vékony lengőkarok tartják a kerékhordozókat. Az 1982-es 190 volt az első sorozatautó ilyen tengellyel.",
+      },
       talk: [
         "Öt rúd, mindegyik főként a saját tengelye mentén terhelve, vezeti a kerékhordozót. A 190-es volt az első sorozatautó ezzel a tengellyel, 1982-ben.",
         "Figyelje a narancssárga görbét. A bukkanón az abroncsterhelés kiugrik, a kátyúban nulla felé esik. A tapadás ebből a terhelésből származik, ezért a cél a lapos vonal.",

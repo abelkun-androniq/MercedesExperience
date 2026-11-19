@@ -34,6 +34,12 @@ export default {
         axle: { wheelR: 0.55, tubeR: 0.08, diffR: 0.24, drop: 0.12, ratio: 1.85 },   // illustrative
         rock: { min: 100, max: 600, value: 350 }, wheelTorque: 6000, quoted: 430,     // illustrative
       },
+      real: {   // the part in real life (not this car)
+        src: "parts/portal-hub.jpg", w: 600, h: 800,
+        alt: "A green military axle with its wheel-hub housing cut open, showing a small gear above a larger one",
+        caption: "A portal hub cut open (on a BTR-70 military vehicle). The axle shaft comes in high up, and a pair of gears carries the drive down to the wheel centre: that step is the extra ground clearance.",
+        credit: { author: "HobbyAstronaut", license: "CC BY-SA 4.0", url: "https://commons.wikimedia.org/wiki/File:Portalachse_eines_BTR-70_im_Schnitt.jpg" },
+      },
       talk: [
         "Unimog stands for Universal-Motor-Gerät, a universal motorised implement: designed after the war as a small tractor that could also drive fast on the road, and built by Daimler-Benz since 1951.",
         "Its axles are portal axles. The half-shafts run above the wheel centres and drive each wheel through a pair of spur gears in the hub, so the axle tube and the differential sit higher by the gears' drop, leaving more room underneath.",

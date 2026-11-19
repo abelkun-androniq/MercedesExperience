@@ -11,7 +11,8 @@ iPhone/iPad Safari (iOS 16.4+, import maps). No bundler: native ES modules; `too
   cache (new root files also go in tools/build.mjs ENTRIES)
 - `stops/tour.js` route order, room, level, `check` ("room" or "level": not yet confirmed on site, shown as a qualifier),
   and `teaser` (slugs): single source for order and prev/next ·
-  `stops/<slug>/car.js` pure data (+ photo.jpg)
+  `stops/<slug>/car.js` pure data (+ photo.jpg) · `parts/` real-life photos of mechanisms the exhibits hide (component `real`; shared
+  between stops)
 - `lib/model/` pure maths, Node-tested: linkage (multi-link closure), quarter-car (ride), engine (N-cylinder slider-crank,
   timing, diesel), blower, valvetrain (spring float, desmo), steering (double-pivot trapezoid, centre pivot, twin steered
   axles), differential (one axle; traction4: four-wheel drive with locks or brake traction control), gearbox (sliding
@@ -57,9 +58,11 @@ iPhone/iPad Safari (iOS 16.4+, import maps). No bundler: native ES modules; `too
 ## Contracts
 - car.js: `{ slug, title, name, year, summary, question?, eyebrow, lede, look?, takeaway?, frame?, ride?, orbit?, sun?,
   body?: { ghost }, photo?: { …, caption? }, components: [{ id, label, subsystem, view: { pos, target }, ghost?: { fill, edge },
-  params, talk, prompt?, answer?, more? }], note, unverified, sources }`. `question` replaces the summary on the index
+  params, talk, prompt?, answer?, more?, real? }], note, unverified, sources }`. `question` replaces the summary on the index
   card; `look`/`takeaway` open and close the story at the car; a component with `prompt` shows prompt → key controls →
-  `answer`, and `more` names the disclosure holding the detail widgets and the facts (piloted on 300sl, slk, 540k).
+  `answer`, and `more` names the disclosure holding the detail widgets and the facts (piloted on 300sl, slk, 540k). `real:
+  { src: "parts/<x>.jpg", w, h, alt, caption, credit }` shows the part in real life after the answer, only where the
+  exhibit hides it (under the body or bonnet): any car's, ~800 px wide, free licence, caption saying whose it is.
 - Subsystem: `export function create(ctx, params)` with ctx `{ stage, carRoot, frame, ride, panel, reducedMotion, t }`, returns
   `{ layout({ active, onPhoto }), update(dt, { onPhoto }) }`. lib/app/viewer.js owns photo view, outline, ghost body and
   the loop (the story's step at the reading line chooses what it shows; a car without a photo shows its model), and

@@ -6,7 +6,7 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL("..", import.meta.url)), out = join(root, "_site");
-const ENTRIES = ["index.html", "teaser.html", "stop.html", "sw.js", "manifest.webmanifest", "teaser.webmanifest", "icons", "lib", "stops", "subsystems", "vendor"];
+const ENTRIES = ["index.html", "teaser.html", "stop.html", "sw.js", "manifest.webmanifest", "teaser.webmanifest", "icons", "lib", "parts", "stops", "subsystems", "vendor"];
 const SKIP = /(^|\/)\.|\.svg$/;   // dotfiles (.DS_Store) and the icon source
 
 await rm(out, { recursive: true, force: true });

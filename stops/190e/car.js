@@ -54,6 +54,12 @@ export default {
         road: { x0: -5, x1: 8, seg: 520 },
         patch: [0.07, 0.065],
       },
+      real: {   // the part in real life (not this car)
+        src: "parts/multi-link.jpg", w: 800, h: 386,
+        alt: "A complete multi-link rear axle with its brakes on a display stand: thin black links reach from the subframe to each wheel carrier",
+        caption: "A modern five-link rear axle out of its car (Toyota Supra, 2019): separate thin links hold each wheel carrier. The 190 of 1982 was the first series car with such an axle.",
+        credit: { author: "TTTNIS", license: "CC0", url: "https://commons.wikimedia.org/wiki/File:Toyota_Supra_A90_multi-link_rear_suspension.jpg" },
+      },
       talk: [
         "Five rods, each loaded mostly along its own axis, locate the wheel carrier. The 190 was the first series car with this axle, in 1982.",
         "Watch the orange trace. Over the bump tyre load spikes; in the pothole it drops toward zero. Grip comes from that load, so a flat line is the goal.",

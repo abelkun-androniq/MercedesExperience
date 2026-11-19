@@ -38,6 +38,11 @@ for (const car of cars) {
       assert.ok(exists(`subsystems/${c.subsystem}.js`), `subsystems/${c.subsystem}.js`);
       assert.ok(c.label && c.view?.pos?.length === 3 && c.view?.target?.length === 3, `${c.id}: label and view`);
       assert.ok(c.talk?.length > 0 && c.talk.every(t => t.length > 20), `${c.id}: talk points`);
+      if (c.real) {   // the real part: a shared photo under parts/, with its size, words and credit
+        assert.match(c.real.src, /^parts\/[a-z0-9-]+\.jpg$/); assert.ok(exists(c.real.src), `${c.id}: ${c.real.src}`);
+        assert.ok(c.real.w > 0 && c.real.h > 0 && c.real.alt && c.real.caption?.length > 20, `${c.id}: real size and text`);
+        assert.ok(c.real.credit?.author && c.real.credit.license && /^https:\/\//.test(c.real.credit.url), `${c.id}: real credit`);
+      }
     }
     assert.ok(Array.isArray(car.unverified) && Array.isArray(car.sources));
     for (const s of car.sources) assert.match(s.url, /^https:\/\//);

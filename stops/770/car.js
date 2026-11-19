@@ -51,6 +51,12 @@ export default {
         blower: { ratio: 2.6, engageAt: 0.98, tauUp: 0.25, tauDown: 0.7, boostMax: 0.4, psAtmo: 150, psBoost: 200 },   // ratio, timing and boost illustrative
         order: [1, 6, 2, 5, 8, 3, 7, 4], engineLabel: "7.7-litre straight-eight", offset: [0, 0, 0.42],
       },
+      real: {   // the part in real life (not this car)
+        src: "parts/roots-blower.jpg", w: 644, h: 493,
+        alt: "1928 drawing of a dismantled Mercedes supercharger: the casing on the left, the two upright rotors with the clutch beneath them on the right",
+        caption: "A Mercedes supercharger taken apart, drawn for a 1928 handbook. The casing (left) fits over the two upright rotors (right); beneath them is the clutch that brings the blower in at full throttle.",
+        credit: { author: "Montagu, Cars and Motor-Cycles (1928)", license: "Public domain", url: "https://commons.wikimedia.org/wiki/File:Mercedes_type_vertical_Roots_blower,_dismantled_(Montagu,_Cars_and_Motor-Cycles,_1928).jpg" },
+      },
       talk: [
         "Like the SSK's, the 770's Roots supercharger runs only when it is needed. Push the accelerator to the floor and a clutch couples it to the crankshaft; it then blows air into the carburettor under pressure.",
         "More air per stroke means more fuel can burn: 150 hp without the blower, 200 hp with it. Ease off and the clutch lets it go again, saving the engine and the fuel.",
