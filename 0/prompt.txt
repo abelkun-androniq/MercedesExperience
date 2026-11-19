@@ -1,0 +1,13 @@
+The tour looks very good. Upgrade: can you find a real life image for the technologies that are component-specific? e.g. an image of the inside of an open/LSD differential, or an image of parts of a wishbone suspension. So it doesnt need to be the exact model, but an image could help the visitor imagine how those subsystems look like in real life after they already understood what they do based on the tour. It doesnt need to be extensive and also it shouldnt hinder the presented cars - if the technology is visible, then there is no need for an additional image. If it is under the chassis, not observable, then it can be a very good addition.
+
+---
+
+Show me a local hosted view so I can check cisually
+
+---
+
+Very nice! One more thing: make the images clickable  when clicked it should pop into the place of the 3D model area and the 3D model should go to the images space - essentially switching places so that the image can be checked up-close. When the 3D model is clicked again, they should go back to their original spaces and also when the user scrolls past the real-life image of the component. Make this change and let me check in the dev view.
+
+---
+
+good! commit push and redeploy.
