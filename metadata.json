@@ -3,7 +3,7 @@
   "checkpoint_id": "01M8A4QM45J3TDKTNGQH90E9Z8",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 7,
+  "checkpoints_count": 11,
   "files_touched": [
     "CLAUDE.md",
     "index.html",
@@ -53,6 +53,7 @@
     "teaser.html",
     "tests/e2e/smoke.spec.mjs",
     "tests/unit/helpers.mjs",
+    "tools/cfd/.gitignore",
     "tools/cfd/export.mjs",
     "tools/cfd/lbm3d.mjs",
     "tools/cfd/run.mjs",
@@ -73,24 +74,38 @@
       "compact_transcript": "/1/transcript.jsonl",
       "content_hash": "/1/content_hash.txt",
       "prompt": "/1/prompt.txt"
+    },
+    {
+      "metadata": "/2/metadata.json",
+      "transcript": "/2/full.jsonl",
+      "compact_transcript": "/2/transcript.jsonl",
+      "content_hash": "/2/content_hash.txt",
+      "prompt": "/2/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 296393,
-    "cache_creation_tokens": 150455,
-    "cache_read_tokens": 15181614,
-    "output_tokens": 56523,
-    "api_call_count": 126
+    "input_tokens": 296799,
+    "cache_creation_tokens": 780639,
+    "cache_read_tokens": 59504642,
+    "output_tokens": 278052,
+    "api_call_count": 325,
+    "subagent_tokens": {
+      "input_tokens": 8,
+      "cache_creation_tokens": 53498,
+      "cache_read_tokens": 8981,
+      "output_tokens": 5585,
+      "api_call_count": 4
+    }
   },
   "redaction": {
-    "replacements": 116,
+    "replacements": 127,
     "layers": {
       "betterleaks": 0,
       "connection_string": 0,
       "credential_key": 0,
-      "credential_value": 2,
+      "credential_value": 4,
       "credentialed_uri": 0,
-      "entropy": 123,
+      "entropy": 132,
       "key_context": 0,
       "provider_token": 0,
       "shell_stdin": 0
