@@ -16,7 +16,7 @@ export default [
   { slug: "blitzen-benz", room: "Legend 2", level: 7 },
   { slug: "milnes-daimler", room: "Collection 1", level: 7 },
   { slug: "lo1112", room: "Collection 1", level: 7 },
-  { slug: "o302", room: "Collection 1", level: 7 },
+  { slug: "o302", room: "Collection 1", level: 7, check: "room" },   // Daimler Truck's 2022 photos: Collection 4
   { slug: "ssk", room: "Legend 3", level: 6 },
   { slug: "770", room: "Legend 3", level: 6 },
   { slug: "260d", room: "Legend 3", level: 6 },

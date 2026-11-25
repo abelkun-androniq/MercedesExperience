@@ -2,7 +2,8 @@
 export default {
   title: "Hogyan kormányoz a Victoria",
   name: "Benz Victoria",
-  summary: "Carl Benz kétcsapos kormányzása: mindkét első kerék saját csapja körül fordul, olyan szögben, hogy mindkettő ugyanazt a fordulókört kövesse.",
+  summary: "Carl Benz kétcsapos kormányzása: mindkét első kerék saját csapja körül fordul, a belső jobban, így mindkettő ugyanazon fordulási középpont körül gördül.",
+  question: "Kanyarodáskor miért fordul el jobban a belső első kerék?",
   eyebrow: "Benz Victoria, 1893",
   lede: "Az első kétcsapos kormányzású Benz, felülről nézve. Kormányozza, aztán váltson a lovaskocsik középen forgó tengelyére, amelyet felváltott, és hasonlítsa össze, hol metszik egymást a kerekek tengelyvonalai.",
   photo: { alt: "Az 1893-as Benz Vis-à-Vis, egy szemben ülős első üléssel épült Victoria, a Mercedes-Benz Múzeumban, jobbról elölről nézve" },

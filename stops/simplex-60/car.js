@@ -33,12 +33,12 @@ export default {
         label: "9.2-litre four · overhead inlet valves · firing order 1-3-4-2",
         order: [1, 3, 4, 2], bore: 140, stroke: 150, rod: 320,                    // rod illustrative
         xs: [330, 150, -30, -210], crankZ: 600, lean: 0,                            // positions illustrative
-        valvetrain: "ohv", ignition: "spark", fuel: "carb", crankcase: "open",
+        valvetrain: "ohv", sideExhaust: true, ignition: "spark", fuel: "carb", crankcase: "open",
         speed: { min: 5, max: 40, value: 15 },
       },
       talk: [
         "Four cylinders of 140 mm bore and 150 mm stroke: 9.2 litres, giving 60 hp at little more than 1,000 rpm. With its light body the racing version reached over 100 km/h.",
-        "Earlier engines let the inlet valve open by suction, held shut only by a weak spring. The 60 PS opens it from the camshaft, through a pushrod and rocker, so the cylinder fills properly at speed.",
+        "Earlier engines let the inlet valve open by suction, held shut only by a weak spring. The 60 PS opens it from the camshaft, through a pushrod and rocker, so the cylinder fills properly at speed. The exhaust valve (red) stays low beside the cylinder, lifted from below by a tappet on the same camshaft.",
         "It kept the layout of the first Mercedes of 1900: engine at the front under a low bonnet, honeycomb radiator, pressed-steel frame and a gate gearbox, a pattern cars kept for decades.",
         "This one carries a tall touring-limousine body: room to stand up inside, for travelling in comfort.",
       ],
@@ -47,7 +47,7 @@ export default {
   note: "The Simplex name stood for simple driving: the 1902 range was meant to be easy to handle compared with its predecessors.",
   unverified: [
     "Engine position in the car, cylinder spacing and conrod length",
-    "Valve gear drawn as overhead valves for both (the 60 PS had overhead inlet and side exhaust valves)",
+    "Positions of the side exhaust valve, its tappet and the inlet pushrods (schematic)",
     "Ghost-body outline (sketched from the data-sheet sizes, not yet traced from the photo)",
     "Room: Legend 2",
   ],

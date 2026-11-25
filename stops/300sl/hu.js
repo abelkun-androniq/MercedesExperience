@@ -15,7 +15,7 @@ export default {
       prompt: "Mi történne, ha ezek a csövek olyan alacsonyan futnának, hogy szokásos ajtó is beférjen? Váltson vázat, és hasonlítsa össze.",
       answer: "Levágott oldalakkal ez a modell merevségének csak kb. harmadát tartja meg. A magas csövek adják a valódi autó magas küszöbét, ezért az ajtók a tetőn csuklósak.",
       more: "A váz terhelése és merevsége",
-      params: { label: "A váz megcsavarása", modes: { high: "300 SL váz: magas oldalfalak", low: "Lecsökkentve szokásos ajtókhoz" } },
+      params: { label: "A váz megcsavarása", modes: { high: "Eredeti, magas küszöb", low: "Alacsony küszöb hagyományos ajtóhoz" } },
       real: {
         alt: "Egy 300 SL csupasz, fekete csőváza a Mercedes-Benz Múzeumban kiállítva",
         caption: "Egy 300 SL csupasz csőváza, ebben a múzeumban fényképezve 2013-ban. Figyelje meg, milyen magasan futnak az oldalsó csövek ott, ahol egy ajtó lenne.",

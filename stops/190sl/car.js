@@ -7,7 +7,7 @@ export default {
   year: 1959,
   summary: "The 300 SL's affordable sister: the same look, a saloon floorpan and a new 1.9-litre overhead-camshaft four.",
   eyebrow: "Mercedes-Benz 190 SL, 1959",
-  lede: "It looks like a 300 SL, but underneath it is far simpler. Its engine is a four-cylinder with the 300 SL's bore and a camshaft in the head, turned by a chain. Watch the cam open each valve directly as the four cylinders fire in turn.",
+  lede: "It looks like a 300 SL, but underneath it is far simpler. Its engine is a four-cylinder with the 300 SL's bore and a camshaft in the head, turned by a chain. Each cam works its valve through a rocker arm, as the four cylinders fire in turn.",
   orbit: { min: 0.5, max: 14 },
   sun: [2, 3, 6],
   body: {
@@ -28,19 +28,20 @@ export default {
   components: [
     {
       id: "engine", label: "Engine", subsystem: "inline-engine",
+      prompt: "Follow the cam as it presses the rocker arm and opens the valve.",
       view: { pos: [1.5, 1.5, 1.3], target: [0.18, 0, 0.45] },
       ghost: { fill: 0.04, edge: 0.35 },
       params: {
         label: "M 121 four, overhead camshaft · firing order 1-3-4-2",
         order: [1, 3, 4, 2], bore: 85, stroke: 83.6, rod: 145,           // rod illustrative
         xs: [360, 260, 160, 60], crankZ: 330, lean: 0,                    // positions illustrative
-        valvetrain: "ohc", ignition: "spark", fuel: "carb", crankcase: "open",
+        valvetrain: "ohc", rockers: true, ignition: "spark", fuel: "carb", crankcase: "open",
         speed: { min: 5, max: 60, value: 20 }, realRpm: 5700,
       },
       talk: [
         "The 190 SL shares the 300 SL's styling and its suspension layout, wishbones at the front and a swing axle at the rear. But instead of a tubular space frame it sits on a shortened floorpan from the saloons, which made it far cheaper to build.",
         "Its engine, the M 121, was new: four cylinders with the 300 SL's 85 mm bore and an 83.6 mm stroke, 1.9 litres in all, giving 105 hp at 5,700 rpm through two twin-choke Solex carburettors.",
-        "One camshaft in the head, driven by a double roller chain, opens all eight valves. With no pushrods in between, the valve gear stays light and can follow the cam at high revs.",
+        "One camshaft in the head, driven by a double roller chain, opens all eight valves through rocker arms. With no pushrods in between, the valve gear stays light and can follow the cam at high revs.",
         "Firing order 1-3-4-2: one power stroke every half turn. Pistons 1 and 4 rise and fall together, 2 and 3 opposite them. Detuned, the same engine later powered the 180 and 190 saloons.",
       ],
     },

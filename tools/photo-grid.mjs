@@ -1,7 +1,8 @@
 // Crop of a photo, enlarged, with a pixel grid (labels in the photo's own pixels) and optional overlays of vehicle-frame
 // polylines projected through a fitted camera: for reading outline points for trace-profile.mjs and for checking a
 // profile against a museum photo. Renders with Playwright's Chromium (the e2e dependency).
-// Usage: node tools/photo-grid.mjs <photo.jpg> <out.png> [x0 y0 x1 y1] [scale] [step] [--overlay overlay.json]
+// Usage: node tools/photo-grid.mjs <photo.jpg> <out.png> [x0 y0 x1 y1] [scale] [step] [--overlay overlay.json] [--bright k]
+// (--bright: brightens the photo k times, for dark cars)
 // overlay.json: { cam, image, shapes: [{ y (mm plane), pts: [[x, z], …] (mm), color?, closed? }] }; shapes may instead take
 // { from: "stops/<slug>/car.js", path: "body.ghost.0.pts" } to draw a profile straight from a car config.
 import { readFileSync } from "node:fs";
@@ -11,6 +12,7 @@ import { chromium } from "@playwright/test";
 import { camera } from "./camera.mjs";
 
 const args = process.argv.slice(2), oi = args.indexOf("--overlay"), overlay = oi >= 0 ? JSON.parse(readFileSync(args.splice(oi, 2)[1], "utf8")) : null;
+const bi = args.indexOf("--bright"), bright = bi >= 0 ? +args.splice(bi, 2)[1] : 1;
 const [photo, out, ...nums] = args, b64 = readFileSync(photo).toString("base64");
 const browser = await chromium.launch(), page = await browser.newPage();
 await page.setContent(`<img id="i" src="data:image/jpeg;base64,${b64}">`);
@@ -31,7 +33,7 @@ if (overlay) {
 }
 await page.setViewportSize({ width: Math.round((x1 - x0) * k), height: Math.round((y1 - y0) * k) });
 await page.setContent(`<body style="margin:0"><svg width="${(x1 - x0) * k}" height="${(y1 - y0) * k}" viewBox="${x0} ${y0} ${x1 - x0} ${y1 - y0}"
-  font-size="${9 / k}" font-family="monospace" stroke-width="${1 / k}"><image href="data:image/jpeg;base64,${b64}" width="${W}" height="${H}"/>${lines.join("")}</svg></body>`);
+  font-size="${9 / k}" font-family="monospace" stroke-width="${1 / k}"><image href="data:image/jpeg;base64,${b64}" width="${W}" height="${H}" style="filter:brightness(${bright})"/>${lines.join("")}</svg></body>`);
 await page.screenshot({ path: out });
 await browser.close();
 console.log(`${out}: ${W}×${H} photo, crop ${x0},${y0}–${x1},${y1} at ×${k}`);

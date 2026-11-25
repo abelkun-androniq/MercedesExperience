@@ -37,7 +37,7 @@ export default {
   components: [
     {
       id: "roof", label: "Vario-roof", subsystem: "vario-roof",
-      prompt: "Which moves first, the boot lid or the roof? Press “Open the roof” and watch the steps light up.",
+      prompt: "Tap “Open the roof”. Which moves first, the boot lid or the roof?",
       answer: "The lid goes up first; then the rear window turns back, the roof folds onto it, and the pack drops into the boot before the lid closes. The price: with the roof down, much of the boot is taken.",
       more: "How the roof folds",
       view: { pos: [-1.6, -5.4, 1.6], target: [-2, 0, 0.9] },

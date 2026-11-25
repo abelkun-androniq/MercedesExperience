@@ -12,7 +12,7 @@ export default {
       params: { label: "9,2 literes négyhengeres · felül elhelyezett szívószelepek · gyújtási sorrend 1-3-4-2" },
       talk: [
         "Négy henger 140 mm furattal és 150 mm lökettel: 9,2 liter, amely alig több mint 1000/min-en 60 LE-t ad. Könnyű karosszériával a versenyváltozat 100 km/h felett ment.",
-        "A korábbi motoroknál a szívószelepet a szívás nyitotta, és csak egy gyenge rugó tartotta zárva. A 60 PS a vezérműtengelyről, szelepemelő rúdon és himbán át nyitja, így a henger nagy fordulaton is jól feltöltődik.",
+        "A korábbi motoroknál a szívószelepet a szívás nyitotta, és csak egy gyenge rugó tartotta zárva. A 60 PS a vezérműtengelyről, szelepemelő rúdon és himbán át nyitja, így a henger nagy fordulaton is jól feltöltődik. A kipufogószelep (piros) lent, a henger mellett marad: ugyanarról a vezérműtengelyről egy szelepemelő nyomja fel alulról.",
         "Megtartotta az 1900-as első Mercedes elrendezését: elöl, alacsony motorháztető alatt a motor, méhsejthűtő, préselt acél alváz és kulisszás váltó: ezt a mintát az autók évtizedekig követték.",
         "Ez a példány magas, utazólimuzin-karosszériát kapott: belül fel lehet állni, a kényelmes utazáshoz.",
       ],
@@ -21,7 +21,7 @@ export default {
   note: "A Simplex név az egyszerű vezetésre utalt: az 1902-es típuscsaládot elődeinél könnyebben kezelhetőre tervezték.",
   unverified: [
     "A motor helyzete az autóban, a hengertávolság és a hajtórúdhossz",
-    "A szelepvezérlés mindkét szelepnél felül szelepeltként ábrázolva (a 60 PS-nek felül szívó- és oldalt kipufogószelepei voltak)",
+    "Az oldalt álló kipufogószelep, a szelepemelője és a szívóoldali emelőrudak helyzete (vázlatos)",
     "A jármű körvonala (az adatlap méreteiből vázolva, még nem a fotóról átrajzolva)",
     "Terem: Legenda 2",
   ],

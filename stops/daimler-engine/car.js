@@ -27,6 +27,7 @@ export default {
   components: [
     {
       id: "engine", label: "Engine", subsystem: "inline-engine",
+      prompt: "Watch the inlet open as the piston moves down.",
       view: { pos: [1.5, 1.1, 0.75], target: [0, 0, 0.3] },
       ghost: { fill: 0, edge: 0 },
       params: {
@@ -43,7 +44,7 @@ export default {
         "Daimler and Maybach built this engine in Cannstatt in 1884–85. Its upright cylinder on a round crankcase earned it the nickname Standuhr, the Grandfather Clock.",
         "It ran at about 600 rpm, when most gas engines of the day managed 120 to 180. More revs from the same size means more power for the weight: light enough to put in a vehicle. A version of it drove the 1885 Riding Car.",
         "There is no spark plug. A tube outside the cylinder is kept glowing by a burner; the compression stroke pushes mixture into it and it lights itself. Watch the glow on the left of the head.",
-        "Only the exhaust valve is driven, by a rod from a curved groove in the flywheel. The intake valve has no cam at all: the falling piston sucks it open.",
+        "Only the exhaust valve is driven, by a rod from a curved groove in the flywheel: the rod lights up as it lifts the valve. The intake valve has no cam at all: the falling piston sucks it open.",
       ],
     },
   ],

@@ -1,0 +1,16 @@
+{
+  "photo": "stops/260d/photo.jpg",
+  "image": { "width": 1200, "height": 803 },
+  "cam": { "c": [3261.6, -2273, 1851], "yaw": 2.6811, "pitch": -0.2404, "roll": -0.0249, "f": 1202.6 },
+  "camFrom": "tools/photo-fits/260d.json (front-right three-quarter view, both right road wheels; read with --bright 2.5)",
+  "groups": [
+    { "name": "bumper bottom (centre)", "y": 0, "px": [[812, 655]] },
+    { "name": "grille (centre)", "y": 0, "px": [[818, 560], [817, 326]] },
+    { "name": "cowl (centre)", "y": 0, "px": [[580, 272]] },
+    { "name": "windscreen top (centre)", "y": 0, "px": [[580, 179]] },
+    { "name": "roof crown", "y": -150, "px": [[530, 145], [430, 147]] },
+    { "name": "cabin rear corner (right)", "y": -700, "px": [[333, 173], [327, 276]] },
+    { "name": "rear wing end (right)", "y": -800, "px": [[305, 307], [305, 420]] },
+    { "name": "running board rear (right)", "y": -830, "px": [[318, 445]] }
+  ]
+}

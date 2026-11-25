@@ -4,6 +4,7 @@ export default {
   name: "Blitzen-Benz",
   summary: "Négy, egyenként 5,4 literes henger és hegyes karosszéria: 228,1 km/h Daytonában, 1911-ben.",
   eyebrow: "Benz 200 PS „Blitzen-Benz”, 1909",
+  question: "Ha megduplázza a teljesítményt, a végsebesség is a kétszeresére nő?",
   lede: "Forgassa át az óriási négyhengerest, aztán induljon rekordkísérletre. A légellenállás legyőzéséhez szükséges teljesítmény a sebesség köbével nő, így sokkal több teljesítmény csak kicsivel nagyobb sebességet ad.",
   photo: { alt: "Fehér, 1909-es Blitzen-Benz rekordautó a Mercedes-Benz Múzeumban, balról elölről nézve" },
   components: [
@@ -19,11 +20,13 @@ export default {
     },
     {
       label: "Rekordkísérlet",
+      prompt: "Olvassa le a modell végsebességét, aztán húzza a motorteljesítményt 200-ról 400 LE-re, és olvassa le újra. A kétszeresére nőtt?",
+      answer: "Nem: a kétszeres teljesítménnyel a modell kb. 294 km/h-t ér el, nem 456-ot. A levegő legyőzéséhez szükséges teljesítmény a sebesség köbével nő, így a duplázás a sebességet egyharmadánál is kevesebbel növeli.",
       params: { label: "Rekordkísérlet teljes teljesítménnyel", shapes: [{ label: "Blitzen-Benz" }] },
       talk: [
         "Bob Burman Daytona Beachen, 1911. április 23-án: 228,1 km/h repülőrajtos mérföldön, gyorsabban, mint a kor bármelyik repülőgépe vagy vonata. A rekord 1919-ig állt.",
         "Barney Oldfield már 1910-ben 211,97 km/h-t ért el vele ugyanott.",
-        "A légellenállás a sebesség négyzetével nő, a legyőzéséhez szükséges teljesítmény pedig a köbével. Húzza a teljesítmény csúszkát: a duplázás csak kb. negyedével növeli a sebességet.",
+        "A légellenállás a sebesség négyzetével nő, a legyőzéséhez szükséges teljesítmény pedig a köbével. A teljesítmény duplázása a sebességet egyharmadánál is kevesebbel növeli.",
         "A szélcsatorna megmutatja, honnan jön ez az ellenállás. A Nyomás nézetben a levegő pirosan torlódik a hűtő előtt; a vezető feje és a rövid far mögött leválik, és kavargó örvénysávot hagy, amelynek alacsony nyomása hátrafelé húzza az autót.",
         "A légellenállásba menő minden kilowatt ezt az örvénysávot kavarja, az örvények végül felmelegítik a levegőt. Figyelje a kijelzőket: ebben a metszetben az ellenállás szinte teljes egészében az autó mögötti szívásból adódik. A hűtőre ható nyomást nagyrészt kiegyenlíti a szívás ott, ahol a levegő felgyorsul a széleinél, a súrlódás pedig csak néhány százalék.",
         "Ezért hegyes a hűtő és kúpos a far: minél kevesebb levegőt kell félretolni, és minél szelídebben zárul mögötte, annál kisebb az örvénysáv.",

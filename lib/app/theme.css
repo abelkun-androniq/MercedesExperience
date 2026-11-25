@@ -159,7 +159,7 @@ footer ul { margin: 4px 0 0; padding-left: 18px; }
 .jump ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
 .jump a { gap: 8px; padding: 8px 16px; }
 .jump small { font-weight: 400; color: var(--muted); }
-.room { scroll-margin-top: 16px; }
+.room, .jump { scroll-margin-top: 16px; }
 
 /* Index route: one section per room, black photo cards whose picture fades into the card under the title. */
 .route { list-style: none; margin: 0; padding: 0; display: grid; gap: 72px; }

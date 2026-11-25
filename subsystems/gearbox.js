@@ -49,7 +49,7 @@ export function create(ctx, p) {
     { readouts: [{ id: "kmh", label: t("Road speed"), unit: t("km/h") }, { id: "eng", label: t("Engine"), unit: t("rpm") },
       { id: "prim", label: t("Primary shaft"), unit: t("rpm") }, { id: "need", label: t("Chosen gear needs"), unit: t("rpm on the primary shaft") }] },
     { buttons: [{ id: "auto", toggle: [t("Demo drive on"), t("Demo drive off")], pressed: demo, onClick: v => { demo = v; step = 0; age = 0; } }] },
-    { key: [["--l1", t("pair in mesh")], ["--l2", t("pair grinding")], ["--metal", t("pairs apart")], ["--l4", t("shafts")]] },
+    { key: [["--l1", t("gears in mesh")], ["--l2", t("gears grinding")], ["--metal", t("gears apart")], ["--l4", t("shafts")]] },
   ] }]);
   function stopDemo() { if (demo) { demo = false; ui.toggle("auto").set(false); } }
   function select(i) {

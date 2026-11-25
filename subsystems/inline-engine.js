@@ -7,7 +7,12 @@
 // valvetrain "none" (valve gear not drawn), flywheelR? (mm; with "flywheels" it also sizes the round case), rot? [x, y, z] (deg, turns the whole engine about the crank
 // centre: [0, 90, 0] lays it flat with the cylinder pointing forward and the crank vertical), leans? [deg per cylinder]
 // (V engines: each bank leans its own way; cylinders whose crankpins coincide share one, rods side by side), plugs? (spark
-// plugs per cylinder, drawn and lit at firing; 2 adds the dual-ignition card).
+// plugs per cylinder, drawn and lit at firing; 2 adds the dual-ignition card), valves? (4: two inlet and two exhaust valves
+// per cylinder), rockers? (with "ohc": a rocker arm between each cam and its valve), sideExhaust? (with "ohv": the exhaust
+// valve sits beside the cylinder and a tappet from the low camshaft lifts it), breathe? { rpm: [real rpm…], slow } (adds the
+// card comparing the time for one intake stroke; the animation runs at real rpm × slow).
+// The camshaft readout appears only where a camshaft is drawn ("ohc", "dohc", "ohv"); "none" and "atmospheric" have none
+// (the Daimler exhaust rod, driven from a groove in the flywheel, lights up as it lifts its valve).
 import * as THREE from "three";
 import { V, Y, mat, rod, place, ball, glass, line } from "../lib/scene/helpers.js";
 import { layout, pinAngle, phaseOf, strokeOf, valveLifts, flashOf, injecting, injectingDiesel, compressionTemp } from "../lib/model/engine.js";
@@ -79,7 +84,7 @@ export function create(ctx, p) {
   }
   const camSides = p.valvetrain === "dohc" ? [-1, 1] : p.valvetrain === "ohc" ? [0] : [];
   // Pushrod engine: one camshaft low in the block; each valve has a pushrod up to a rocker on the head.
-  const ohv = p.valvetrain === "ohv", pushDx = v => Math.sign(v.side || 1) * 0.3 * bR;
+  const ohv = p.valvetrain === "ohv", shaft = camSides.length > 0 || ohv, pushDx = v => Math.sign(v.side || 1) * 0.3 * bR;
   for (const b of banks.values()) {
     const x0 = Math.min(...b.xs), x1 = Math.max(...b.xs);
     if (ohv) group.add(place(rod(crankMat, 0.014), b.camLow(x0 - 0.06), b.camLow(x1 + 0.06)), place(rod(dark, 0.006), V(xMax + 0.09, 0, crankZ), b.camLow(xMax + 0.09)));
@@ -101,16 +106,20 @@ export function create(ctx, p) {
       chamber: new THREE.Mesh(new THREE.CylinderGeometry(bR - 0.002, bR - 0.002, 1, 28), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.6, depthWrite: false })) };
     c.piston.quaternion.setFromUnitVectors(Y, dAx); c.chamber.quaternion.setFromUnitVectors(Y, dAx);
     group.add(...(c.pin ? [c.pin] : []), ...c.webs, c.conrod, c.piston, c.chamber);
-    // Valves: intake (blue) on +n side, exhaust (red) on −n side; the atmospheric intake sits on top, on the axis.
-    c.valves = p.valvetrain === "none" ? [] : [["intake", intakeMat, p.valvetrain === "atmospheric" ? 0 : -0.45], ["exhaust", exhaustMat, 0.45]].map(([kind, m, side]) => {
-      const v = { kind, side: side * bR, stem: rod(m, 0.006) }; group.add(v.stem);
-      if (camSides.length || ohv) { v.lobe = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.036, 0.02), crankMat); group.add(v.lobe); }
-      if (ohv) { v.push = rod(rodMat, 0.005); v.rocker = rod(crankMat, 0.006); group.add(v.push, v.rocker); }
+    // Valves: intake (blue) on the −n side, exhaust (red) on the +n side, side by side along x when there are four; the
+    // atmospheric intake sits on top, on the axis; a side exhaust sits beside the bore on the camshaft's side.
+    const atm = p.valvetrain === "atmospheric", pair = p.valves === 4 ? [-0.28 * bR, 0.28 * bR] : [0];
+    const kinds = [["intake", intakeMat, atm ? 0 : -0.45, 0], ["exhaust", exhaustMat, p.sideExhaust ? -1.45 : 0.45, p.sideExhaust ? 0.5 * bR : 0]];
+    c.valves = p.valvetrain === "none" ? [] : kinds.flatMap(([kind, m, side, dx0]) => pair.map(dx => {
+      const v = { kind, side: side * bR, dx: dx0 + dx, stem: rod(m, 0.006) }; group.add(v.stem);
+      // Opened upwards by a rod from below: the Daimler exhaust (flywheel groove) and a side valve (tappet on the low cam).
+      v.below = kind === "exhaust" && (atm || !!p.sideExhaust);
+      if (v.below) { v.tappet = rod(rodMat, 0.005); group.add(v.tappet); }
+      if (shaft) { v.lobe = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.036, 0.02), crankMat); group.add(v.lobe); }
+      if (ohv && !v.below) { v.push = rod(rodMat, 0.005); v.rocker = rod(crankMat, 0.006); group.add(v.push, v.rocker); }
+      if (p.rockers && camSides.length === 1) { v.rocker = rod(crankMat, 0.006); group.add(v.rocker); }
       return v;
-    });
-    if (p.valvetrain === "atmospheric") {   // exhaust pushrod from the crankcase cam groove
-      c.pushrod = rod(rodMat, 0.005); group.add(c.pushrod);
-    }
+    }));
     if (p.ignition === "hot-tube") {
       const tubeMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
       c.tube = place(rod(tubeMat, 0.007), at(x, deck + 0.02, -0.9 * bR), at(x, deck + 0.02, -0.9 * bR - 0.09)); group.add(c.tube);
@@ -164,25 +173,31 @@ export function create(ctx, p) {
       c.chamber.material.opacity = stroke === "Power" ? 0.25 + 0.7 * flash : 0.35;
       const lift = valveLifts(ph, p.valvetrain, liftMax);
       for (const v of c.valves) {
-        const lv = lift[v.kind];
-        if (v.kind === "exhaust" && c.pushrod) {
-          // Daimler exhaust: a pushrod from the cam groove lifts the valve upwards off its seat.
-          const top = at(c.x, deck + 0.004 + lv, v.side), foot = at(c.x, deck - 0.06 + lv, v.side);
-          place(v.stem, foot, top); place(c.pushrod, at(c.x, r + 0.09 + lv, v.side), foot);
+        const lv = lift[v.kind], vx = c.x + v.dx, s1 = Math.sign(v.side) || 1;
+        const lobeX = ohv ? vx + (v.below ? 0 : pushDx(v)) : camSides.length > 1 ? vx : c.x + s1 * 0.024;
+        if (v.below) {
+          // A rod from below (groove follower or tappet) lifts the valve upwards off its seat; it lights up while it does.
+          const top = at(vx, deck + 0.004 + lv, v.side), foot = at(vx, deck - 0.06 + lv, v.side);
+          place(v.stem, foot, top); place(v.tappet, ohv ? camLow(vx).addScaledVector(dAx, lv) : at(vx, r + 0.09 + lv, v.side), foot);
+          v.tappet.material = lv > 5e-4 ? exhaustMat : rodMat;
         } else {
           // Poppet valves open into the chamber; the atmospheric intake is pulled open the same way by suction.
-          const base = at(c.x, deck + 0.004 - lv, v.side);
+          const base = at(vx, deck + 0.004 - lv, v.side);
           const tip = base.clone().addScaledVector(dAx, 0.1);
           place(v.stem, base, tip);
           if (v.push) {   // pushrod rises, the rocker tips over and presses the valve down
-            const P = at(c.x + pushDx(v), deck + 0.1 + lv, -1.9 * bR);
-            place(v.push, at(c.x + pushDx(v), r + 0.1 + lv, -1.9 * bR), P); place(v.rocker, P, tip);
+            const P = at(vx + pushDx(v), deck + 0.1 + lv, -1.9 * bR);
+            place(v.push, at(vx + pushDx(v), r + 0.1 + lv, -1.9 * bR), P); place(v.rocker, P, tip);
+          } else if (v.rocker) {
+            // Overhead cam pressing a rocker: pivot outboard of the valve, cam over the middle of the head; the lever
+            // passes over the valve tip, so the cam end moves 1.6 / 1.15 times the valve lift.
+            const k = 1.6 / 1.15;
+            place(v.rocker, at(vx, deck + 0.104, s1 * 1.6 * bR), at(lobeX, deck + 0.104 - k * lv, 0));
           }
         }
         if (v.lobe) {
           const camA = ph / 2 + (v.kind === "intake" ? -2.5 : -0.75) * Math.PI / 2;
-          if (ohv) v.lobe.position.copy(camLow(c.x + pushDx(v)));
-          else v.lobe.position.copy(camC(camSides.length > 1 ? Math.sign(v.side) : 0)).setX(c.x + (camSides.length > 1 ? 0 : Math.sign(v.side) * 0.024));
+          v.lobe.position.copy(ohv ? camLow(lobeX) : camC(camSides.length > 1 ? s1 : 0).setX(lobeX));
           v.lobe.quaternion.setFromAxisAngle(X, camA);
         }
       }
@@ -202,7 +217,7 @@ export function create(ctx, p) {
   const ui = ctx.panel([{ label: p.label, items: [
     { cells: { id: "cyls", labels: xs.map((_, i) => (n === 1 ? t("Cylinder") : t("Cyl {0}", i + 1))) }, detail: true },
     { key: [["--l1", t("power")], ["--metal", t("exhaust")], ["--l4", t("intake")], ["--l2", t("compression")], ...(p.fuel === "direct" ? [["--l3", t("fuel injection")]] : [])], detail: true },
-    { readouts: [{ id: "crank", label: t("Crank angle"), unit: t("deg") }, { id: "cam", label: t("Camshaft"), unit: t("deg, half speed") }, ...(p.realRpm ? [{ id: "real", label: t("Real engine"), unit: t("rpm"), value: String(p.realRpm) }] : [])], detail: true },
+    { readouts: [{ id: "crank", label: t("Crank angle"), unit: t("deg") }, ...(shaft ? [{ id: "cam", label: t("Camshaft"), unit: t("deg, half speed") }] : []), ...(p.realRpm ? [{ id: "real", label: t("Real engine"), unit: t("rpm"), value: String(p.realRpm) }] : [])], detail: true },
     { slider: { id: "rpm", label: t("Speed (slow motion)"), min: p.speed.min, max: p.speed.max, value: rpm, onInput: v => (rpm = v) }, detail: true },
     { buttons: [{ id: "play", toggle: [t("Pause"), t("Play")], pressed: playing, onClick: v => (playing = v) }] },
   ] }]);
@@ -230,6 +245,21 @@ export function create(ctx, p) {
       { text: t("One plug is fired by a magneto, the other by a battery coil: the mixture burns through faster, and the engine keeps running if either system fails.") },
     ] }]);
   }
+  if (p.breathe) {
+    // How long one cylinder has to fill: an intake stroke is half a crank turn (180°), so at n rpm it lasts 30 000 / n ms.
+    // The inlet valves open over a longer, cam-timed interval; the stroke is the clean comparison between speeds.
+    const fmt = v => new Intl.NumberFormat(document.documentElement.lang).format(v);
+    const choose = real => {
+      rpm = real * p.breathe.slow; ui.slider("rpm").set(rpm);
+      ui.set("stroke", (30000 / real).toFixed(1)); p.breathe.rpm.forEach(v => ui.toggle(`r${v}`).set(v === real));
+    };
+    ctx.panel([{ label: t("Time to fill a cylinder"), items: [
+      { buttons: p.breathe.rpm.map(v => ({ id: `r${v}`, label: t("{0} rpm", fmt(v)), pressed: false, onClick: () => choose(v) })) },
+      { readouts: [{ id: "stroke", label: t("One intake stroke"), unit: t("ms, half a crank turn") }] },
+      { text: t("Shown in slow motion. The real time is in the readout; the inlet valves stay open a little longer than the stroke, as the cam timing sets.") },
+    ] }]);
+    choose(p.breathe.rpm[0]);
+  }
   pose();
 
   return {
@@ -239,7 +269,7 @@ export function create(ctx, p) {
       if (playing) theta += dt * (rpm / 60) * 2 * Math.PI;
       pose();
       ui.set("crank", ((theta * 180 / Math.PI) % 720).toFixed(0));
-      ui.set("cam", ((theta * 90 / Math.PI) % 360).toFixed(0));
+      if (shaft) ui.set("cam", ((theta * 90 / Math.PI) % 360).toFixed(0));
     },
   };
 }

@@ -45,7 +45,7 @@ export default {
         bays: [{ top: true }, { door: "high" }, { door: "high" }, { top: true }, { top: true }],
         EA: 210000 * 75,                                       // steel tube of about 75 mm² section (N); illustrative
         load: 3000, exaggerate: 8,
-        modes: { high: "300 SL frame: deep sides", low: "Cut down for normal doors" },
+        modes: { high: "Original high sill", low: "Lower sill for conventional doors" },
       },
       real: {   // the part in real life (not this car)
         src: "parts/300sl-frame.jpg", w: 800, h: 533,

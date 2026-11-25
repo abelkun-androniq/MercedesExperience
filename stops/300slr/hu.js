@@ -4,6 +4,7 @@ export default {
   name: "Mercedes-Benz 300 SLR Uhlenhaut Coupé",
   summary: "Grand Prix-ből származó soros nyolchengeres közvetlen benzinbefecskendezéssel, és szelepek, amelyeket rugók helyett bütykök zárnak.",
   eyebrow: "Mercedes-Benz 300 SLR Uhlenhaut Coupé (W 196 S), 1955",
+  question: "Hogyan zárható egy szelep rugó nélkül?",
   lede: "A versenysportautó, amellyel Rudolf Uhlenhaut közúton járt. Két szerkezet: a soros nyolchengeres, amelynek üzemanyagát közvetlenül a hengerekbe fecskendezik, és a deszmodromikus szelepvezérlés, amellyel ott is pöröghetett, ahol a rugók már feladják.",
   photo: { alt: "Ezüst, 1955-ös Mercedes-Benz 300 SLR Uhlenhaut Coupé a Mercedes-Benz Múzeumban, jobbról elölről nézve" },
   components: [
@@ -19,6 +20,8 @@ export default {
     },
     {
       label: "Deszmodromikus szelepek",
+      prompt: "Növelje a fordulatszámot. Hol válik el a rugóval záró szelep a bütyöktől?",
+      answer: "Ebben a modellben kb. 7000/min fölött, az emelés csúcsán: ott a szelepnek gyorsabban kellene lelassulnia és visszafordulnia, mint ahogy a rugója tudja, ezért továbbrepül, elválik a bütyöktől. A deszmodromikus szelepet egy második bütyök húzza be, így bármilyen fordulaton követi a bütyköt.",
       params: { label: "Deszmodromikus szelep és rugóval záró szelep" },
       talk: [
         "Nagy fordulaton a szeleprugó már nem tudja elég gyorsan visszahúzni a szelepet: a szelep elemelkedik a bütyökről, és nekiütközhet a dugattyúnak. Növelje a fordulatot, és figyelje, ahogy a rugós szelep vonala elválik a szaggatott bütyökvonaltól.",

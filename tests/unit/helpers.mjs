@@ -12,7 +12,7 @@ const TEXT = [
   "components.*.label", "components.*.talk.*", "components.*.prompt", "components.*.answer", "components.*.more",
   "components.*.real.alt", "components.*.real.caption",
   ...["label", "engineLabel", "legendTitle", "links.*.name", "shapes.*.label", "types.*.label", "presets.*.label",
-    "cases.*.label", "modes.*", "drive.gears.*.name", "legend.*.1", "surfaces.*.label",
+    "cases.*.label", "cases.*.say", "modes.*", "drive.gears.*.name", "legend.*.1", "surfaces.*.label",
     "consumers.*.label", "compare"].map(p => `components.*.params.${p}`),
 ];
 const RULES = TEXT.map(p => new RegExp(`^${p.replace(/\./g, "\\.").replace(/\*/g, "[^.]+")}$`));

@@ -45,6 +45,7 @@ export default {
         "One cylinder of 954 cm³ (90 × 150 mm) lies flat at the back and gives 0.75 hp at about 400 rpm.",
         "The big flywheel lies flat as well. Benz did that so its gyroscopic effect would not fight the steering in tight bends.",
         "Benz used electric ignition with a coil and a spark plug instead of Daimler's hot tube.",
+        "The model shows only the piston, crank and flywheel. The real engine also has valve gear, not drawn here: Mercedes-Benz describes an intake slide and a controlled exhaust valve.",
         "The whole transmission is a belt to a countershaft: one speed and no reverse. Pushing the belt onto a loose pulley next to the drive pulley is the clutch.",
       ],
     },

@@ -7,7 +7,7 @@ export default {
   year: 1937,
   summary: "Independent wishbone front suspension, the Roots blower that only joins in at full pedal, and the streamlined body.",
   eyebrow: "Mercedes-Benz 540 K (W 29), 1936–1940",
-  question: "What does the K stand for, and when did it join in?",
+  question: "What does the K stand for? When does the supercharger kick in?",
   look: "Look at the left front wheel: it hangs on its own pair of arms. The three steps below follow this car on a drive.",
   takeaway: "Look at the upright windscreen and the folded soft top: that is the drag the 1938 Streamliner did without.",
   lede: "Three things about the supercharged 540 K, each shown working: the independent front suspension meeting a bump and a pothole, the Roots blower that only joins in when the driver floors the pedal, and what a streamlined body does for top speed. Scroll on: the museum photo then shows the suspension in place on the real car.",

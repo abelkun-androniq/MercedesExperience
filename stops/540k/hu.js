@@ -4,7 +4,7 @@ export default {
   name: "Mercedes-Benz 540 K (W 29)",
   summary: "Független, kettős keresztlengőkaros első felfüggesztés, a csak padlógáznál bekapcsoló Roots-kompresszor és az áramvonalas karosszéria.",
   eyebrow: "Mercedes-Benz 540 K (W 29), 1936–1940",
-  question: "Mit jelent a K, és mikor lépett működésbe?",
+  question: "Mit jelent a K betű? Mikor kapcsol be a kompresszor?",
   look: "Nézze meg a bal első kereket: saját lengőkarpáron függ. Az alábbi három lépés egy úton kíséri végig az autót.",
   takeaway: "Nézze meg a meredek szélvédőt és a lehajtott vászontetőt: ez az a légellenállás, amely nélkül az 1938-as áramvonalas autó elboldogult.",
   lede: "Három dolog a kompresszoros 540 K-ról, mindegyik működés közben: a független első felfüggesztés egy bukkanón és egy kátyún, a Roots-kompresszor, amely csak akkor kapcsolódik be, ha a vezető padlóig nyomja a gázt, és hogy mit ad az áramvonalas karosszéria a végsebességhez. Görgessen tovább: a múzeumi fotón a felfüggesztést a valódi autón, a helyén is láthatja.",

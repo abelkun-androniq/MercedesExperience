@@ -9,12 +9,13 @@ export default {
   components: [
     {
       label: "Motor",
+      prompt: "Figyelje meg, hogyan nyílik ki a szívószelep, amikor a dugattyú lefelé indul.",
       params: { label: "Négyütemű körfolyamat · egy henger" },
       talk: [
         "Daimler és Maybach 1884–85-ben építette ezt a motort Cannstattban. Kerek forgattyúházon álló, függőleges hengere miatt kapta a Standuhr, azaz Állóóra becenevet.",
         "Nagyjából 600/min fordulattal járt, amikor a kor gázmotorjainak többsége 120–180-at tudott. Ugyanakkora méretből több fordulat több teljesítményt ad a tömegéhez képest: elég könnyű lett ahhoz, hogy járműbe kerüljön. Egy változata hajtotta az 1885-ös Reitwagent.",
         "Gyújtógyertya nincs. A hengeren kívüli csövet egy égő tartja izzásban; a sűrítési ütem keveréket nyom bele, és az magától meggyullad. Figyelje az izzást a hengerfej bal oldalán.",
-        "Csak a kipufogószelep vezérelt: egy rúd nyitja, amelyet a lendkerék ívelt hornya mozgat. A szívószelepnek egyáltalán nincs bütyke: a lefelé mozgó dugattyú szívja nyitva.",
+        "Csak a kipufogószelep vezérelt: egy rúd nyitja, amelyet a lendkerék ívelt hornya mozgat; a rúd felvillan, amikor megemeli a szelepet. A szívószelepnek egyáltalán nincs bütyke: a lefelé mozgó dugattyú szívja nyitva.",
       ],
     },
   ],

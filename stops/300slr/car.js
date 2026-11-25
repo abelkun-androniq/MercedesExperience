@@ -8,6 +8,7 @@ export default {
   year: 1955,
   summary: "A Grand Prix-derived straight-eight with direct petrol injection, and valves closed by cams instead of springs.",
   eyebrow: "Mercedes-Benz 300 SLR Uhlenhaut Coupé (W 196 S), 1955",
+  question: "How do you close a valve without a spring?",
   lede: "The racing sports car that Rudolf Uhlenhaut drove on the road. Two mechanisms: the straight-eight with fuel sprayed straight into the cylinders, and the desmodromic valve gear that let it rev where springs give up.",
   frame: { origin: "front", wheelbase: 2370, wheelR: 330 },
   orbit: { min: 0.3, max: 12 },
@@ -50,6 +51,8 @@ export default {
     },
     {
       id: "desmo", label: "Desmodromic valves", subsystem: "desmo-valvetrain",
+      prompt: "Raise the engine speed. Where does the spring-closed valve stop following the cam?",
+      answer: "Above about 7,000 rpm in this model, at the top of the lift: there the valve has to slow down and turn back faster than its spring can make it, so it flies on, off the cam. The desmodromic valve is pulled shut by a second cam and follows the cam at any speed.",
       view: { pos: [0.02, -0.4, 0.52], target: [-0.4, 0.02, 0.37] },
       ghost: { fill: 0, edge: 0 },
       params: {

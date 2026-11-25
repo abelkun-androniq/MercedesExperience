@@ -25,6 +25,9 @@ for (const car of cars) {
       const readouts = () => step.locator(`.panel[data-comp="${want.comp}"] output`).allTextContents();
       const before = await readouts();
       expect(before.length).toBeGreaterThan(0);
+      // Precomputed results (race-aero) stand still until another case is chosen: press the first case button (race-aero starts
+      // on a later one; animated components move either way).
+      if (car.components.find(c => c.id === want.comp).params.cases) await step.locator(`.panel[data-comp="${want.comp}"] button`).first().click();
       await expect.poll(readouts, { timeout: 15_000 }).not.toEqual(before);
     }
     expect(pinned.size, "stage stays put through the component steps").toBe(1);
@@ -55,7 +58,63 @@ test("index: room jump links reach their rooms; highlights and back again", asyn
   await expect(page.locator("#room-legend-6 h2")).toBeInViewport();
   await page.getByRole("link", { name: "Three highlights" }).click();
   await expect(page).toHaveURL(/teaser\.html$/);
-  await expect(page.getByRole("link", { name: "See the full route" })).toHaveAttribute("href", "./#route");
+  await expect(page.getByRole("link", { name: "See the full route" })).toHaveAttribute("href", "./#jump");
+  expect(errors).toEqual([]);
+});
+
+test("index: “Find your room” and a fresh ./#jump both bring the room picker into view", async ({ page }) => {
+  const errors = watchErrors(page);
+  await page.goto("./");
+  await expect(page.locator(".jump a").first()).toBeVisible();
+  await page.getByRole("link", { name: "Find your room" }).click();
+  await expect(page.locator("#jump-title")).toBeInViewport();
+  await expect(page.locator(".jump a").first()).toBeInViewport();
+  await page.goto("about:blank");
+  await page.goto("./#jump");
+  await expect(page.locator(".jump a").first()).toBeInViewport();
+  await expect(page.locator("#jump-title")).toBeInViewport();
+  expect(errors).toEqual([]);
+});
+
+for (const lang of ["en", "hu"]) {
+  test(`SLK roof steps (${lang}): every label fits its cell and names the movement in either direction`, async ({ page }) => {
+    const errors = watchErrors(page);
+    await page.addInitScript(l => localStorage.setItem("tour-lang", l), lang);
+    await page.goto("stop.html?s=slk&debug");
+    await page.waitForFunction(() => window.__tour?.stories[0].frames() > 2, null, { timeout: 20_000 });
+    const step = page.locator(".step").nth(1);
+    await step.evaluate(s => s.scrollIntoView({ block: "center" }));
+    const cells = step.locator(".cyls .cyl");
+    await expect(cells).toHaveCount(4);
+    const labels = () => cells.locator("b").allTextContents();
+    const overflowing = () => cells.evaluateAll(cs => cs.filter(c => c.scrollWidth > c.clientWidth).map(c => c.firstChild.textContent));
+    const buttons = step.locator(".row").first().locator("button");
+    await buttons.nth(0).click();   // Open the roof
+    expect(await labels()).toEqual(lang === "en" ? ["Unlatch", "Boot lid up", "Roof folds back", "Boot lid down"] : ["Reteszoldás", "Fedél nyílik", "A tető hátrahajlik", "Fedél zárul"]);
+    expect(await overflowing()).toEqual([]);
+    await buttons.nth(1).click();   // Close the roof
+    await expect.poll(labels).toEqual(lang === "en" ? ["Boot lid up", "Roof folds forward", "Boot lid down", "Latch"] : ["Fedél nyílik", "A tető előrehajlik", "Fedél zárul", "Reteszelés"]);
+    expect(await overflowing()).toEqual([]);
+    expect(errors).toEqual([]);
+  });
+}
+
+test("switching language keeps the experiment: the 300 SL's lowered frame stays chosen and in view", async ({ page }) => {
+  const errors = watchErrors(page);
+  await page.addInitScript(() => { if (!localStorage.getItem("tour-lang")) localStorage.setItem("tour-lang", "en"); });
+  await page.goto("stop.html?s=300sl&debug");
+  await page.waitForFunction(() => window.__tour?.stories[0].frames() > 2, null, { timeout: 20_000 });
+  await page.locator(".step").nth(1).evaluate(s => s.scrollIntoView({ block: "center" }));
+  await expect.poll(() => shown(page)).toMatchObject({ step: 1, state: { comp: "frame" } });
+  await page.getByRole("button", { name: "Lower sill for conventional doors" }).click();
+  for (const [to, lower] of [["Magyar", "Alacsony küszöb hagyományos ajtóhoz"], ["English", "Lower sill for conventional doors"]]) {
+    await page.getByRole("button", { name: to }).click();
+    await page.waitForFunction(() => window.__tour?.stories[0].frames() > 2, null, { timeout: 20_000 });
+    const button = page.getByRole("button", { name: lower });
+    await expect(button).toHaveAttribute("aria-pressed", "true");
+    await expect(button).toBeInViewport();
+    await expect.poll(() => shown(page)).toMatchObject({ step: 1, state: { comp: "frame" } });
+  }
   expect(errors).toEqual([]);
 });
 

@@ -7,6 +7,7 @@ export default {
   year: 1909,
   summary: "Four cylinders of 5.4 litres each and a pointed body: 228.1 km/h at Daytona in 1911.",
   eyebrow: "Benz 200 PS 'Blitzen-Benz', 1909",
+  question: "If you double the power, do you double the speed?",
   lede: "Turn over the giant four-cylinder, then make a record run. The power to push through the air grows with the cube of speed, so a lot more power buys only a little more speed.",
   frame: { origin: "front", wheelbase: 2800, wheelR: 450 },
   orbit: { min: 0.8, max: 16 },
@@ -47,6 +48,8 @@ export default {
     },
     {
       id: "record", label: "Record run", subsystem: "aero",
+      prompt: "Read the model's top speed, then slide the engine power from 200 to 400 PS and read it again. Has it doubled?",
+      answer: "No: twice the power gives about 294 km/h in this model, not 456. The power to push through the air grows with the cube of speed, so doubling it adds less than a third more speed.",
       view: { pos: [-1.2, -10.5, 2.6], target: [-2.6, 0, 1.0] },
       ghost: { fill: 0.04, edge: 0.35 },
       params: {
@@ -69,7 +72,7 @@ export default {
       talk: [
         "Bob Burman at Daytona Beach on 23 April 1911: 228.1 km/h over the flying mile, faster than any aeroplane or train of the time. The record stood until 1919.",
         "Barney Oldfield had already reached 211.97 km/h with it there in 1910.",
-        "Air drag grows with the square of speed, and the power to overcome it with the cube. Slide the power: doubling it adds only about a quarter more speed.",
+        "Air drag grows with the square of speed, and the power to overcome it with the cube. Doubling the power adds less than a third more speed.",
         "The wind tunnel shows where that drag comes from. Under Pressure the air piles up red against the radiator; behind the driver's head and the short tail it breaks away into a churning wake, whose low pressure pulls the car back.",
         "Every kilowatt that goes into drag ends up stirring that wake, and the swirls finally warm the air. Watch the readouts: in this slice nearly all the drag is suction behind the car. The push on the radiator is largely cancelled where the air speeds up round its edges, and friction is only a few per cent.",
         "Hence the pointed radiator and the tail cone: the less air the car has to shove aside and the more gently it lets it close up behind, the smaller the wake.",

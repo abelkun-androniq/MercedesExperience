@@ -12,7 +12,7 @@ export default {
   components: [
     {
       label: "Vario-tető",
-      prompt: "Mi mozdul előbb, a csomagtartófedél vagy a tető? Nyomja meg a „Tető nyitása” gombot, és figyelje, ahogy a lépések kigyulladnak.",
+      prompt: "Koppintson a „Tető nyitása” gombra. Mi mozdul meg először, a csomagtartó fedele vagy a tető?",
       answer: "Előbb a fedél nyílik fel; aztán a hátsó ablak hátrafordul, a tető ráhajlik, és a csomag a csomagtartóba süllyed, mielőtt a fedél bezárul. Az ára: nyitott tetővel a csomagtartó nagy része foglalt.",
       more: "Hogyan hajlik össze a tető",
       params: { label: "Az acéltető összehajtása" },

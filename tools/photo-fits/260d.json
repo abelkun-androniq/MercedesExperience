@@ -4,15 +4,39 @@
     "width": 1200,
     "height": 803
   },
-  "frame": "mm; x forward, y left, z up; origin = front axle centre on the ground. Lamp and grille positions estimated, so the fit is approximate",
-  "aimAt": [-1500, 0, 800],
-  "seeds": [
-    [3500, -3000, 1500],
-    [3000, -4000, 1700],
-    [4500, -2500, 1300],
-    [2500, -2500, 1900]
+  "frame": "mm; x forward, y left, z up; origin = front axle centre on the ground. Right front and right rear road wheels (the rear one dark and half hidden behind the running board; the spare on the front wing left out), lamps and grille estimated",
+  "aimAt": [
+    -1500,
+    0,
+    800
   ],
-  "focalSeeds": [900, 1300, 1800],
+  "seeds": [
+    [
+      3500,
+      -3000,
+      1500
+    ],
+    [
+      3000,
+      -4000,
+      1700
+    ],
+    [
+      4500,
+      -2500,
+      1300
+    ],
+    [
+      2500,
+      -2500,
+      1900
+    ]
+  ],
+  "focalSeeds": [
+    900,
+    1300,
+    1800
+  ],
   "rollPenalty": 300,
   "focalPrior": {
     "f": 1300,
@@ -21,33 +45,107 @@
   "groundZ": 0,
   "points": [
     {
-      "name": "RF wheel centre",
-      "X": [0, -730, 360],
-      "px": [565, 580],
+      "name": "RF hubcap (proud of the wheel)",
+      "X": [
+        0,
+        -780,
+        360
+      ],
+      "px": [
+        565,
+        588
+      ],
       "w": 3
     },
     {
-      "name": "RF tyre bottom",
-      "X": [0, -730, 0],
-      "px": [580, 700],
+      "name": "RF tyre bottom (outer sidewall)",
+      "X": [
+        0,
+        -760,
+        0
+      ],
+      "px": [
+        592,
+        714
+      ],
+      "w": 2
+    },
+    {
+      "name": "RF tyre top (outer sidewall)",
+      "X": [
+        0,
+        -760,
+        720
+      ],
+      "px": [
+        560,
+        470
+      ],
+      "w": 2
+    },
+    {
+      "name": "RR tyre bottom (outer sidewall)",
+      "X": [
+        -3050,
+        -800,
+        0
+      ],
+      "px": [
+        340,
+        458
+      ],
       "w": 2
     },
     {
       "name": "R headlamp",
-      "X": [400, -560, 1000],
-      "px": [718, 405],
+      "X": [
+        300,
+        -500,
+        950
+      ],
+      "px": [
+        718,
+        405
+      ],
       "w": 2
     },
     {
       "name": "L headlamp",
-      "X": [400, 560, 1000],
-      "px": [932, 385],
+      "X": [
+        300,
+        500,
+        950
+      ],
+      "px": [
+        932,
+        385
+      ],
       "w": 2
     },
     {
       "name": "Grille top",
-      "X": [320, 0, 1200],
-      "px": [825, 325],
+      "X": [
+        320,
+        0,
+        1200
+      ],
+      "px": [
+        825,
+        325
+      ],
+      "w": 1
+    },
+    {
+      "name": "Roof crown above the B-pillar (height \u2248 1,610 mm, estimated)",
+      "X": [
+        -1500,
+        -150,
+        1610
+      ],
+      "px": [
+        530,
+        145
+      ],
       "w": 1
     }
   ]

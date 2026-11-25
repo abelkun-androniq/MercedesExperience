@@ -14,6 +14,7 @@ export default {
         "A 954 cm³-es (90 × 150 mm) egyetlen henger hátul fekszik, és kb. 400/min fordulaton 0,75 LE-t ad.",
         "A nagy lendkerék is vízszintesen fekszik. Benz azért tette így, hogy pörgettyűhatása ne dolgozzon a kormányzás ellen a szűk kanyarokban.",
         "Benz Daimler izzócsöve helyett elektromos gyújtást használt, gyújtótekerccsel és gyújtógyertyával.",
+        "A modell csak a dugattyút, a forgattyút és a lendkereket mutatja. A valódi motornak szelepvezérlése is van, ez itt nincs megrajzolva: a Mercedes-Benz leírása szerint szívótolattyú és vezérelt kipufogószelep.",
         "A teljes erőátvitel egy szíj a közlőtengelyre: egy fokozat, hátramenet nélkül. A tengelykapcsoló annyi, hogy a szíjat a hajtótárcsa melletti, szabadon futó tárcsára tolják.",
       ],
     },

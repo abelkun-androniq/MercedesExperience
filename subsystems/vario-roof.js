@@ -29,10 +29,15 @@ export function create(ctx, p) {
 
   // ---------- state + panel ----------
   let time = 0, dir = 0, demo = !ctx.reducedMotion, wait = 1.5;
-  const names = { latch: t("Unlatch"), "lid-open": t("Boot lid up"), fold: t("Roof folds back"), "lid-close": t("Boot lid down") };
+  // The steps in the order they happen and named by what moves: closing runs the opening backwards, so its first step is
+  // the lid going up again (the opening's "lid-close" phase reversed).
+  const steps = {
+    open: PHASES.map(k => [k, { latch: t("Unlatch"), "lid-open": t("Boot lid up"), fold: t("Roof folds back"), "lid-close": t("Boot lid down") }[k]]),
+    close: [...PHASES].reverse().map(k => [k, { "lid-close": t("Boot lid up"), fold: t("Roof folds forward"), "lid-open": t("Boot lid down"), latch: t("Latch") }[k]]),
+  };
   const ui = ctx.panel([{ label: p.label, badge: { id: "state", text: "" }, items: [
     { buttons: [{ id: "open", label: t("Open the roof"), pressed: false, onClick: () => { stopDemo(); go(1); } }, { id: "close", label: t("Close the roof"), pressed: false, onClick: () => { stopDemo(); go(-1); } }] },
-    { cells: { id: "phase", labels: PHASES.map(k => names[k]) } },
+    { cells: { id: "phase", labels: steps.open.map(([, name]) => name) } },
     { meter: { id: "progress" } },
     { buttons: [{ id: "auto", toggle: [t("Demo on"), t("Demo off")], pressed: demo, onClick: v => (demo = v) }] },
     { text: t("The maker quotes about {0} s; pivot positions and the order of the movements are simplified.", p.quoted) },
@@ -49,7 +54,7 @@ export function create(ctx, p) {
       const s = roofAt(p.roof, time);
       span(roof, s.A, s.J); span(rearWin, s.J, s.D); span(lid, s.lidFront, p.roof.lid.hinge);
       joint.position.set(m(s.J[0]), w / 2 + 0.03, m(s.J[1]));
-      PHASES.forEach((k, i) => ui.cells("phase").set(i, s.phase === k ? "▶" : "", s.phase === k));
+      (dir < 0 ? steps.close : steps.open).forEach(([k, name], i) => { ui.cells("phase").label(i, name); ui.cells("phase").set(i, s.phase === k ? "▶" : "", s.phase === k); });
       ui.meter("progress").set(time / T, dir !== 0 && time > 0 && time < T);
       const D = 180 / Math.PI;
       ui.set("time", time.toFixed(1)); ui.set("rear", (s.phi * D).toFixed(0)); ui.set("fold", (Math.abs(s.psi) * D).toFixed(0)); ui.set("lid", (s.lid * D).toFixed(0));
