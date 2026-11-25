@@ -1,0 +1,49 @@
+<pasted_content id="efa9">
+Continue the Evo II wind-tunnel work in /Users/kunabel/workspace/MercedesExperience. Read CLAUDE.md first.
+
+HARD CONSTRAINT: do not commit or push. A push to main deploys, and the user wants a single deploy at the end. Leave everything in the working tree.
+The user wants this "correct enough for understanding of the technology and a basic feasibility – no engineering-level CFD". Keep it token-efficient. Don't tune the solver further.
+
+## State
+- Offline 3-D lattice-Boltzmann tunnel in tools/cfd/ (see CLAUDE.md map):
+  - mesh.mjs, geometry.mjs (cases base/flap/lip/arch), lbm3d.mjs, run.mjs, export.mjs, all.sh.
+  - tools/cfd/all.sh ran every case at 40 mm and 28 mm (9000 steps) into tools/cfd/out/ (git-ignored, like evo2.glb).
+- export.mjs takes all reported forces from the mean surface pressure. It ignores the solver's own force sum (its axle split was wrong); the run JSON's `sd` and `mean.n` serve only as the noise estimate.
+  - It writes stops/190e-evo2/cfd/{cfd.json, <case>.bin}.
+  - Currently those files hold a 40 mm preview (`node tools/cfd/export.mjs 40 40`). The final run is plain `node tools/cfd/export.mjs` (28 mm display, 40 mm check).
+- 40 mm results (Δ vs base, coefficients; front/rear = extra load pressing the axle down):
+  - flap: cd +0.077, cl −0.083, front −0.041, rear +0.123 (physical: the wing loads the rear).
+  - lip: cd +0.061, cl +0.043, front −0.036, rear −0.007.
+  - arch: identical to base at 40 mm (the 33 mm trim is under one cell), so it can only show something at 28 mm and will most likely read "–".
+- subsystems/race-aero.js (new) shows the results:
+  - centre-plane and cross slices, streamlines, part marker, and arrows for Δdrag and Δaxle load;
+  - readouts in kg and kW at 200 km/h; changes that are not `settled` show "–".
+  - It is checked visually with tools/stop-shot.mjs at 40 mm; no errors.
+- stops/190e-evo2/car.js + hu.js:
+  - The race-aero component comes first; the question is set; the old aero step is renamed "Road car on the autobahn".
+  - Credits and the unverified line are done.
+  - PLACEHOLDERS remain: car.js `answer: "ANSWER"` and `say: "SAY_FLAP"/"SAY_LIP"/"SAY_ARCH"`; hu.js `prompt: "PROMPT_HU"`, `answer: "ANSWER_HU"`, `SAY_*_HU`.
+- Also done this session (no action needed):
+  - 260 D camera refit and traced outline; engine-param changes (valves/rockers/sideExhaust/breathe), visually checked.
+  - Updatable panel `text: { id, value }`; photo-grid `--bright`; CLAUDE.md updated.
+  - npm test passes (229).
+
+## To do
+1. Export: `node tools/cfd/export.mjs`. Read the printed Δ28/Δ40/settled per case.
+2. Write the placeholder texts from what the model actually shows, in English and Hungarian (Hungarian style: natural, complete; the race-aero prompt in hu.js translates the English prompt).
+   - answer: the flap buys rear load (grip in fast bends, stability) for drag (speed on the straight), with the numbers in kg/kW at 200 km/h, flagged as the simplified model's.
+   - Each `say`: what visibly changes for that case.
+   - If arch is not settled, say the change shows in the wake and the force change is too small for this model to measure.
+   - If the lip's numbers contradict the intended "forward lip = more front load", report what the model shows; don't invent.
+3. Look at stops/190e-evo2/cfd/cfd.json size (~116 KB at 40 mm; streamline points can be thinned if large). The --cfd-* colour scale and the streamlines must read on an iPhone.
+4. Check visually:
+   - `npm run serve`, then `node tools/stop-shot.mjs 190e-evo2 race-aero <scratch>/ra.png 5000`, and once more with a button, e.g. "Lip forward" / "No arch flare".
+   - Also `--photo`.
+5. Run `npm test`, then `npm run e2e` (Playwright: WebKit iPhone/iPad + Chromium offline). Fix failures.
+6. Update CLAUDE.md "Open" with an Evo II CFD note: simplified voxel model, still wheels, low Reynolds number, pressure-only forces, which changes are settled.
+7. Report to the user. Ask whether docs/bilingual-copy-and-ux-proposals.md (untracked) should go into the eventual commit. Still no commit or push.
+</pasted_content id="efa9">
+
+---
+
+commit and push but do not trigger a redeploy
