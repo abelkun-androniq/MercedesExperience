@@ -51,7 +51,9 @@ export default {
     },
     {
       id: "diff", label: "Differential", subsystem: "differential",
-      view: { pos: [1.9, -2.0, 2.3], target: [0.15, 0, 0.45] },
+      prompt: "In a bend the outer wheel has further to go. Watch the small spider gears while the steering swings from straight to a bend: when do they turn on their pin?",
+      answer: "Only in the bend. Straight ahead they ride round with the carrier like part of a solid shaft; in a bend they roll between the two side gears, so one wheel runs ahead and the other falls behind by the same amount. Now press “Hold the left wheel”: the right one turns twice as fast as the carrier.",
+      view: { pos: [1.3, -0.9, 1.1], target: [0.42, 0, 0.42] },
       ghost: { fill: 0.03, edge: 0.3 },
       params: {
         label: "Differential on the countershaft", mode: "corner",
@@ -59,11 +61,19 @@ export default {
         ringR: 110, drive: "belt", counter: { x: 450, z: 450, half: 470 }, // illustrative
         corner: { kmh: 12, minRadius: 3 },
       },
+      real: {   // the part in real life (not this car): Benz's differential sits inside the belt pulley
+        src: "parts/open-differential.jpg", w: 800, h: 600,
+        mark: { x: 280, y: 232, r: 70, token: "--l2" },   // the spider gear at the near end of the cross pin
+        alt: "Close-up of an open car differential with its cover off: a steel cross pin through the carrier, a small bevel gear on its end and a large bevel gear with a splined hub behind it, inside a big crown wheel",
+        caption: "An open differential of a modern car, cover off. The ring marks a spider gear on the cross pin; behind the pin is a side gear, splined to its half-shaft. Benz's 1886 differential works the same way, inside the belt pulley.",
+        credit: { author: "Dr. Mirko Junge", license: "CC BY-SA 3.0", url: "https://commons.wikimedia.org/wiki/File:Differentialgetriebe_Hinterachse_Porsche_Cayenne.jpg" },
+      },
       talk: [
         "In a bend the outer rear wheel has further to go than the inner one. On one solid shaft one of them would have to skid.",
         "Benz built a differential into the countershaft. The belt turns its housing, and small bevel gears inside let the two output shafts run at different speeds.",
         "From each end of the countershaft a chain runs to a rear wheel, as on a bicycle.",
         "Move the steering slider. Straight ahead the small spider gears ride round with the housing without turning; in a bend they start to spin.",
+        "The carrier always turns at the average speed of the two wheels. That is also the catch: an open differential gives both wheels the same torque, so a wheel on ice can spin while its partner stands. Later cars added locks for that; the Unimog's is shown further on.",
       ],
     },
   ],

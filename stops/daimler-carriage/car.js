@@ -21,7 +21,7 @@ export default {
   photo: {
     src: "photo.jpg", w: 1200, h: 803,
     alt: "Daimler motor carriage of 1886 in the Mercedes-Benz Museum, seen from the right",
-    cam: { c: [-1400.4, -4603.7, 2721.7], yaw: 1.0942, pitch: -0.3346, roll: -0.0388, f: 1560.5 }, // tools/photo-fits/daimler-carriage.json
+    cam: { c: [3469, -1215.6, 1393.1], yaw: 2.6433, pitch: -0.1546, roll: -0.0007, f: 904.5 }, // tools/photo-fits/daimler-carriage.json
     credit: { author: "Valder137", license: "CC BY 2.0", url: "https://commons.wikimedia.org/wiki/File:Daimler_Motorkutsche_1886_RSideFront_MBMuse_9June2013_(14980552081).jpg" },
   },
   components: [

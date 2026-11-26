@@ -9,6 +9,7 @@ export default {
   summary: "A replica of West Germany's 1974 World Cup team bus, with air conditioning on its roof.",
   eyebrow: "Mercedes-Benz O 302, 1974",
   lede: "A replica of West Germany's 1974 World Cup team bus. A coach in summer is a glasshouse full of people: each passenger gives off about as much heat as a light bulb, and the sun pours in through the windows. The unit on the roof takes that heat out. Fill the coach, switch the unit off and watch the temperature climb.",
+  look: "Find the electric fan mounted by the front door, extra air for a hot glasshouse, and at the back Tip and Tap, the mascots of the 1974 World Cup.",
   orbit: { min: 0.5, max: 26 },
   sun: [2, 3, 6],
   body: {

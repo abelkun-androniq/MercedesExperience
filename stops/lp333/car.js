@@ -27,6 +27,8 @@ export default {
   components: [
     {
       id: "steer", label: "Twin front axles", subsystem: "twin-steer",
+      prompt: "Set the steering slider to 20° and hold it there. Then press “Second axle fixed”. Before you look: which tyres will be scrubbed sideways?",
+      answer: "The second axle's pair, picked out in colour. Fixed straight, they point away from their circles round the turning centre, so the lorry drags them sideways, here at about 14° of slip. Steered by the drag link, they point along their circles and roll.",
       view: { pos: [-2.8, -4.5, 10.5], target: [-2.8, 0, 0] },
       ghost: { fill: 0.04, edge: 0.35 },
       params: {

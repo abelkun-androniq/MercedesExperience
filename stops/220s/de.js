@@ -26,11 +26,24 @@ export default {
         "Der steife Vorderwagen hält auf kürzerem Weg mit weit höherer Kraft an und drückt in die Zelle selbst hinein.",
       ],
     },
+    {
+      label: "Der Messwagen",
+      prompt: "Fahren Sie mit guten Stoßdämpfern über die Bodenwelle, dann mit verschlissenen. Was zeigt der Schreiber im Wagen dahinter?",
+      answer: "Mit guten Dämpfern schwingt die Kurve ein- oder zweimal und beruhigt sich. Mit verschlissenen hüpfen Rad und Aufbau nach jeder Bodenwelle noch mehrere Schwingungen weiter: genau das konnten die Ingenieure im Messwagen auf Papier sehen, während der Versuch noch lief.",
+      params: { label: "Linkes Vorderrad, Signal zurück zum Schreiber" },
+      talk: [
+        "Hinter diesem Auto steht in der Galerie ein Einzelstück: ein Mercedes-Benz 300 Kombi von 1960, umgebaut zum Messwagen. Bei Straßenversuchen verband ihn ein Kabel mit dem Versuchswagen vor ihm.",
+        "Sensoren am Versuchswagen maßen, was die Ingenieure wissen wollten, etwa wie weit die Federung arbeitete. Die Signale liefen über das Kabel zurück zu den Messgeräten im Messwagen, wo die Ingenieure sie während des Versuchs verfolgten.",
+        "Über einer Bodenwelle federt die Feder ein und das Rad hebt sich; der Stoßdämpfer entscheidet, wie schnell das Nachschwingen abklingt. Verschlissene Dämpfer zeigen sich sofort in der Kurve.",
+        "Vor solchen Instrumenten konnten Testfahrer nur berichten, wie sich ein Auto anfühlte. Messungen auf der Straße ließen die Ingenieure eine Konstruktion mit einer anderen in Zahlen vergleichen.",
+      ],
+    },
   ],
   note: "Echtes Deformationsverhalten ist viel ungleichmäßiger als die fast konstante Kraft dieses Modells. Die Flossen am Heck gaben dem Wagen seinen Spitznamen „Heckflosse“.",
   unverified: [
     "Masse, Deformationskräfte, Deformationswege und Steifigkeiten (so gewählt, dass plausible g-Werte entstehen)",
     "Karosseriemaße und Umriss der Karosserie",
     "Welche W-111-Variante ausgestellt ist (das Foto zeigt einen 220 S von 1964)",
+    "Messwagen: Sensor, Schreiber und Fahrwerkswerte sind veranschaulichend; das Museum nennt die Kabelverbindung, nicht die Instrumente",
   ],
 };

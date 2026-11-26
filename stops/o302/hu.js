@@ -5,6 +5,7 @@ export default {
   summary: "A nyugatnémet válogatott 1974-es világbajnoki csapatbuszának másolata, tetején légkondicionálóval.",
   eyebrow: "Mercedes-Benz O 302, 1974",
   lede: "A nyugatnémet válogatott 1974-es világbajnoki csapatbuszának másolata. Egy autóbusz nyáron emberekkel teli üvegház: minden utas nagyjából egy villanykörtényi hőt ad le, és az ablakokon ömlik be a napfény. A tetőn ülő berendezés ezt a hőt vonja el. Töltse meg a buszt, kapcsolja ki a berendezést, és figyelje, ahogy emelkedik a hőmérséklet.",
+  look: "Keresse meg az első ajtó mellé szerelt villanyventilátort, plusz levegőt a forró üvegházba, hátul pedig Tipet és Tapot, az 1974-es világbajnokság kabaláit.",
   photo: { alt: "Sárga Mercedes-Benz O 302 autóbusz a Mercedes-Benz Múzeumban, a nyugatnémet válogatott 1974-es világbajnoki csapatbuszának másolata, balról elölről nézve" },
   components: [
     {

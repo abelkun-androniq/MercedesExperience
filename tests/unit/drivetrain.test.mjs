@@ -33,6 +33,19 @@ test("differential: open splits torque equally, so one wheel on ice stops the ca
   assert.ok(both.spinL && both.spinR, "equal grip, too much torque: both spin");
 });
 
+test("differential: a limited-slip differential passes up to its bias ratio to the wheel with grip, between open and locked", () => {
+  const p = { torque: 4000, wheelR: 0.45, normal: 9000, muL: 0.15, muR: 0.6, resist: 5000 };
+  const open = traction(p), lsd = traction({ ...p, bias: 2.5 }), locked = traction({ ...p, locked: true });
+  assert.ok(Math.abs(lsd.fL - 0.15 * 9000) < 1e-9 && Math.abs(lsd.fR - 2.5 * 0.15 * 9000) < 1e-9);
+  assert.ok(open.total < lsd.total && lsd.total < locked.total);
+  assert.ok(lsd.spinL && !lsd.spinR, "the slipping wheel keeps slipping; the plates only pass torque across");
+  assert.deepEqual(traction({ ...p, bias: 1 }), open, "bias 1 is an open differential");
+  const plenty = traction({ ...p, bias: 100 });
+  assert.ok(Math.abs(plenty.total - locked.total) < 1e-9, "an unlimited bias drives like a lock");
+  const right = traction({ ...p, muL: 0.6, muR: 0.15, bias: 2.5 });
+  assert.ok(Math.abs(right.fL - lsd.fR) < 1e-9 && right.spinR && !right.spinL, "mirror image");
+});
+
 const box = { gears: [{ name: "R", drive: 15, driven: 45, idler: true }, { name: "1", drive: 15, driven: 45 }, { name: "2", drive: 20, driven: 40 }, { name: "4", drive: 30, driven: 30 }], final: 2, wheelR: 0.45 };
 
 test("gearbox: ratios, reverse runs backwards, primary speed and road speed are inverse", () => {

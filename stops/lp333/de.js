@@ -10,9 +10,11 @@ export default {
   },
   components: [
     {
+      prompt: "Stellen Sie den Lenkregler auf 20° und halten Sie ihn dort. Drücken Sie dann „Zweite Achse ungelenkt“. Bevor Sie hinsehen: Welche Reifen werden seitlich geschoben?",
+      answer: "Das Radpaar der zweiten Achse, farbig hervorgehoben. Geradeaus festgehalten, zeigen die Räder von ihren Kreisen um den Drehpunkt weg, also schleift der Lastwagen sie seitwärts, hier mit etwa 14° Schräglauf. Über die Lenkschubstange gelenkt, zeigen sie entlang ihrer Kreise und rollen.",
       label: "Doppelte Vorderachse",
       params: {
-        label: "Lenkung, von oben gesehen",
+      label: "Lenkung, von oben gesehen",
       },
       talk: [
         "Deutsche Vorschriften der späten 1950er-Jahre senkten die Last, die jede Achse eines Lkw tragen durfte. Um die Nutzlast zu halten, setzte der LP 333 zwei gelenkte Achsen unter sein Fahrerhaus: drei Achsen insgesamt, was ihm den Spitznamen „Tausendfüßler“ einbrachte.",

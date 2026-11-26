@@ -52,7 +52,7 @@ export default {
     {
       id: "desmo", label: "Desmodromic valves", subsystem: "desmo-valvetrain",
       prompt: "Raise the engine speed. Where does the spring-closed valve stop following the cam?",
-      answer: "Above about 7,000 rpm in this model, at the top of the lift: there the valve has to slow down and turn back faster than its spring can make it, so it flies on, off the cam. The desmodromic valve is pulled shut by a second cam and follows the cam at any speed.",
+      answer: "Above about 7,000 rpm in this model, at the top of the lift: there the valve has to slow down and turn back faster than its spring can make it, so it flies on, off the cam. The desmodromic valve is pulled shut by a second cam: it follows the cam throughout the speed range shown.",
       view: { pos: [0.02, -0.4, 0.52], target: [-0.4, 0.02, 0.37] },
       ghost: { fill: 0, edge: 0 },
       params: {
@@ -63,13 +63,14 @@ export default {
       },
       real: {   // the part in real life (not this car)
         src: "parts/desmo-ducati.jpg", w: 800, h: 600,
+        mark: { x: 390, y: 395, r: 62, token: "--l2" },   // the forked closing rocker, ringed as in the model
         alt: "Close-up through the inspection opening of a Ducati motorcycle engine: an upper rocker on the valve tip and a forked rocker under the collar on the stem",
-        caption: "On this Ducati engine, the forked rocker pulls the valve shut by the collar on its stem; the upper rocker opens it. Which rocker pulls the valve shut in the Mercedes model? The rocker layouts differ; the idea, closing by force, is the same.",
+        caption: "On this Ducati engine, the forked rocker pulls the valve shut by the collar on its stem; the upper rocker opens it. The ring marks the fork; in the model the same ring marks the Mercedes closing rocker's fork. The rocker layouts differ; the idea, closing by force, is the same.",
         credit: { author: "Gérard Delafond", license: "CC BY-SA 3.0", url: "https://commons.wikimedia.org/wiki/File:Desmo_photo.jpg" },
       },
       talk: [
         "At high revs a valve spring can no longer pull the valve back fast enough: the valve floats off the cam and can hit the piston. Raise the speed and watch the spring valve's line leave the dashed cam line.",
-        "Mercedes's desmodromic gear has no closing spring. A second cam and a rocker pull the valve shut, so the valve follows the cam exactly at any speed.",
+        "Mercedes's desmodromic gear has no closing spring. A second cam and a rocker pull the valve shut, so in this model the valve follows the cam exactly throughout the speed range shown.",
         "The opening and closing cams are matched: their radii always add up to the same value, so the two never fight. Ducati later made the idea famous on motorcycles.",
       ],
     },

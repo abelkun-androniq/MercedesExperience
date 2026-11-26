@@ -8,6 +8,8 @@ export default {
   photo: { alt: "Zöld, 1959-es, két első tengelyes Mercedes-Benz LP 333 platós teherautó a Mercedes-Benz Múzeumban, balról elölről nézve" },
   components: [
     {
+      prompt: "Állítsa a kormányzás csúszkáját 20°-ra, és tartsa ott. Aztán nyomja meg: „A második tengely merev”. Mielőtt odanéz: melyik gumik csúsznak majd oldalra?",
+      answer: "A második tengely kerékpárja, színnel kiemelve. Egyenesre merevítve nem a fordulási középpont körüli köreik mentén állnak, ezért a teherautó oldalra húzza őket, itt kb. 14°-os kúszással. A tolórúddal kormányozva a köreik mentén állnak, és gördülnek.",
       label: "Kettős első tengely",
       params: { label: "Kormányzás felülről" },
       talk: [

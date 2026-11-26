@@ -24,14 +24,21 @@ export default {
     },
     {
       label: "Differenzial",
+      prompt: "In einer Kurve hat das äußere Rad den weiteren Weg. Beobachten Sie die kleinen Ausgleichskegelräder, während die Lenkung von geradeaus in die Kurve schwenkt: Wann drehen sie sich auf ihrem Bolzen?",
+      answer: "Nur in der Kurve. Geradeaus laufen sie mit dem Gehäuse um wie ein Teil einer starren Welle; in der Kurve wälzen sie sich zwischen den beiden Achswellenrädern ab, sodass ein Rad um so viel vorauseilt, wie das andere zurückbleibt. Drücken Sie jetzt „Linkes Rad festhalten“: Das rechte dreht sich doppelt so schnell wie das Gehäuse.",
       params: {
         label: "Differenzial auf der Vorgelegewelle",
+      },
+      real: {
+        alt: "Nahaufnahme eines offenen Pkw-Differenzials ohne Deckel: ein Stahlbolzen quer durch das Ausgleichsgehäuse, ein kleines Kegelrad auf seinem Ende und dahinter ein großes Kegelrad mit verzahnter Nabe, in einem großen Tellerrad",
+        caption: "Das offene Differenzial eines heutigen Autos, ohne Deckel. Der Ring markiert ein Ausgleichskegelrad auf dem Ausgleichsbolzen; hinter dem Bolzen sitzt ein Achswellenrad, verzahnt mit seiner Halbwelle. Benz' Differenzial von 1886 arbeitet genauso, in der Riemenscheibe.",
       },
       talk: [
         "In der Kurve hat das äußere Hinterrad einen weiteren Weg als das innere. Auf einer starren Welle müsste eines von beiden rutschen.",
         "Benz baute ein Differenzial in die Vorgelegewelle ein. Der Riemen dreht sein Gehäuse, und kleine Kegelräder darin lassen die beiden Abtriebswellen verschieden schnell laufen.",
         "Von jedem Ende der Vorgelegewelle läuft eine Kette zu einem Hinterrad, wie beim Fahrrad.",
         "Bewegen Sie den Lenkregler. Geradeaus laufen die kleinen Ausgleichsräder mit dem Gehäuse um, ohne sich zu drehen; in der Kurve beginnen sie zu kreisen.",
+        "Das Gehäuse dreht sich immer mit der mittleren Geschwindigkeit beider Räder. Das ist auch der Haken: Ein offenes Differenzial gibt beiden Rädern dasselbe Drehmoment, also kann ein Rad auf Eis durchdrehen, während sein Partner steht. Spätere Fahrzeuge bekamen dafür Sperren; die des Unimog zeigt die Tour weiter unten.",
       ],
     },
   ],

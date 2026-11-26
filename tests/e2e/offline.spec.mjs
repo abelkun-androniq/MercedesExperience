@@ -23,7 +23,7 @@ test("one visit stores the whole tour; another stop then opens offline", async (
     }
   }
   await page.goto("./?sw=1");
-  await expect(page.locator('a[href^="stop.html?s="]')).toHaveCount(tour.length);
+  await expect(page.locator('main a[href^="stop.html?s="]')).toHaveCount(tour.length);   // the stop cards
   await page.goto("teaser.html?sw=1");
   await expect(page.locator('a[href^="stop.html?s="]')).toHaveCount(3);
 });

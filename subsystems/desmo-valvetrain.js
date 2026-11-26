@@ -40,6 +40,10 @@ export function create(ctx, p) {
   const dv = valve(desmoMat, Yd), sv = valve(springValveMat, Ys);
   // Desmo closing rocker: a lever pivoted halfway between the closing-cam follower and a fork under the valve collar.
   const closer = rod(rockerMat, 0.004), pivot = ball(dark, 0.006); group.add(closer, pivot);
+  // A ring round its fork, the part that pulls the valve shut (ringed the same way on the real-part photo). It breathes
+  // gently to catch the eye, and stays still with reduced motion.
+  const fork = new THREE.Mesh(new THREE.TorusGeometry(0.011, 0.0012, 8, 40), rockerMat); group.add(fork);
+  let glow = 0;
   // Spring valve: bucket under the cam, coil spring from the head to the collar.
   const bucket = new THREE.Mesh(new THREE.CylinderGeometry(0.014, 0.014, 0.012, 24), steel); bucket.rotation.x = Math.PI / 2; group.add(bucket);
   // Coil built once at its closed length and squashed along z as the valve opens.
@@ -58,6 +62,7 @@ export function create(ctx, p) {
     // hooked under the valve collar, drops by L, so the pivot between them stays fixed.
     const zB = CAM_Z - cam.base - cam.lift - L, zA = CAM_Z - (cam.base + cam.lift - L);
     place(closer, V(0, Yd, zB), V(0, Yc, zA)); pivot.position.set(0, (Yd + Yc) / 2, (zA + zB) / 2);
+    fork.position.set(0, Yd, zB);
     bucket.position.set(0, Ys, CAM_Z - cam.base - x - 0.006);
     coil.scale.z = (coilTop(x) - seatZ) / coil0;
     return { L, x };
@@ -70,7 +75,7 @@ export function create(ctx, p) {
       { readouts: [{ id: "rpm", label: t("Engine speed"), unit: t("rpm") }, { id: "float", label: t("Spring valve float"), unit: t("mm off the cam") },
         { id: "desmo", label: t("Desmo valve lift"), unit: t("mm, always = cam") }, { id: "spring", label: t("Spring valve lift"), unit: t("mm") }] },
       { svg: { id: "lift", viewBox: "0 0 280 120", aria: t("Valve lift over one cam revolution: cam profile, spring valve and desmodromic valve") } },
-      { key: [["--muted", t("cam profile")], ["--accent", t("desmo valve")], ["--l1", t("spring valve")]] },
+      { key: [["--muted", t("cam profile")], ["--accent", t("desmo valve")], ["--l1", t("spring valve")], ["--l2", t("ring: the fork that pulls the valve shut")]] },
       { buttons: [{ id: "play", toggle: [t("Pause"), t("Play")], pressed: playing, onClick: v => (playing = v) }] },
     ] },
     { label: t("Parts"), items: [{ legend: [["--accent", t("Desmodromic valve")], ["--l2", t("Closing cam and closing rocker")], ["--l1", t("Spring-closed valve (for comparison)")], ["--l4", t("Valve spring")], ["--metal", t("Opening cams and camshaft")]] }] },
@@ -95,6 +100,7 @@ export function create(ctx, p) {
     layout({ active }) { group.visible = active; },
     update(dt) {
       if (playing) phi = (phi + dt * SHOWN_REV_S * TAU) % TAU;
+      if (!ctx.reducedMotion) { glow += dt; fork.scale.setScalar(1 + 0.15 * Math.sin(glow * 4)); }
       const { L, x } = pose();
       cursor.setAttribute("x1", X(phi)); cursor.setAttribute("x2", X(phi));
       ui.set("desmo", (L * 1000).toFixed(1)); ui.set("spring", (x * 1000).toFixed(1));

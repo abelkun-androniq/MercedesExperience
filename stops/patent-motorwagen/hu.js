@@ -20,12 +20,19 @@ export default {
     },
     {
       label: "Differenciálmű",
+      prompt: "Kanyarban a külső keréknek hosszabb az útja. Figyelje a kis kiegyenlítő kerekeket, miközben a kormány egyenesből kanyarba fordul: mikor forognak a csapjukon?",
+      answer: "Csak kanyarban. Egyenesben a házzal együtt körbefutnak, mintha egy merev tengely részei lennének; kanyarban legördülnek a két féltengely-kerék között, így az egyik kerék ugyanannyival előresiet, amennyivel a másik lemarad. Most nyomja meg: „Bal kerék megfogása”: a jobb kerék kétszer olyan gyorsan forog, mint a ház.",
       params: { label: "Differenciálmű a közlőtengelyen" },
+      real: {
+        alt: "Közeli kép egy autó nyitott, fedél nélküli differenciálművéről: acél kiegyenlítőcsap a házon át, a végén kis kúpkerék, mögötte bordás agyú nagy kúpkerék, egy nagy tányérkerékben",
+        caption: "Egy mai autó nyitott differenciálműve, fedél nélkül. A gyűrű a kiegyenlítőcsapon ülő kiegyenlítő kereket jelöli; a csap mögött egy féltengely-kerék, bordázattal a féltengelyén. Benz 1886-os differenciálműve ugyanígy működik, a szíjtárcsa belsejében.",
+      },
       talk: [
         "Kanyarban a külső hátsó keréknek hosszabb utat kell megtennie, mint a belsőnek. Egyetlen merev tengelyen az egyiknek csúsznia kellene.",
         "Benz differenciálművet épített a közlőtengelybe. A szíj a házát forgatja, a benne lévő kis kúpkerekek pedig engedik, hogy a két kimenő tengely eltérő sebességgel forogjon.",
         "A közlőtengely mindkét végéről lánc fut egy-egy hátsó kerékhez, mint a kerékpáron.",
         "Mozgassa a kormány csúszkát. Egyenesben a kis kiegyenlítő kerekek a házzal együtt körbefutnak, de nem forognak; kanyarban pörögni kezdenek.",
+        "A ház mindig a két kerék átlagos sebességével forog. Ez a gyenge pontja is: a nyitott differenciálmű mindkét keréknek ugyanakkora nyomatékot ad, így a jégen álló kerék kipöröghet, miközben a párja áll. A későbbi autók ezért zárat kaptak; az Unimogét az útvonal későbbi részén mutatjuk be.",
       ],
     },
   ],

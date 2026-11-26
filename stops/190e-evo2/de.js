@@ -13,7 +13,7 @@ export default {
     {
       label: "Heckflügel",
       prompt: "Beobachten Sie den orangefarbenen Pfeil im gestrichelten Kasten über der Hinterkante des Flügels. Stellen Sie die Klappe auf: In welche Richtung dreht die Luft, die den Flügel verlässt?",
-      answer: "Nach oben. Mit aufgestellter Klappe kippt die mittlere Richtung der Luft im Kasten um etwa 13° weiter nach oben (auf einem gröberen Gitter um etwa 8°). Die Luft nach oben zu lenken braucht einen Schub, und der Flügel spürt den Gegenschub, nach unten. Im Gesamtfahrzeugmodell sind das bei 200 km/h etwa 34 kg mehr auf der Hinterachse, für etwa 9 kW mehr Motorleistung, die in den Luftwiderstand geht.",
+      answer: "Nach oben. Mit aufgestellter Klappe kippt die mittlere Richtung der Luft im Kasten um etwa 13° weiter nach oben (auf einem gröberen Gitter um etwa 8°). Die Luft nach oben zu lenken braucht einen Schub, und der Flügel spürt den Gegenschub, nach unten. Auf beiden Gittern des Gesamtfahrzeugmodells brachte die aufgestellte Klappe mehr Last auf die Hinterachse und mehr Luftwiderstand. Wie viel, hängt vom Gitter ab: bei 200 km/h etwa 25 bis 43 kg mehr auf der Hinterachse, für 4 bis 14 kW mehr Motorleistung, die in den Luftwiderstand geht.",
       more: "Details zum Windkanal",
       params: {
         label: "Flügelklappe · ein Schnitt aus dem Gesamtfahrzeug-Kanal",

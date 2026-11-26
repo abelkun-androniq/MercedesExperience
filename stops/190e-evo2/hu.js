@@ -11,7 +11,7 @@ export default {
     {
       label: "Hátsó szárny",
       prompt: "Figyelje a narancssárga nyilat a szárny kilépőéle fölötti szaggatott keretben. Állítsa fel a lapot: merre fordul a szárnyat elhagyó levegő?",
-      answer: "Felfelé. Felállított lappal a keretben az átlagos áramlási irány kb. 13°-kal feljebb billen (egy durvább rácson kb. 8°-kal). A levegő felfelé terelése erőt kíván, és a szárny ennek ellenerejét lefelé kapja. Az egész autó modelljében ez 200 km/h-nál kb. 34 kg-mal nagyobb terhelés a hátsó tengelyen, kb. 9 kW-tal több, légellenállásra fordított motorteljesítmény árán.",
+      answer: "Felfelé. Felállított lappal a keretben az átlagos áramlási irány kb. 13°-kal feljebb billen (egy durvább rácson kb. 8°-kal). A levegő felfelé terelése erőt kíván, és a szárny ennek ellenerejét lefelé kapja. Az egész autó modelljének mindkét rácsán a felállított lap növelte a hátsó tengely terhelését és a légellenállást. Hogy mennyivel, az a rácstól függ: 200 km/h-nál kb. 25–43 kg-mal több jut a hátsó tengelyre, 4–14 kW-tal több, légellenállásra fordított motorteljesítmény árán.",
       more: "A szélcsatorna részletei",
       params: {
         label: "Szárnylap · metszet az egész autó szélcsatornájából",

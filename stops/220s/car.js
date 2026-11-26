@@ -55,10 +55,31 @@ export default {
         "The stiff front stops in a shorter distance at a far higher force, and pushes into the cell itself.",
       ],
     },
+    {
+      id: "measure", label: "The measuring car", subsystem: "measuring-car",
+      prompt: "Drive over the bump with good dampers, then with worn ones. What does the recorder in the car behind show?",
+      answer: "With good dampers the trace swings once or twice and settles. With worn ones the wheel and body go on bouncing for several swings after each bump: exactly what the engineers in the measuring car could see on paper while the test was still running.",
+      view: { pos: [-0.8, 7.6, 2.1], target: [-2.9, 0.3, 0.5] },
+      ghost: { fill: 0.03, edge: 0.3 },
+      params: {
+        label: "Front left wheel, signal back to the recorder",
+        wheel: { x: 0, y: 740, R: 340 }, tail: -3900,
+        follower: { x0: -10500, x1: -5900, w: 1800, h: 1450 }, recorder: [-6500, 300, 1150],   // gap and recorder position illustrative
+        ride: { ms: 350, mu: 45, ks: 22000, kt: 180000, cs: 1800, csWorn: 350 },             // illustrative
+        speed: { min: 20, max: 80, value: 50 },
+      },
+      talk: [
+        "Behind this car in the gallery stands a one-off: a 1960 Mercedes-Benz 300 estate converted into a measuring car. In road tests a cable linked it to the car being tested, ahead of it.",
+        "Sensors on the test car measured what engineers wanted to know, such as how far the suspension moved. The signals ran back along the cable to recording instruments in the measuring car, where engineers watched them as the test went on.",
+        "Over a bump the spring compresses and the wheel rises; the damper decides how quickly the bouncing dies away. Worn dampers show up at once in the trace.",
+        "Before such instruments, test drivers could only report how a car felt. Measurements on the road let engineers compare one design with another in numbers.",
+      ],
+    },
   ],
   note: "Real crush behaviour is far more ragged than this model's nearly constant force. The fins at the back gave the car its nickname 'Heckflosse'.",
-  unverified: ["Mass, crush forces, crush lengths and stiffnesses (chosen to give plausible g values)", "Body dimensions and ghost-body outline", "Which W 111 variant is on display (the photo shows a 1964 220 S)"],
+  unverified: ["Mass, crush forces, crush lengths and stiffnesses (chosen to give plausible g values)", "Body dimensions and ghost-body outline", "Which W 111 variant is on display (the photo shows a 1964 220 S)", "Measuring car: the sensor, the recorder and the suspension figures are illustrative; the museum names the cable link, not the instruments"],
   sources: [
+    { label: "Mercedes-Benz Museum: the 300 measuring car and the 220 S in Legend 5 (2022)", url: "https://mb-france.mercedes-benz-clubs.com/wp-content/uploads/sites/21/2022/02/2022Messwagentxt.pdf" },
     { label: "Mercedes-Benz press text: the passenger safety cell is patented (German Car Forum)", url: "https://www.germancarforum.com/threads/mercedes-benz-23-january-1951-the-passenger-safety-cell-is-patented.36023" },
     { label: "Motorway America: Mercedes-Benz marks 50 years of crash testing", url: "https://www.motorwayamerica.com/content/mercedes-benz-marks-50-years-crash-testing-first-car" },
     { label: "Tecosim: history of crash tests", url: "https://tecosim.com/history-of-crash-tests/" },

@@ -33,7 +33,7 @@ export default {
     {
       id: "wing", label: "Rear wing", subsystem: "race-aero",
       prompt: "Watch the orange arrow in the dashed box above the wing's trailing edge. Raise the flap: which way does the air leaving the wing turn?",
-      answer: "Upward. With the flap raised, the mean direction of the air in the box tips about 13° further up (about 8° on a coarser grid). Turning the air upward takes a push, and the wing feels the push back, downward. In the whole-car model that is about 34 kg more on the rear axle at 200 km/h, for about 9 kW more of the engine's power spent on drag.",
+      answer: "Upward. With the flap raised, the mean direction of the air in the box tips about 13° further up (about 8° on a coarser grid). Turning the air upward takes a push, and the wing feels the push back, downward. On both grids of the whole-car model, raising the flap added load on the rear axle and drag. How much depends on the grid: at 200 km/h about 25 to 43 kg more on the rear axle, for 4 to 14 kW more of the engine's power spent on drag.",
       more: "Wind tunnel details",
       view: { pos: [-3.73, 1.88, 1.12], target: [-3.73, 0.238, 1.12] },
       ghost: { fill: 0, edge: 0 },

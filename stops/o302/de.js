@@ -5,6 +5,7 @@ export default {
   summary: "Ein Nachbau des Mannschaftsbusses der deutschen Nationalmannschaft bei der WM 1974, mit Klimaanlage auf dem Dach.",
   eyebrow: "Mercedes-Benz O 302, 1974",
   lede: "Ein Nachbau des Mannschaftsbusses der deutschen Nationalmannschaft bei der WM 1974. Ein Reisebus im Sommer ist ein Glashaus voller Menschen: Jeder Fahrgast gibt etwa so viel Wärme ab wie eine Glühbirne, und die Sonne strahlt durch die Fenster herein. Die Anlage auf dem Dach führt diese Wärme ab. Füllen Sie den Bus, schalten Sie die Anlage aus und sehen Sie zu, wie die Temperatur steigt.",
+  look: "Suchen Sie den elektrischen Ventilator an der vorderen Tür, zusätzliche Luft für das heiße Glashaus, und hinten Tip und Tap, die Maskottchen der WM 1974.",
   photo: {
     alt: "Gelber Mercedes-Benz O 302 Reisebus im Mercedes-Benz Museum, ein Nachbau des Mannschaftsbusses der deutschen Nationalmannschaft von 1974, von vorn links gesehen",
   },

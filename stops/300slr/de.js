@@ -25,17 +25,17 @@ export default {
     {
       label: "Desmodromische Ventile",
       prompt: "Erhöhen Sie die Motordrehzahl. Wo hört das federgeschlossene Ventil auf, dem Nocken zu folgen?",
-      answer: "In diesem Modell oberhalb von etwa 7000 U/min, am höchsten Punkt des Hubs: Dort muss das Ventil schneller abbremsen und umkehren, als seine Feder es zwingen kann, also fliegt es weiter, vom Nocken weg. Das desmodromische Ventil wird von einem zweiten Nocken zugezogen und folgt dem Nocken bei jeder Drehzahl.",
+      answer: "In diesem Modell oberhalb von etwa 7000 U/min, am höchsten Punkt des Hubs: Dort muss das Ventil schneller abbremsen und umkehren, als seine Feder es zwingen kann, also fliegt es weiter, vom Nocken weg. Das desmodromische Ventil wird von einem zweiten Nocken zugezogen: Es folgt dem Nocken im ganzen gezeigten Drehzahlbereich.",
       params: {
         label: "Desmodromisches Ventil gegen federgeschlossenes Ventil",
       },
       real: {
         alt: "Nahaufnahme durch die Inspektionsöffnung eines Ducati-Motorradmotors: ein oberer Kipphebel auf dem Ventilschaftende und ein gegabelter Kipphebel unter dem Bund am Schaft",
-        caption: "An diesem Ducati-Motor zieht der gegabelte Kipphebel das Ventil am Bund seines Schafts zu; der obere Kipphebel öffnet es. Welcher Hebel zieht das Ventil im Mercedes-Modell zu? Die Hebelanordnungen unterscheiden sich; die Idee, das Schließen mit Zwang, ist dieselbe.",
+        caption: "An diesem Ducati-Motor zieht der gegabelte Kipphebel das Ventil am Bund seines Schafts zu; der obere Kipphebel öffnet es. Der Ring markiert die Gabel; im Modell markiert derselbe Ring die Gabel des Mercedes-Schließhebels. Die Hebelanordnungen unterscheiden sich; die Idee, das Schließen mit Zwang, ist dieselbe.",
       },
       talk: [
         "Bei hoher Drehzahl kann eine Ventilfeder das Ventil nicht mehr schnell genug zurückziehen: Das Ventil hebt vom Nocken ab und kann den Kolben treffen. Erhöhen Sie die Drehzahl und sehen Sie zu, wie die Linie des Federventils die gestrichelte Nockenlinie verlässt.",
-        "Die desmodromische Steuerung von Mercedes hat keine Schließfeder. Ein zweiter Nocken und ein Kipphebel ziehen das Ventil zu, also folgt das Ventil dem Nocken bei jeder Drehzahl genau.",
+        "Die desmodromische Steuerung von Mercedes hat keine Schließfeder. Ein zweiter Nocken und ein Kipphebel ziehen das Ventil zu, also folgt das Ventil in diesem Modell im gezeigten Drehzahlbereich dem Nocken genau.",
         "Öffnungs- und Schließnocken sind aufeinander abgestimmt: Ihre Radien ergeben zusammen stets denselben Wert, so arbeiten die beiden nie gegeneinander. Ducati machte die Idee später an Motorrädern berühmt.",
       ],
     },

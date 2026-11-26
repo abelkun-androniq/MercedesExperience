@@ -2,7 +2,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { housing, rotorCentre, apexes, displacement, chamberVolume, flank, strokeOf, compressionRatio, STROKES } from "../../lib/model/wankel.js";
-import { uaAt, steadyTemp, boilRate, perHundredKm, createCooling } from "../../lib/model/cooling.js";
+import { uaAt, steadyTemp, boilRate, perHundredKm, createCooling, createIceTank, MELT } from "../../lib/model/cooling.js";
 import { compressionTemp, injectingDiesel } from "../../lib/model/engine.js";
 import { loadCars } from "./helpers.mjs";
 
@@ -69,4 +69,12 @@ test("diesel: compression alone heats the air well past diesel's self-ignition; 
   assert.ok(compressionTemp(20.5) > 400 && compressionTemp(6) < 250, "≈ 450 °C at 20.5:1, ≈ 230 °C at 6:1");
   assert.ok(Math.abs(compressionTemp(1) - 20) < 1e-9);
   assert.ok(injectingDiesel(4 * Math.PI - 0.1) && injectingDiesel(0.05) && !injectingDiesel(Math.PI));
+});
+
+test("ice cooling: the ice melts at 0 °C first, then the water warms, then it boils", () => {
+  const tank = createIceTank({ ice: 30, water: 20 }), heat = 400e3, L = tank.lasts(heat);
+  assert.ok(Math.abs(L.ice - 30 * MELT / heat) < 1e-9);
+  tank.step(heat, L.ice * 0.5); assert.equal(tank.T, 0); assert.ok(Math.abs(tank.ice - 15) < 1e-9 && Math.abs(tank.water - 35) < 1e-9);
+  tank.step(heat, L.ice * 0.5 + 5); assert.equal(tank.ice, 0); assert.ok(tank.T > 0 && tank.T < 100);
+  tank.reset(); tank.step(heat, L.boil + 1); assert.equal(tank.T, 100); assert.ok(tank.boiled > 0);
 });

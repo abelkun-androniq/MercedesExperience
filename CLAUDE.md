@@ -15,19 +15,21 @@ iPhone/iPad Safari (iOS 16.4+, import maps). No bundler: native ES modules; `too
   between stops)
 - `lib/model/` pure maths, Node-tested: linkage (multi-link closure), quarter-car (ride), engine (N-cylinder slider-crank,
   timing, diesel, shaking forces, gas-torque pulses), torsion (crankshaft twist: centre or end take-off), blower, valvetrain (spring float, desmo), steering (double-pivot trapezoid, centre pivot, twin steered
-  axles), differential (one axle; traction4: four-wheel drive with locks or brake traction control), gearbox (sliding
+  axles), differential (one axle; traction: open, limited-slip (`bias`) or locked with one wheel on mud; traction4: four-wheel drive with locks or brake traction control), gearbox (sliding
   gears), aero (drag, top speed), truss (space frame twist), crash, air-spring (levelling: air, or a motor-wound torsion
-  bar), wankel, cooling, belt (two-speed flat-belt drive, hill climbing), hoist (car-transporter deck: cylinder, pulley
+  bar), wankel, cooling (+ ice tank: melt, warm, boil), belt (two-speed flat-belt drive, hill climbing), hoist (car-transporter deck: cylinder, pulley
   block, cables), flow (2-D lattice-Boltzmann wind tunnel: D2Q9 + Smagorinsky, moving road, drag split), abs (tyre slip
   curves, braking with and without ABS), rollover (tip angle, rolling pendulum, roll-bar timing), hydraulics (gas
-  accumulator, pump, cylinders), climate (cabin heat balance), portal (portal-axle clearance), roof (folding hardtop), part-field (component airflow files:
+  accumulator, pump, cylinders), climate (cabin heat balance), portal (portal-axle clearance), roof (folding hardtop), pitstop (wheel-change phases, a stuck nut), ev (torque vectoring in a bend; energy
+  battery → wheels, regen limit), turbo (boost → air, power, shaft work and speed), fuelcell (cell voltage curve, stack and
+  auxiliary power, hydrogen and water), part-field (component airflow files:
   one plane grid per part, cases with paths and guides)
 - `lib/scene/` stage (renderer, cameras, lights, theme tokens, loop), helpers, ghost-body, road, wind-tunnel (CFD view of
   `flow` on the centre plane: speed/pressure/swirl field, body section, smoke streaklines; `--cfd-*` tokens)
 - `lib/app/` shell, teaser, story (scroll stories: shared by shell and teaser), viewer (one car's stage, subsystems,
   photo view and loop: one per story), panel
   (declarative widgets, API in its header; `detail: true` on a card or widget moves it under the step's disclosure when
-  the component has `more`), dom (`h`, `link`), offline, index, theme.css (look after
+  the component has `more`), dom (`h`, `link`), offline, index, route (room fragment ids, placement qualifiers), theme.css (look after
   mercedes-benz.com: black bar/hero, white page, condensed serif, black photo cards, pills), fonts/ (Instrument Serif, OFL;
   latin + latin-ext for ő/ű), lang.js (head script: saved EN/HU/DE choice or browser language → `<html lang>`), i18n.js
   (`t`, `num`, `loadCar`, `localizePage`, `LANGS`), i18n/hu.js and i18n/de.js (UI catalogs keyed by the English text; German
@@ -35,7 +37,9 @@ iPhone/iPad Safari (iOS 16.4+, import maps). No bundler: native ES modules; `too
 - `subsystems/<id>.js` one mechanism each (params documented in each file's header): linkage-suspension, inline-engine,
   roots-blower, desmo-valvetrain, steering, differential, gearbox, radiator, aero, space-frame, crumple-zone,
   air-suspension, wankel, belt-drive, hoist, abs, rollover, comfort-hydraulics, cabin-climate, portal-axle,
-  four-wheel-drive, twin-steer, vario-roof, race-aero (one part's airflow computed offline by tools/cfd/part.mjs: a field slice through the part,
+  four-wheel-drive, twin-steer, vario-roof, pit-stop, electric-drive (`mode`: bend or energy), turbo (`presets` of boost),
+  fuel-cell, ice-cooling, dual-axis-steering (DAS toe from above), measuring-car (quarter-car over a bump, signal down a cable to a
+  recorder), race-aero (one part's airflow computed offline by tools/cfd/part.mjs: a field slice through the part,
   mean-flow paths with arrowheads and the guides of its lesson per case; case buttons, Follow the air, Pause airflow). inline-engine also draws V engines (`leans`: one bank per lean angle,
   opposite cylinders sharing a crankpin) and twin ignition (`plugs: 2`), four valves (`valves: 4`), rocker arms (`rockers`), a side exhaust valve on a tappet
   (`sideExhaust`), a time-to-fill card (`breathe`), shaking-force arrows (`balance`), a crank-torque trace (`pulses`) and a
@@ -109,7 +113,7 @@ after one visit: index → every stop · Add to Home Screen, launch offline · i
 true speed · Web Inspector over USB shows no errors. LAN (`http://<mac-ip>:8765`) checks layout only: service workers need HTTPS.
 
 ## Open
-- Confirm on site: rooms and levels in tour.js (Collection 4 on level 4 is a guess; 220 S may be in Legend 4); which 540 K
+- Confirm on site: rooms and levels in tour.js (Collection 4 on level 4 is a guess; the 220 S stands in Legend 5 beside the 300 measuring car, per a 2022 museum text); which 540 K
   is shown (Cabriolet B photo vs the 1938 Streamliner); which W 111 variant (the 2013 photo is a 1964 220 S); whether the
   Victoria stop's car is the Vis-à-Vis of the photo; whether the Popemobile has diff locks.
 - The 260 D photo fit rests on both right road wheels (the rear one dark), the lamps and an estimated roof height (RMS 20 px);
@@ -131,7 +135,8 @@ true speed · Web Inspector over USB shows no errors. LAN (`http://<mac-ip>:8765
   4) and eras; all to confirm on site, as is Collection 3 on level 5. All have their photo (fetched through Chrome after
   scripted downloads met HTTP 429). Fits rest on the near wheels plus assumed lamp, star and plate positions (each fit's
   `frame` says which): RMS 5–34 px; roughest the Ponton, 300, 600, LO 1112, the A-Class (a tilted phone photo, kept
-  portrait so its principal point stays central) and the carriage, whose wheel planes do not line up. Their `body.ghost`
+  portrait so its principal point stays central). The Daimler carriage is seen from the front right (its near axle is
+  the front one; an earlier fit had the axles swapped and the outline turned): RMS 14 px. Their `body.ghost`
   outlines are still sketched, not traced: wheels line up on the photos, bodies only roughly (trace per the recipe); the
   SLK's is traced (tools/profile-traces/slk.json). Photos not from the museum floor: SLS (outside the museum), G-Class
   “Otto” (the 2019–20 G-Class exhibition), SLK (a public-domain street photo: no free photo of the museum's SLK was found
@@ -153,6 +158,14 @@ true speed · Web Inspector over USB shows no errors. LAN (`http://<mac-ip>:8765
   rejoin, and force summed on the wetted faces (open). Corners: still tyres 48 mm above the road. W 196 R: the claim is the
   wake behind the bare tyre; the streamliner's body fills that patch, and the air beside the car does not settle (the
   enclosed body runs out through the outlet). Evo arch: one state, a path of the mean flow, not attributed to the flare.
+- Stops added from reports/Missing museum tour cars.md: W12 (pit stop; hangs on the wall behind the pit-stop rig, Legend 7),
+  SLS AMG Electric Drive (Legend 6), NECAR 1 (`check: "room"`: photographed in the museum, room not named), C 9 (Legend 7),
+  W11 (`check: "room"`: placed in Legend 7 in December 2024), W 125 record car (Legend 7, the banked curve), and the 300
+  measuring car as a step of the 220 S. Photos: W12 and W11 are race and test photos, not the museum floor. Fits RMS 4–28 px
+  (roughest the W 125, whose wheels hide in fairings, and NECAR, which rests on assumed lamp, star and roof corners: front
+  overhang ~1,150, rear ~590 read off the photo); outlines sketched. Illustrative: W12 phase times, SLS ED weight split,
+  tyre stiffness and regen limit, C 9 qualifying boost and turbo efficiencies, NECAR cell curve, W 125 heat load and ice
+  mass, W11 toe angles and linkage, measuring-car sensor and recorder. Left out: MP4-13, W07, T 80.
 - Not added from docs/research.md: the Vision R 320 CDI (its exhibition has ended) and the Vision Mercedes-Maybach 6
   (never shown at the museum).
 - The original single-file PoC pages are in git history at commit 468cc29 (`museum-tour-poc/`).

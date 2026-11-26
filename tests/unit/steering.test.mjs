@@ -1,7 +1,7 @@
 // Double-pivot trapezoid steering and the centre-pivot comparison.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { createDoublePivot, centrePivot } from "../../lib/model/steering.js";
+import { createDoublePivot, centrePivot, dualAxis, toeDrag } from "../../lib/model/steering.js";
 
 const G = { kingpinHalf: 600, arm: 160, wheelbase: 1650 };
 const st = createDoublePivot(G);
@@ -35,4 +35,14 @@ test("centre pivot: support narrows with steer and the inner wheel swings back",
   assert.ok(Math.abs(c.swingBack - 300) < 1e-9);
   assert.ok(c.L[0] < 0 && c.R[0] > 0);
   assert.equal(centrePivot(G, 0).radius, Infinity);
+});
+
+test("dual-axis steering: the column changes toe on both wheels without steering the car", () => {
+  const g = { arm: 100, gain: 0.05, toe0: -0.01 };
+  const a = dualAxis(g, 0, 0), b = dualAxis(g, 0, 20);
+  assert.ok(Math.abs(a.left + a.right) < 1e-12 && Math.abs(b.left + b.right) < 1e-12);   // no net steer
+  assert.ok(a.toe < 0 && Math.abs(b.toe) < 0.002);                                         // toe-out, then about straight
+  const s = dualAxis(g, 0.1, 0); assert.ok(Math.abs((s.left + s.right) / 2 - 0.1) < 1e-12);
+  const d0 = toeDrag(90e3, a.toe, 80), d1 = toeDrag(90e3, b.toe, 80);
+  assert.ok(d0.drag > d1.drag && d0.side > 0 && d0.power === d0.drag * 80);
 });

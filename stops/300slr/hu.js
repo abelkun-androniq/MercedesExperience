@@ -21,15 +21,15 @@ export default {
     {
       label: "Deszmodromikus szelepek",
       prompt: "Növelje a fordulatszámot. Hol válik el a rugóval záró szelep a bütyöktől?",
-      answer: "Ebben a modellben kb. 7000/min fölött, az emelés csúcsán: ott a szelepnek gyorsabban kellene lelassulnia és visszafordulnia, mint ahogy a rugója tudja, ezért továbbrepül, elválik a bütyöktől. A deszmodromikus szelepet egy második bütyök húzza be, így bármilyen fordulaton követi a bütyköt.",
+      answer: "Ebben a modellben kb. 7000/min fölött, az emelés csúcsán: ott a szelepnek gyorsabban kellene lelassulnia és visszafordulnia, mint ahogy a rugója tudja, ezért továbbrepül, elválik a bütyöktől. A deszmodromikus szelepet egy második bütyök húzza be, így az ábrázolt fordulatszám-tartományban végig követi a bütyköt.",
       params: { label: "Deszmodromikus szelep és rugóval záró szelep" },
       real: {
         alt: "Közeli kép egy Ducati motorkerékpár-motor szemlélőnyílásán át: felső himba a szelepszár végén, alatta villás himba a szelepszárra erősített gyűrűnél",
-        caption: "Ennél a Ducati-motornál a villás himba a szelepszárra erősített gyűrűnél fogva húzza vissza a szelepet; a felső himba nyitja. Melyik himba húzza vissza a szelepet a Mercedes modelljében? A himbák elrendezése más, a gondolat, a kényszerzárás, ugyanaz.",
+        caption: "Ennél a Ducati-motornál a villás himba a szelepszárra erősített gyűrűnél fogva húzza vissza a szelepet; a felső himba nyitja. A gyűrű a villát jelöli; a modellben ugyanilyen gyűrű jelöli a Mercedes záró himbájának villáját. A himbák elrendezése más, a gondolat, a kényszerzárás, ugyanaz.",
       },
       talk: [
         "Nagy fordulaton a szeleprugó már nem tudja elég gyorsan visszahúzni a szelepet: a szelep elemelkedik a bütyökről, és nekiütközhet a dugattyúnak. Növelje a fordulatot, és figyelje, ahogy a rugós szelep vonala elválik a szaggatott bütyökvonaltól.",
-        "A Mercedes deszmodromikus vezérlésében nincs záró rugó. Egy második bütyök és egy himba húzza be a szelepet, így a szelep bármilyen fordulaton pontosan követi a bütyköt.",
+        "A Mercedes deszmodromikus vezérlésében nincs záró rugó. Egy második bütyök és egy himba húzza be a szelepet, így ebben a modellben a szelep az ábrázolt fordulatszám-tartományban végig pontosan követi a bütyköt.",
         "A nyitó és záró bütykök össze vannak hangolva: sugaraik összege mindig ugyanannyi, így sosem dolgoznak egymás ellen. Az ötletet később a Ducati tette híressé a motorkerékpárokon.",
       ],
     },

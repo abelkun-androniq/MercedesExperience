@@ -3,6 +3,7 @@
 import { test, expect } from "@playwright/test";
 import tour, { teaser } from "../../stops/tour.js";
 import { watchErrors, stepsOf, shown, precomputed } from "./helpers.mjs";
+import { roomId } from "../../lib/app/route.js";
 
 const cars = await Promise.all(tour.map(async s => (await import(`../../stops/${s.slug}/car.js`)).default));
 
@@ -41,7 +42,7 @@ for (const car of cars) {
 test("index lists every stop in walking order", async ({ page }) => {
   const errors = watchErrors(page);
   await page.goto("./");
-  const links = page.locator('a[href^="stop.html?s="]');
+  const links = page.locator('main a[href^="stop.html?s="]');   // the stop cards; the hero's invitation links into one story
   await expect(links).toHaveCount(tour.length);
   expect(await links.evaluateAll(as => as.map(a => new URL(a.href).searchParams.get("s")))).toEqual(tour.map(s => s.slug));
   expect(errors).toEqual([]);
@@ -191,11 +192,11 @@ test("teaser lists its three stops; opened from there, they page between each ot
     expect(pager).toEqual([order[i - 1], order[i + 1]].filter(Boolean).map(href));
   }
 
-  const other = tour.find(s => !teaser.includes(s.slug)).slug;   // not a teaser stop: the full tour's paging
-  await page.goto(`stop.html?s=${other}&r=teaser&debug`);
+  const other = tour.find(s => !teaser.includes(s.slug));   // not a teaser stop: the full tour's paging
+  await page.goto(`stop.html?s=${other.slug}&r=teaser&debug`);
   await page.waitForFunction(() => window.__tour?.stories[0].frames() > 5, null, { timeout: 20_000 });
   await expect(page.locator("#where")).toContainText(`of ${tour.length}`);
-  await expect(page.getByRole("link", { name: "← Tour route" })).toHaveAttribute("href", "./");
+  await expect(page.getByRole("link", { name: "← Tour route" })).toHaveAttribute("href", `./#${roomId(other.room)}`);   // back to its room on the route
   expect(errors).toEqual([]);
 });
 

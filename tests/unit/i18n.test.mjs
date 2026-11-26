@@ -15,7 +15,7 @@ const sources = [...js("lib/app/"), ...js("subsystems/")].filter(([f]) => f !== 
 const used = new Set();
 for (const [, s] of sources) for (const m of s.matchAll(/\bt\(\s*"((?:[^"\\]|\\.)*)"/g)) used.add(JSON.parse(`"${m[1]}"`));
 for (const f of readdirSync(root).filter(f => f.endsWith(".html"))) for (const m of read(f).matchAll(/data-i18n[^>]*>([^<]*)</g)) used.add(m[1].trim().replace(/\s+/g, " "));
-for (const s of tour) used.add(s.room);   // shown with t(stop.room)
+for (const s of tour) { used.add(s.room); if (s.seen) used.add(s.seen.room); }   // shown with t(stop.room), t(stop.seen.room)
 
 test("data-i18n text is plain characters", () => {
   assert.deepEqual([...used].filter(k => k.includes("&")), [], "data-i18n text is read as textContent: write characters, not entities");
@@ -32,7 +32,7 @@ test("t() is called with a literal, so the tests can find every key", () => {
   const bad = [];
   for (const [f, s] of sources) for (const m of s.matchAll(/\bt\(\s*([^\s"])/g)) {
     const call = s.slice(m.index, m.index + 20);
-    if (!/^t\((stop\.room|room\.name)\)/.test(call)) bad.push(`${f}: ${call}`);   // rooms: keys taken from stops/tour.js
+    if (!/^t\((stop\.room|stop\.seen\.room|room\.name)\)/.test(call)) bad.push(`${f}: ${call}`);   // rooms: keys taken from stops/tour.js
   }
   assert.deepEqual(bad, []);
 });
