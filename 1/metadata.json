@@ -1,0 +1,68 @@
+{
+  "cli_version": "0.13.4",
+  "checkpoint_id": "01M8D2DMEH8SPJH3PBG2QVYR9A",
+  "session_id": "01a219be-7c4b-7b92-8a3a-453e8e71765e",
+  "strategy": "manual-commit",
+  "created_at": "2026-11-26T23:18:03.187729Z",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "save_step_count": 2,
+  "files_touched": [
+    "reports/Missing museum tour cars.md",
+    "research_notes/Missing museum tour cars/f1.md",
+    "research_notes/Missing museum tour cars/racing.md",
+    "research_notes/Missing museum tour cars/road.md",
+    "research_notes/Wider museum tour coverage/passenger.md"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6.2-astra",
+  "turn_id": "8fd330a9b1aa",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 26094,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 1125376,
+    "output_tokens": 3881,
+    "api_call_count": 31,
+    "subagent_tokens": {
+      "input_tokens": 325382,
+      "cache_creation_tokens": 0,
+      "cache_read_tokens": 9593344,
+      "output_tokens": 25855,
+      "api_call_count": 106
+    },
+    "subagent_tokens_complete": true
+  },
+  "session_token_usage": {
+    "input_tokens": 26094,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 1125376,
+    "output_tokens": 3881,
+    "api_call_count": 31,
+    "subagent_tokens": {
+      "input_tokens": 325382,
+      "cache_creation_tokens": 0,
+      "cache_read_tokens": 9593344,
+      "output_tokens": 25855,
+      "api_call_count": 106
+    },
+    "subagent_tokens_complete": true
+  },
+  "redaction": {
+    "replacements": 12,
+    "layers": {
+      "betterleaks": 0,
+      "connection_string": 0,
+      "credential_key": 0,
+      "credential_value": 0,
+      "credentialed_uri": 0,
+      "entropy": 12,
+      "key_context": 0,
+      "provider_token": 0,
+      "shell_stdin": 0
+    }
+  },
+  "session_metrics": {
+    "turn_count": 2
+  }
+}
