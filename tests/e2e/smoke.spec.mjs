@@ -2,7 +2,7 @@
 // device.
 import { test, expect } from "@playwright/test";
 import tour, { teaser } from "../../stops/tour.js";
-import { watchErrors, stepsOf, shown } from "./helpers.mjs";
+import { watchErrors, stepsOf, shown, precomputed } from "./helpers.mjs";
 
 const cars = await Promise.all(tour.map(async s => (await import(`../../stops/${s.slug}/car.js`)).default));
 
@@ -22,12 +22,11 @@ for (const car of cars) {
       if (k === 0 || k > car.components.length) continue;   // intro and background: no component cards
       pinned.add(await page.locator(".stage").evaluate(s => Math.round(s.getBoundingClientRect().top)));
       await expect.poll(() => page.evaluate(() => window.__tour.stories[0].triangles())).toBeGreaterThan(0);
+      const comp = car.components.find(c => c.id === want.comp);
+      if (comp.subsystem === "race-aero") { await precomputed(step, comp); continue; }   // precomputed airflow: no readouts
       const readouts = () => step.locator(`.panel[data-comp="${want.comp}"] output`).allTextContents();
       const before = await readouts();
       expect(before.length).toBeGreaterThan(0);
-      // Precomputed results (race-aero) stand still until another case is chosen: press the first case button (race-aero starts
-      // on a later one; animated components move either way).
-      if (car.components.find(c => c.id === want.comp).params.cases) await step.locator(`.panel[data-comp="${want.comp}"] button`).first().click();
       await expect.poll(readouts, { timeout: 15_000 }).not.toEqual(before);
     }
     expect(pinned.size, "stage stays put through the component steps").toBe(1);

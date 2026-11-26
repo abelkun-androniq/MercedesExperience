@@ -9,10 +9,14 @@ export default {
   components: [
     {
       label: "Motor",
+      prompt: "Kivehetők-e még az egyes munkaütemek a főtengelyen? Figyelje a nyomatékgörbét, ahogy a hengerek sorra felvillannak.",
+      answer: "Alig: fordulatonként négy munkaütem átfedi egymást, így a főtengely lökése sosem esik nagyot. Egy egyenletesen gyújtó hathengeres, fordulatonként hárommal, azonos átlagos nyomaték mellett jóval nagyobbat ingadozik.",
+      more: "Motorvezérlés",
       params: { label: "7,7 literes soros nyolchengeres · hengerenként két gyertya · gyújtási sorrend 1-6-2-5-8-3-7-4" },
       talk: [
         "A 770 korának legnagyobb Mercedes-Benze volt, kis számban épült államfőknek, uralkodóknak és nagyon gazdagoknak. Ez a Cabriolet F a volt II. Vilmos császárnak készült, aki akkor Hollandiában élt száműzetésben.",
         "Nyolc henger egy sorban, 95 mm furattal és 135 mm lökettel: 7,7 liter. Soros nyolchengeresben negyed fordulatonként gyújt egy henger, ezért a hajtás sima és egyenletes.",
+        "3000/min fordulaton egy egyenletesen gyújtó hathengeres másodpercenként 150 munkaütemet ad, egy nyolchengeres 200-at. A görbe a gáznyomás által a főtengelyre kifejtett nyomatékot mutatja, mindkettőnél azonos átlagos nyomatékkal.",
         "Minden hengerben két gyújtógyertya van. Az egyik sort mágnesgyújtó, a másikat akkumulátor és gyújtótekercs táplálja. Két ponton meggyújtva a keverék körülbelül fele idő alatt ég el, és ha az egyik rendszer kiesik, a motor a másikkal tovább jár.",
       ],
     },
@@ -33,6 +37,7 @@ export default {
   unverified: [
     "A motor helyzete az autóban és a hajtórúdhossz",
     "A szelepvezérlés szelepemelő rudas, felül szelepelt motorként ábrázolva",
+    "Nyomatékgörbe: szemléltető gáznyomásgörbe, minden hengernél ugyanaz",
     "A kompresszor áttétele, kapcsolása és töltőnyomása (a 150 és 200 LE közölt érték)",
     "A jármű körvonala (az adatlap méreteiből vázolva, még nem a fotóról átrajzolva)",
     "Terem: Legenda 3",

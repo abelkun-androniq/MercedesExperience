@@ -46,6 +46,12 @@ export default {
           { id: "door", label: "Door closer", at: [-2500, -700, 500], dir: [0, -1, 0], bore: 0.025, stroke: 0.08, load: 500, part: [400, 10, 300] },
         ],
       },
+      real: {   // the part in real life (not this car)
+        src: "parts/citroen-accumulator.jpg", w: 800, h: 755,
+        alt: "A Citroën suspension sphere cut in half beside a folding rule: a thick rubber diaphragm divides the gas space above from the oil space below",
+        caption: "A Citroën suspension sphere, cut open. The rubber diaphragm separates the gas (above) from the oil (below): squeezed gas is what pushes the oil out while the pump is idle. Citroën uses the gas cushion as a spring; the 600 uses the stored pressure to move its windows and seats.",
+        credit: { author: "Nutzdatenbegleiter", license: "CC BY-SA 4.0", url: "https://commons.wikimedia.org/wiki/File:Cit-hydraulic-accumulator.jpg" },
+      },
       talk: [
         "An engine-driven pump charges a gas-filled accumulator to about 150 bar. From there, pipes run to small hydraulic cylinders at the windows, the seats, the sliding roof and the boot lid, and to the closers that pull the doors shut.",
         "Each switch opens a valve: oil from the accumulator pushes the piston and the window rises, silently, with no electric motor in the door. The gas cushion means the pump does not have to run while you press.",

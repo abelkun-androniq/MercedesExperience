@@ -1,7 +1,10 @@
 // Engine cooling water and its radiator: the water warms in the engine, rises to the radiator, gives its heat to the air
 // streaming through the core and comes back cooler. With too little radiator it reaches 100 °C and boils away: shown as
-// litres lost per hour and per 100 km, the measure Daimler used. Time runs ×20 so a warm-up fits into a visit.
-// Params (mm, ground at z = 0): label, heat (W into the water at full load), airT (°C), speed { min, max, value } (km/h),
+// litres lost per hour and per 100 km, the measure Daimler used. Time runs ×20 so a warm-up fits into a visit. Every type
+// runs at once from the same start, so the trace compares their water temperatures on one clock; the stage shows the chosen
+// one: air through the tubes of a tubular or honeycomb core (water around them), around the outside of a plain tank.
+// Params (mm, ground at z = 0): label, heat (W into the water at full load), airT (°C), start? (°C, water at the start and
+// on "Start again"; default airT), load? (% at the start; default 100), speed { min, max, value } (km/h),
 // types [{ id, label, kind "tank" | "tubular" | "honeycomb", ua (W/K), still, refSpeed (km/h), water (kg), fan? }],
 // engine { x, z, l, w, h } (block centre and size), radiator { x, z, w, h, d } (core centre and size).
 import * as THREE from "three";
@@ -57,26 +60,33 @@ export function create(ctx, p) {
   const coolFrom = (loop.segs.slice(0, 3).reduce((a, b) => a + b, 0)) / loop.tot, coolTo = (loop.segs.slice(0, 4).reduce((a, b) => a + b, 0)) / loop.tot;
   const NW = 90, NA = 160, NS = 40, water = particles(NW, 0.03), air = particles(NA, 0.022), steam = particles(NS, 0.04);
   group.add(water.pts, air.pts, steam.pts);
-  const seedA = Array.from({ length: NA }, () => [Math.random(), (Math.random() - 0.5) * rw, rz + (Math.random() - 0.5) * rh]);
+  // Air enters through the tube openings (the core face's 9 × 9 round holes); water drops through the core between them.
+  const TUBES = 9, cellW = rw / TUBES, cellH = rh / TUBES, grid = (u, n) => (Math.floor(u * n) + 0.5) / n - 0.5;
+  const seedA = Array.from({ length: NA }, () => [Math.random(), grid(Math.random(), TUBES) * rw, rz + grid(Math.random(), TUBES) * rh]);
+  const seedW = Array.from({ length: NW }, () => [(Math.floor(Math.random() * (TUBES - 1)) + 1) / TUBES - 0.5, (Math.random() - 0.5) * 0.8]);
+  // The tank (see the variants): air meeting its face divides and passes outside its walls.
+  const tank = { x0: rx - rd * 0.8, x1: rx + rd * 0.8, hw: rw / 2, z0: rz + rh * 0.1 - rh * 0.65, z1: rz + rh * 0.1 + rh * 0.65 };
   const seedS = Array.from({ length: NS }, () => [Math.random(), (Math.random() - 0.5) * 0.06, (Math.random() - 0.5) * 0.06]);
 
   // ---------- state + panel ----------
-  let type = p.types[0], kmh = p.speed.value, load = 1, cool = createCooling(paramsOf(type)), phase = 0, rate = 0;
-  function paramsOf(t) { return { water: t.water, ua: t.ua, refSpeed: t.refSpeed / 3.6, still: t.still, airT: p.airT }; }
-  const setType = t => {
-    const T = cool.T, boiled = cool.boiled; type = t; cool = createCooling(paramsOf(t)); cool.T = T; cool.boiled = boiled;
-    p.types.forEach(k => { ui.toggle(k.id).set(k === t); variants.get(k.id).visible = k === t; });
-  };
+  const START = p.start ?? p.airT, SERIES = "--accent --muted --l3".split(" ");
+  let type = p.types[0], kmh = p.speed.value, load = (p.load ?? 100) / 100, phase = 0, rate = 0, clock = 0;
+  const cools = new Map(p.types.map(k => [k.id, createCooling({ water: k.water, ua: k.ua, refSpeed: k.refSpeed / 3.6, still: k.still, airT: p.airT })]));
+  const restart = () => { for (const c of cools.values()) { c.reset(); c.T = START; } };
+  restart();
+  const setType = t => { type = t; p.types.forEach(k => { ui.toggle(k.id).set(k === t); variants.get(k.id).visible = k === t; }); };
   const ui = ctx.panel([{ label: p.label, badge: { id: "boil", text: "" }, items: [
     { buttons: p.types.map((t, i) => ({ id: t.id, label: t.label, pressed: i === 0, onClick: () => setType(t) })) },
     { slider: { id: "speed", label: t("Road speed (km/h)"), min: p.speed.min, max: p.speed.max, value: kmh, onInput: v => (kmh = v) } },
-    { slider: { id: "load", label: t("Engine load (%)"), min: 20, max: 100, step: 5, value: 100, onInput: v => (load = v / 100) } },
+    { slider: { id: "load", label: t("Engine load (%)"), min: 20, max: 100, step: 5, value: load * 100, onInput: v => (load = v / 100) } },
     { meter: { id: "temp" } },
     { readouts: [{ id: "T", label: t("Water"), unit: t("°C") }, { id: "in", label: t("Heat into water"), unit: t("kW") }, { id: "out", label: t("Radiator gives off"), unit: t("kW") },
       { id: "lh", label: t("Boiling away"), unit: t("litres per hour") }, { id: "l100", label: t("Water used"), unit: t("litres per 100 km") }] },
-    { buttons: [{ id: "cold", label: t("Cold start"), onClick: () => cool.reset() }] },
-    { text: t("Time runs {0}× faster than real.", TIME) },
-    { key: [["--l1", t("hot water")], ["--l4", t("cooled water")], ["--muted", t("air through the core")], ["--fg", t("steam")]] },
+    { trace: { id: "cmp", series: p.types.map((k, i) => ({ token: SERIES[i], min: Math.min(START, 60) - 5, max: 102 })), span: 120, top: t("100 °C"), bottom: t("{0} °C", Math.min(START, 60) - 5), aria: t("Water temperature of each cooling system over time") } },
+    { key: p.types.map((k, i) => [SERIES[i], k.label]) },
+    { buttons: [{ id: "cold", label: START > p.airT ? t("Start again at {0} °C", START) : t("Cold start"), onClick: restart }] },
+    { text: t("Time runs {0}× faster than real. Both systems run side by side; the trace shows two minutes of the visit.", TIME) },
+    { key: [["--l1", t("hot water: around the tubes")], ["--l4", t("cooled water")], ["--muted", t("air: through the tubes, around a tank")], ["--metal", t("metal wall: the heat passes through it")], ["--fg", t("steam")]] },
   ] }]);
   setType(type);
 
@@ -84,12 +94,13 @@ export function create(ctx, p) {
   return {
     layout({ active }) { group.visible = active; },
     update(dt) {
-      const heat = p.heat * load, v = kmh / 3.6, T0 = cool.T;
-      cool.step(heat, v, dt * TIME);
+      const heat = p.heat * load, v = kmh / 3.6, cool = cools.get(type.id), T0 = cool.T;
+      for (const c of cools.values()) c.step(heat, v, dt * TIME);
+      clock += dt; const tr = ui.trace("cmp"); tr.push(clock, p.types.map(k => cools.get(k.id).T)); tr.draw(clock);
       rate = cool.boiling ? Math.max(0, heat - cool.q) / LATENT : 0;   // kg/s ≈ litres/s
       const f = (cool.T - p.airT) / (100 - p.airT), share = Math.min(1, cool.q / Math.max(heat, 1));
       ui.meter("temp").set(f, cool.boiling);
-      ui.badge("boil").set(cool.boiling ? t("Boiling") : cool.T > T0 + 1e-6 ? t("Warming up") : t("Steady"), cool.boiling);
+      ui.badge("boil").set(cool.boiling ? t("Boiling") : cool.T > T0 + 1e-6 ? t("Warming up") : cool.T < T0 - 1e-6 ? t("Cooling down") : t("Steady"), cool.boiling);
       ui.set("T", cool.T.toFixed(0)); ui.set("in", (heat / 1000).toFixed(1)); ui.set("out", (cool.q / 1000).toFixed(1));
       ui.set("lh", (rate * 3600).toFixed(1)); ui.set("l100", rate === 0 ? "0" : Number.isFinite(perHundredKm(rate, kmh)) ? perHundredKm(rate, kmh).toFixed(0) : t("standing"));
 
@@ -98,13 +109,20 @@ export function create(ctx, p) {
       phase = (phase + dt * 0.08) % 1;
       for (let i = 0; i < NW; i++) {
         const s = (i / NW + phase) % 1, through = s < coolFrom ? 0 : s > coolTo ? 1 : (s - coolFrom) / (coolTo - coolFrom);
-        water.set(i, at(loop, s, q), c.copy(cCool).lerp(cHot, f * (1 - 0.8 * share * through)));
+        at(loop, s, q);
+        if (through > 0 && through < 1 && type.kind !== "tank") q.set(rx + seedW[i][1] * rd, seedW[i][0] * rw, q.z);   // between the tubes
+        water.set(i, q, c.copy(cCool).lerp(cHot, f * (1 - 0.8 * share * through)));
       }
       const airV = 0.15 + (v + (type.fan ? 4 : 0)) * 0.04;
       seedA.forEach((a, i) => {
         a[0] = (a[0] + dt * airV) % 1;
         const x = rx + 0.5 - a[0] * 1.1, behind = x < rx - rd / 2;
-        air.set(i, q.set(x, a[1], a[2]), c.copy(cAir).lerp(cWarm, behind && type.kind !== "tank" ? f * share : 0));
+        let y = a[1];
+        if (type.kind === "tank" && a[2] > tank.z0 && a[2] < tank.z1) {   // divides around the closed tank, then closes up behind it
+          const d = x > tank.x1 ? x - tank.x1 : x < tank.x0 ? tank.x0 - x : 0, w = Math.max(0, 1 - d / 0.22), out = Math.sign(y || 1) * (tank.hw + 0.025 + Math.abs(y) * 0.25);
+          y += (out - y) * w * w * (3 - 2 * w);
+        }
+        air.set(i, q.set(x, y, a[2]), c.copy(cAir).lerp(cWarm, behind ? f * share : 0));
       });
       seedS.forEach((s, i) => {
         s[0] = (s[0] + dt * 0.5) % 1;

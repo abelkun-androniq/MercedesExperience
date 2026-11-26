@@ -10,6 +10,10 @@ export default {
     {
       label: "Szíjak és láncok",
       params: { label: "Két szíj, szabadon futó tárcsák, láncok", drive: { gears: [{ name: "Alsó" }, { name: "Felső" }] } },
+      real: {
+        alt: "Egy 1894-es Benz Velo ülése és kezelőszervei, az ülés mellett álló szíjváltó karokkal",
+        caption: "Egy másik 1894-es Velo a London–Brighton-túrán: az ülés melletti álló karok váltják a szíjakat. Mi mozdul el az ülés alatt, amikor a vezető átváltja a kart? A modellben a szíj oldalt csúszik a szabadon forgó tárcsáról a rögzítettre.",
+      },
       talk: [
         "Két lapos szíj fut a motortól az ülés alatti közlőtengelyre, fokozatonként egy. A közlőtengelyen minden rögzített tárcsa mellett egy szabadon futó is forog; a szabadon futó tárcsán járó szíj semmit sem hajt. A szíj átcsúsztatása egyszerre fokozatváltás és tengelykapcsoló.",
         "A közlőtengelyben van a differenciálmű. Mindkét végéről lánc fut hátra egy-egy hátsó kerék lánckerekéhez.",

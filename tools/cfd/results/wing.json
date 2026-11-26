@@ -1,0 +1,51 @@
+{
+ "part": "wing",
+ "generated": "node tools/cfd/part.mjs wing export",
+ "source": "whole-car runs tools/cfd/run.mjs base|flap 28|40 9000 (uniform inflow, half car, still wheels)",
+ "box": {
+  "x": [
+   -3920,
+   -3750
+  ],
+  "y": [
+   200,
+   300
+  ],
+  "z": [
+   1230,
+   1290
+  ]
+ },
+ "probe": {
+  "base-28": {
+   "cells": 48,
+   "angle": -8.6,
+   "rearward": 0.872,
+   "up": -0.132
+  },
+  "flap-28": {
+   "cells": 48,
+   "angle": 4,
+   "rearward": 0.565,
+   "up": 0.04
+  },
+  "base-40": {
+   "cells": 12,
+   "angle": -2.3,
+   "rearward": 0.549,
+   "up": -0.022
+  },
+  "flap-40": {
+   "cells": 12,
+   "angle": 5.7,
+   "rearward": 0.356,
+   "up": 0.036
+  }
+ },
+ "changedCells": {
+  "28": 90,
+  "40": 39
+ },
+ "display": "crop of the 28 mm whole-car run at y = 238 mm",
+ "field": "mean vertical velocity / inlet speed"
+}

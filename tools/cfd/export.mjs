@@ -1,8 +1,9 @@
-// Packs the tunnel results (tools/cfd/out/, from run.mjs) for the stop: node tools/cfd/export.mjs
-// stops/190e-evo2/cfd/<case>.bin: three slices of the mean flow, each two Uint8 fields (speed |u|/U over 0…1.6, pressure
+// Packs the whole-car tunnel results (tools/cfd/out/, from run.mjs): node tools/cfd/export.mjs. The stop now shows one
+// part at a time (tools/cfd/part.mjs); this whole-car summary stays for reference in tools/cfd/out/whole-car/ (ignored).
+// <case>.bin: three slices of the mean flow, each two Uint8 fields (speed |u|/U over 0…1.6, pressure
 // coefficient over −1.5…1; 255 in the speed field marks the car): "side" the centre plane (x, z) and "cross" the plane just
 // behind the front wheel (y, z, both sides mirrored); per slice speed then pressure, rows from the bottom.
-// stops/190e-evo2/cfd/cfd.json: the slices' extents (mm), streamlines (mm) and, per case, the force coefficients and their
+// cfd.json: the slices' extents (mm), streamlines (mm) and, per case, the force coefficients and their
 // change from the baseline on the display grid (28 mm, `delta`), the check grid (40 mm, `check`) and their mean (`est`, what
 // the stop shows), with `settled`: the change has the same sign on both grids and its two-grid mean stands clear of the
 // pooled spread. A case whose solid is the baseline's on the display grid (its change is finer than a cell) is left out,
@@ -10,17 +11,14 @@
 // (friction left out): drag, lift, and the extra load on each axle (+ = pressed down) from lift and pitching moment. They
 // match the solver's momentum-exchange forces in the changes between cases; the solver's totals and its axle split did
 // not survive that check, so its force history serves only as the noise estimate (sd).
-import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { writeFileSync, mkdirSync } from "node:fs";
 import { CASES } from "./geometry.mjs";
+import { load as loadRun } from "./volume.mjs";
 
-const DIR = new URL("./out/", import.meta.url), OUT = new URL("../../stops/190e-evo2/cfd/", import.meta.url);
+const DIR = new URL("./out/", import.meta.url), OUT = new URL("./out/whole-car/", import.meta.url);
 const H = +(process.argv[2] ?? 28), CHECK = +(process.argv[3] ?? 40), SIDE = { x: [2000, -6200], z: [0, 2100] }, CROSS = { x: -450, y: [-1400, 1400], z: [0, 1300] };
 mkdirSync(OUT, { recursive: true });
-const load = (c, h) => {
-  const m = JSON.parse(readFileSync(new URL(`${c}-${h}.json`, DIR))), b = readFileSync(new URL(`${c}-${h}.bin`, DIR)), N = m.nx * m.ny * m.nz;
-  const f = new Float32Array(b.buffer, b.byteOffset, 4 * N);
-  return { ...m, rho: f.subarray(0, N), ui: f.subarray(N, 2 * N), uj: f.subarray(2 * N, 3 * N), uk: f.subarray(3 * N), solid: readFileSync(new URL(`${c}-${h}.solid`, DIR)) };
-};
+const load = (c, h) => loadRun(`${c}-${h}`, DIR);
 // Pressure forces on the half car as full-car coefficients (the ratio of half force to half area stands).
 function forces(r) {
   const { nx, ny, nz, h, U, area } = r, at = (i, j, k) => (k * ny + j) * nx + i, iF = r.x0 / h - 0.5, L = 2678 / h;

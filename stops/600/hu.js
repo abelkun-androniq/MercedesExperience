@@ -13,6 +13,10 @@ export default {
         label: "Egy szivattyú, egy tároló, sok henger",
         consumers: [{ label: "Hátsó ablak" }, { label: "Első ülés" }, { label: "Tolótető" }, { label: "Csomagtartófedél" }, { label: "Ajtóbehúzó" }],
       },
+      real: {
+        alt: "Kettévágott Citroën felfüggesztési gömb egy colstok mellett: vastag gumimembrán választja el a felső gázteret az alsó olajtértől",
+        caption: "Felvágott Citroën felfüggesztési gömb. A gumimembrán elválasztja a gázt (fent) az olajtól (lent): az összenyomott gáz nyomja ki az olajat, amikor a szivattyú áll. A Citroën a gázpárnát rugóként használja; a 600-as a tárolt nyomással mozgatja ablakait és üléseit.",
+      },
       talk: [
         "A motorhajtású szivattyú egy gáztöltésű tárolót kb. 150 bar-ra tölt. Innen csövek vezetnek kis hidraulikus hengerekhez az ablakoknál, az üléseknél, a tolótetőnél és a csomagtartófedélnél, valamint az ajtókat behúzó szerkezetekhez.",
         "Minden kapcsoló egy szelepet nyit: a tárolóból érkező olaj megtolja a dugattyút, és az ablak hangtalanul emelkedik, elektromos motor nélkül az ajtóban. A gázpárna miatt a szivattyúnak nem kell járnia, amíg a gombot nyomja.",

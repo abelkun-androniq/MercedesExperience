@@ -44,6 +44,12 @@ export default {
         at: { engine: [-300, 520], counter: [480, 440], wheel: [0, 425], belt: -330, pitch: -80, finals: [-470, 470], wheels: [-520, 520] },
         grade: { max: 8, value: 0 },
       },
+      real: {   // the part in real life (not this car)
+        src: "parts/velo-controls.jpg", w: 800, h: 894,
+        alt: "The bench seat and driver's controls of an 1894 Benz Velo, with the belt-shifting handles standing up beside the seat",
+        caption: "Another 1894 Velo, at the London to Brighton run: the upright handles beside the seat shift the belts. What moves under the seat when the driver moves a lever? In the model, the belt slides sideways from the free pulley onto the fixed one.",
+        credit: { author: "Nick.Pr", license: "CC0", url: "https://commons.wikimedia.org/wiki/File:Bench_seat_and_controls_of_Benz_Velo_of_1894.jpg" },
+      },
       talk: [
         "Two flat belts run from the engine to a countershaft under the seat, one for each gear. Beside each fixed pulley on the countershaft turns a loose one; a belt on its loose pulley drives nothing. Sliding a belt across is both the gear change and the clutch.",
         "The countershaft holds the differential. From each end a chain runs back to a sprocket on a rear wheel.",

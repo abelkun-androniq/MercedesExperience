@@ -1,0 +1,362 @@
+{
+ "part": "w196-wheel",
+ "generated": "node tools/cfd/part.mjs w196-wheel export",
+ "model": "3-D lattice Boltzmann (tools/cfd/lbm3d.mjs): D3Q19, Smagorinsky 0.16, half car mirrored at y = 0, moving road, still tyres cut 48 mm above it, free-slip top and side, uniform inflow, zero-gradient outlet",
+ "geometry": "tools/cfd/corner.mjs",
+ "U": 0.08,
+ "Re": "10000 on the 680 mm tyre diameter",
+ "plane": 344,
+ "station": -700,
+ "runs": {
+  "enclosed-24": {
+   "nx": 183,
+   "ny": 75,
+   "nz": 58,
+   "nu": 0.00022666666666666666,
+   "steps": 17500,
+   "settle": 5000,
+   "window": 2500,
+   "windows": [
+    {
+     "wake": null,
+     "beside": -0.152,
+     "inner": 830,
+     "outer": 874,
+     "width": 44
+    },
+    {
+     "wake": null,
+     "beside": -0.136,
+     "inner": 830,
+     "outer": 870,
+     "width": 40
+    },
+    {
+     "wake": null,
+     "beside": -0.117,
+     "inner": 830,
+     "outer": 870,
+     "width": 40
+    },
+    {
+     "wake": null,
+     "beside": -0.104,
+     "inner": 830,
+     "outer": 874,
+     "width": 44
+    },
+    {
+     "wake": null,
+     "beside": -0.089,
+     "inner": 830,
+     "outer": 874,
+     "width": 44
+    }
+   ]
+  },
+  "exposed-24": {
+   "nx": 183,
+   "ny": 75,
+   "nz": 58,
+   "nu": 0.00022666666666666666,
+   "steps": 17500,
+   "settle": 5000,
+   "window": 2500,
+   "windows": [
+    {
+     "wake": 0.552,
+     "beside": -0.125,
+     "inner": 578,
+     "outer": 798,
+     "width": 220
+    },
+    {
+     "wake": 0.602,
+     "beside": -0.121,
+     "inner": 574,
+     "outer": 806,
+     "width": 232
+    },
+    {
+     "wake": 0.613,
+     "beside": -0.124,
+     "inner": 574,
+     "outer": 806,
+     "width": 232
+    },
+    {
+     "wake": 0.644,
+     "beside": -0.118,
+     "inner": 574,
+     "outer": 814,
+     "width": 240
+    },
+    {
+     "wake": 0.644,
+     "beside": -0.118,
+     "inner": 570,
+     "outer": 818,
+     "width": 248
+    }
+   ]
+  },
+  "enclosed-16": {
+   "nx": 275,
+   "ny": 113,
+   "nz": 88,
+   "nu": 0.00033999999999999997,
+   "steps": 24500,
+   "settle": 7000,
+   "window": 3500,
+   "windows": [
+    {
+     "wake": null,
+     "beside": -0.185,
+     "inner": 826,
+     "outer": 850,
+     "width": 24
+    },
+    {
+     "wake": null,
+     "beside": -0.178,
+     "inner": 826,
+     "outer": 858,
+     "width": 32
+    },
+    {
+     "wake": null,
+     "beside": -0.169,
+     "inner": 826,
+     "outer": 858,
+     "width": 32
+    },
+    {
+     "wake": null,
+     "beside": -0.166,
+     "inner": 826,
+     "outer": 858,
+     "width": 32
+    },
+    {
+     "wake": null,
+     "beside": -0.162,
+     "inner": 826,
+     "outer": 862,
+     "width": 36
+    }
+   ]
+  },
+  "exposed-16": {
+   "nx": 275,
+   "ny": 113,
+   "nz": 88,
+   "nu": 0.00033999999999999997,
+   "steps": 24500,
+   "settle": 7000,
+   "window": 3500,
+   "windows": [
+    {
+     "wake": 0.425,
+     "beside": -0.121,
+     "inner": 590,
+     "outer": 770,
+     "width": 180
+    },
+    {
+     "wake": 0.448,
+     "beside": -0.121,
+     "inner": 590,
+     "outer": 766,
+     "width": 176
+    },
+    {
+     "wake": 0.453,
+     "beside": -0.119,
+     "inner": 586,
+     "outer": 770,
+     "width": 184
+    },
+    {
+     "wake": 0.439,
+     "beside": -0.116,
+     "inner": 582,
+     "outer": 770,
+     "width": 188
+    },
+    {
+     "wake": 0.43,
+     "beside": -0.112,
+     "inner": 582,
+     "outer": 774,
+     "width": 192
+    }
+   ]
+  },
+  "enclosed-big-24": {
+   "nx": 233,
+   "ny": 108,
+   "nz": 83,
+   "domain": "larger tunnel (BIG)",
+   "windows": [
+    {
+     "wake": null,
+     "beside": 0.011,
+     "inner": 830,
+     "outer": 930,
+     "width": 100
+    },
+    {
+     "wake": null,
+     "beside": 0.028,
+     "inner": 830,
+     "outer": 978,
+     "width": 148
+    },
+    {
+     "wake": null,
+     "beside": 0.038,
+     "inner": 830,
+     "outer": 966,
+     "width": 136
+    },
+    {
+     "wake": null,
+     "beside": 0.034,
+     "inner": 830,
+     "outer": 954,
+     "width": 124
+    },
+    {
+     "wake": null,
+     "beside": 0.04,
+     "inner": 830,
+     "outer": 954,
+     "width": 124
+    }
+   ]
+  },
+  "exposed-big-24": {
+   "nx": 233,
+   "ny": 108,
+   "nz": 83,
+   "domain": "larger tunnel (BIG)",
+   "windows": [
+    {
+     "wake": 0.611,
+     "beside": -0.066,
+     "inner": 578,
+     "outer": 810,
+     "width": 232
+    },
+    {
+     "wake": 0.654,
+     "beside": -0.061,
+     "inner": 574,
+     "outer": 822,
+     "width": 248
+    },
+    {
+     "wake": 0.668,
+     "beside": -0.06,
+     "inner": 570,
+     "outer": 826,
+     "width": 256
+    },
+    {
+     "wake": 0.666,
+     "beside": -0.058,
+     "inner": 570,
+     "outer": 818,
+     "width": 248
+    },
+    {
+     "wake": 0.65,
+     "beside": -0.049,
+     "inner": 570,
+     "outer": 826,
+     "width": 256
+    }
+   ]
+  }
+ },
+ "wake": {
+  "quantity": "mean axial deficit behind the exposed tyre",
+  "patch": {
+   "y": [
+    560,
+    820
+   ],
+   "z": [
+    100,
+    700
+   ]
+  },
+  "byGrid": {
+   "16": {
+    "d": 0.439,
+    "lo": 0.424,
+    "hi": 0.454
+   },
+   "24": {
+    "d": 0.611,
+    "lo": 0.564,
+    "hi": 0.658
+   }
+  },
+  "gate": {
+   "sign": 1,
+   "credible": 0.424,
+   "domain": 0.039,
+   "released": true
+  }
+ },
+ "beside": {
+  "quantity": "axial deficit outside both bodies, exposed − enclosed",
+  "patch": {
+   "y": [
+    880,
+    1400
+   ],
+   "z": [
+    100,
+    700
+   ]
+  },
+  "byGrid": {
+   "16": {
+    "d": 0.054,
+    "lo": 0.043,
+    "hi": 0.066
+   },
+   "24": {
+    "d": -0.002,
+    "lo": -0.033,
+    "hi": 0.03
+   }
+  },
+  "gate": {
+   "sign": 0,
+   "credible": 0,
+   "domain": 0.087,
+   "released": false
+  }
+ },
+ "settled": {
+  "wake": true,
+  "beside": false
+ },
+ "display-enclosed": {
+  "wake": null,
+  "beside": -0.172,
+  "inner": 826,
+  "outer": 858,
+  "width": 32
+ },
+ "display-exposed": {
+  "wake": 0.439,
+  "beside": -0.118,
+  "inner": 586,
+  "outer": 770,
+  "width": 184
+ }
+}

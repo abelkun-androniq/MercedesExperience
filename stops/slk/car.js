@@ -52,6 +52,12 @@ export default {
         },
         boot: { x0: -3150, x1: -2150, z0: 350, z1: 950 }, width: 1300, quoted: 25,
       },
+      real: {   // the part in real life (not this car)
+        src: "parts/slk-roof-fold.jpg", w: 560, h: 360,
+        alt: "Side view of a black Mercedes-Benz SLK 230 with its folding hardtop halfway into the raised boot lid",
+        caption: "An SLK 230 of the same R 170 series, caught mid-fold: the boot lid stands open at the back, the roof panel and rear window are swinging into the gap. Why does the boot lid open first?",
+        credit: { author: "Cerafino", license: "CC BY-SA 2.5", url: "https://commons.wikimedia.org/wiki/File:Slk_mb170_offen.jpg" },
+      },
       talk: [
         "Folding steel hardtops had been tried before, but the SLK of 1996 brought one to a series-production car: closed, it is a coupé with a fixed roof's quiet and security; open, a roadster.",
         "The roof is two pieces: the panel over the seats and the rear-window section. Opening, hydraulic cylinders swing the boot lid up about its rear hinge, then turn the rear section backwards and down, carrying the roof, which folds onto it.",

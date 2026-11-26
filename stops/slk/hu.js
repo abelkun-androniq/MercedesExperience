@@ -16,6 +16,10 @@ export default {
       answer: "Előbb a fedél nyílik fel; aztán a hátsó ablak hátrafordul, a tető ráhajlik, és a csomag a csomagtartóba süllyed, mielőtt a fedél bezárul. Az ára: nyitott tetővel a csomagtartó nagy része foglalt.",
       more: "Hogyan hajlik össze a tető",
       params: { label: "Az acéltető összehajtása" },
+      real: {
+        alt: "Fekete Mercedes-Benz SLK 230 oldalnézetből, a lemezteteje félúton a felnyitott csomagtérfedél alá hajtva",
+        caption: "Ugyanabból az R 170-es sorozatból egy SLK 230, hajtogatás közben: hátul áll a nyitott csomagtérfedél, a tetőelem és a hátsó ablak a résbe fordul. Miért a csomagtérfedél nyílik ki először?",
+      },
       talk: [
         "Behajtható acél keménytetővel korábban is próbálkoztak, de az 1996-os SLK hozta el a sorozatgyártásba: zárva kupé, a fix tető csendjével és biztonságával, nyitva roadster.",
         "A tető két részből áll: az ülések feletti elemből és a hátsó ablakos részből. Nyitáskor hidraulikus hengerek felbillentik a csomagtartófedelet a hátsó zsanérja körül, majd a hátsó részt hátra és lefelé fordítják, magukkal víve a tetőt, amely ráhajlik.",

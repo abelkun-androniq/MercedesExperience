@@ -39,11 +39,28 @@ export default {
         "A motor 45°-kal balra dől, hogy a motorháztető alacsonyan ülhessen. A szárazkarteres kenés, külön olajtartállyal, laposan tartja a forgattyúházat.",
       ],
     },
+    {
+      label: "A motor kiegyensúlyozása",
+      prompt: "Hogyan egyenlítik ki egymás tehetetlenségi erőit a soros hathengeres dugattyúi? Nyomja meg a „Lépés 30°-kal” gombot, és kövesse a nyilakat: az 1. és a 6. dugattyú együtt mozog.",
+      answer: "A hengerek tükörpárokban dolgoznak, 1 és 6, 2 és 5, 3 és 4, egymáshoz képest harmad fordulattal eltolva: lökéseik kioltják egymást, fordulatonként egyszer és kétszer is, és ugyanígy a blokk közepe körüli billentés is. Egy soros négyhengeresnél a fordulatonként kétszeres lökések ehelyett összeadódnak.",
+      more: "Motorvezérlés",
+      params: { label: "Soros hathengeres · rázóerők" },
+      real: {
+        alt: "Csupasz hathengeres motorblokk egy raklapon, előtte a főtengelye",
+        caption: "Egy ismeretlen hathengeres motor blokkja és főtengelye. Kövesse az első és az utolsó forgattyút: egy irányba mutatnak, így az 1. és a 6. dugattyú együtt emelkedik.",
+      },
+      talk: [
+        "A dugattyúk fordulatonként kétszer gyorsulnak és lassulnak, és közben tolják-húzzák a blokkot: fordulatonként egyszer saját fel-le mozgásuk miatt, kétszer a hajtórúd kilengése miatt, amitől a dugattyú a felső holtpont közelében gyorsabban mozog, mint az alsónál.",
+        "A soros hathengeresben az erők és a blokk közepe körüli billentés kioltják egymást. A 190 E négyhengerese kioltja a fordulatonként egyszeres lökéseket, de a kétszeresek mind egy irányba mutatnak: a négyhengeres magas fordulaton zúg, a hathengeres simán jár.",
+        "A kiegyensúlyozott nem jelent egyenletest: a főtengely harmad fordulatonként így is kap egy munkaütemet, hosszának különböző pontjain, és a hajtáslánc viszi tovább ezeket a nyomatéklökéseket.",
+      ],
+    },
   ],
   note: "1954 és 1957 között 1400 kupé készült. A közúti változat ötlete Max Hoffman amerikai importőrtől származott.",
   unverified: [
     "A váz csomópontjainak helyzete és a csövek keresztmetszete; a háromszoros merevségvesztés e modell eredménye, nem mérés",
     "Hajtórúdhossz és a motor helyzete",
+    "Rázóerők: egyforma dugattyútömegek és egyenletesen elosztott, szimmetrikus főtengely",
     "A jármű körvonala",
   ],
 };

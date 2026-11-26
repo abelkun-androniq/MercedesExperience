@@ -10,12 +10,18 @@
 // plugs per cylinder, drawn and lit at firing; 2 adds the dual-ignition card), valves? (4: two inlet and two exhaust valves
 // per cylinder), rockers? (with "ohc": a rocker arm between each cam and its valve), sideExhaust? (with "ohv": the exhaust
 // valve sits beside the cylinder and a tappet from the low camshaft lifts it), breathe? { rpm: [real rpm…], slow } (adds the
-// card comparing the time for one intake stroke; the animation runs at real rpm × slow).
+// card comparing the time for one intake stroke; the animation runs at real rpm × slow), balance? (adds the shaking-forces
+// card: an arrow along each cylinder for its piston's inertia force, once or twice per turn, their sum, and an inline four
+// for comparison), pulses? { compare: [firing order], rpm } (adds a torque trace at the crank against an evenly firing
+// engine of the compared firing order, at equal mean torque), torsion? { rpm: { min, max, value }, damping: { min, max,
+// value } (%) } (adds the crankshaft-twist card: centre or end take-off, witness marks along the crank, twist drawn
+// exaggerated; lib/model/torsion.js).
 // The camshaft readout appears only where a camshaft is drawn ("ohc", "dohc", "ohv"); "none" and "atmospheric" have none
 // (the Daimler exhaust rod, driven from a groove in the flywheel, lights up as it lifts its valve).
 import * as THREE from "three";
-import { V, Y, mat, rod, place, ball, glass, line } from "../lib/scene/helpers.js";
-import { layout, pinAngle, phaseOf, strokeOf, valveLifts, flashOf, injecting, injectingDiesel, compressionTemp } from "../lib/model/engine.js";
+import { V, Y, mat, rod, place, ball, glass, line, gear } from "../lib/scene/helpers.js";
+import { layout, pinAngle, phaseOf, strokeOf, valveLifts, flashOf, injecting, injectingDiesel, compressionTemp, shaking, crankTorque, pulsesPerTurn, pulsesPerSecond } from "../lib/model/engine.js";
+import { torsionResponse, resonanceRpm } from "../lib/model/torsion.js";
 
 const STROKE_TOKEN = { Power: "--l1", Exhaust: "--metal", Intake: "--l4", Compression: "--l2" };
 
@@ -214,6 +220,7 @@ export function create(ctx, p) {
 
   // ---------- panel ----------
   let playing = !ctx.reducedMotion, rpm = p.speed.value;
+  const fmt = v => new Intl.NumberFormat(document.documentElement.lang).format(v);
   const ui = ctx.panel([{ label: p.label, items: [
     { cells: { id: "cyls", labels: xs.map((_, i) => (n === 1 ? t("Cylinder") : t("Cyl {0}", i + 1))) }, detail: true },
     { key: [["--l1", t("power")], ["--metal", t("exhaust")], ["--l4", t("intake")], ["--l2", t("compression")], ...(p.fuel === "direct" ? [["--l3", t("fuel injection")]] : [])], detail: true },
@@ -248,7 +255,6 @@ export function create(ctx, p) {
   if (p.breathe) {
     // How long one cylinder has to fill: an intake stroke is half a crank turn (180°), so at n rpm it lasts 30 000 / n ms.
     // The inlet valves open over a longer, cam-timed interval; the stroke is the clean comparison between speeds.
-    const fmt = v => new Intl.NumberFormat(document.documentElement.lang).format(v);
     const choose = real => {
       rpm = real * p.breathe.slow; ui.slider("rpm").set(rpm);
       ui.set("stroke", (30000 / real).toFixed(1)); p.breathe.rpm.forEach(v => ui.toggle(`r${v}`).set(v === real));
@@ -260,6 +266,94 @@ export function create(ctx, p) {
     ] }]);
     choose(p.breathe.rpm[0]);
   }
+  const each = [], NS = "http://www.w3.org/2000/svg";
+  const pause = () => { playing = false; ui.toggle("play").set(false); };
+  if (p.balance) {
+    // Each piston's inertia pushes on the block along its cylinder; in a straight-six the pushes cancel, in a four the
+    // twice-per-turn ones add. Arrows above the head: one per cylinder (F m per m·r·ω²) and their sum beside the block.
+    const lambda = r / l, four = layout([1, 3, 4, 2]), F = 0.09, gap = xs.length > 1 ? Math.abs(xs[1] - xs[0]) : 1;
+    const arrow = m => {
+      const g = new THREE.Group(), shaft = rod(m, 0.006), head = new THREE.Mesh(new THREE.ConeGeometry(0.017, 0.035, 14), m); g.add(shaft, head); group.add(g);
+      return (base, dir, len) => {
+        g.visible = Math.abs(len) > 0.004; if (!g.visible) return;
+        const u = dir.clone().multiplyScalar(Math.sign(len)), tip = base.clone().addScaledVector(u, Math.abs(len) + 0.02);
+        place(shaft, base, tip.clone().addScaledVector(u, -0.03)); head.position.copy(tip).addScaledVector(u, -0.0175); head.quaternion.setFromUnitVectors(Y, u);
+      };
+    };
+    const arrows = cyl.map(() => arrow(stage.tokenMat("--l2"))), total = arrow(stage.tokenMat("--accent"));
+    let order = 1;
+    const setOrder = o => { order = o; bal.toggle("o1").set(o === 1); bal.toggle("o2").set(o === 2); };
+    const bal = ctx.panel([{ label: t("Shaking forces"), items: [
+      { buttons: [{ id: "o1", label: t("Once per turn"), pressed: true, onClick: () => setOrder(1) }, { id: "o2", label: t("Twice per turn"), pressed: false, onClick: () => setOrder(2) }] },
+      { buttons: [{ id: "step", label: t("Step 30°"), onClick: () => { pause(); theta += Math.PI / 6; } }] },
+      { readouts: [{ id: "sum", label: t("All {0} together", n), unit: t("% of one piston") }, { id: "mom", label: t("Rocking moment"), unit: t("% of one piston × spacing") },
+        { id: "four", label: t("An inline four"), unit: t("% of one piston") }] },
+      { key: [["--l2", t("each piston's push on the block")], ["--accent", t("all of them together")]] },
+      { text: t("Once per turn: the piston's own up-and-down. Twice per turn: the extra from the conrod's changing angle. Arrows show the force at real speed, scaled.") },
+    ] }]);
+    each.push(() => {
+      const peak = order === 1 ? 1 : lambda, sh = shaking(lay, theta, xs, lambda, order), b4 = shaking(four, theta, [0, 1, 2, 3], lambda, order);
+      cyl.forEach((c, i) => arrows[i](c.bank.at(c.x, blockH + 0.03), c.bank.d, F * sh.f[i] / peak));
+      const b = cyl[0].bank; total(b.at(xc, blockH + 0.03, 3.4 * bR), b.d, F * sh.sum / peak);
+      const pc = v => (Math.abs(v) < 5e-4 ? 0 : v * 100).toFixed(0);
+      bal.set("sum", pc(sh.sum / peak)); bal.set("mom", pc(sh.moment / gap / peak)); bal.set("four", pc(b4.sum / peak));
+    });
+  }
+  if (p.pulses) {
+    // Gas torque at the crank against an evenly firing engine of another cylinder count, at equal mean torque.
+    const other = layout(p.pulses.compare), N = other.n, deg = 180 / Math.PI;
+    const tq = ctx.panel([{ label: t("Torque at the crank"), items: [
+      { trace: { id: "tq", series: [{ token: "--l1", min: 0.2, max: 1.5 }, { token: "--muted", min: 0.2, max: 1.5 }], span: 720, top: t("strong push"), bottom: t("weak push"), aria: t("Crank torque over two turns, this engine against one with {0} cylinders", N) } },
+      { key: [["--l1", t("these {0} cylinders", n)], ["--muted", t("{0} cylinders, same mean torque", N)]] },
+      { readouts: [{ id: "a", label: t("{0} cylinders", n), unit: t("power strokes per second at {0} rpm", fmt(p.pulses.rpm)), value: String(pulsesPerSecond(n, p.pulses.rpm)) },
+        { id: "b", label: t("{0} cylinders", N), unit: t("power strokes per second at {0} rpm", fmt(p.pulses.rpm)), value: String(pulsesPerSecond(N, p.pulses.rpm)) }] },
+      { text: t("{0} cylinders fire {1} times per crank turn, {2} cylinders {3} times: the pushes overlap and the torque evens out. The firing cylinder lights up as its pulse reaches the trace.", n, pulsesPerTurn(n), N, pulsesPerTurn(N)) },
+    ] }]);
+    each.push(() => { const tr = tq.trace("tq"); tr.push(theta * deg, [crankTorque(lay, theta), crankTorque(other, theta)]); tr.draw(theta * deg); });
+  }
+  if (p.torsion) {
+    // Crank twist: witness marks on the front half, the gear and the rear half turn with the crank plus their twist
+    // against the gear (drawn EXAG × larger), which follows the firing ripple at four pulses per turn.
+    const EXAG = 100, xF = xMax + 0.04, xR = xMin - 0.04, X1 = V(1, 0, 0), crankMat2 = stage.tokenMat("--l5");
+    const marks = [0, 1, 2].map(() => { const m = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.016, 0.12), crankMat2); m.geometry.translate(0, 0, 0.075); group.add(m); return m; });
+    const gearG = gear(0.06, 24, 0.02, stage.tokenMat("--metal")); group.add(gearG);
+    let take = "centre", trpm = p.torsion.rpm.value, zeta = p.torsion.damping.value / 100, resp = null;
+    const sx = sh => xF + (xR - xF) * sh, recalc = () => {
+      resp = torsionResponse(take, trpm, zeta);
+      const res = resonanceRpm(take, zeta, p.torsion.rpm.min, p.torsion.rpm.max);
+      tor.set("tw", (resp.twist * 180 / Math.PI).toFixed(2)); tor.set("res", res ? fmt(Math.round(res / 100) * 100) : t("none in range"));
+      tor.set("prop", (resp.prop / 240 * 100).toFixed(1));
+      gearG.position.set(sx(take === "centre" ? 0.5 : 1), 0, crankZ);
+      ["centre", "end"].forEach(k => tor.toggle(k).set(k === take)); plot();
+    };
+    const tor = ctx.panel([{ label: t("Crankshaft twist"), items: [
+      { buttons: [{ id: "centre", label: t("Drive from the middle (M 196)"), pressed: true, onClick: () => { take = "centre"; recalc(); } }, { id: "end", label: t("Drive from the end (comparison)"), pressed: false, onClick: () => { take = "end"; recalc(); } }] },
+      { slider: { id: "trpm", label: t("Engine speed (rpm)"), min: p.torsion.rpm.min, max: p.torsion.rpm.max, step: 100, value: trpm, onInput: v => { trpm = v; recalc(); } } },
+      { svg: { id: "tplot", viewBox: "0 0 280 120", aria: t("Crankshaft twist against engine speed, drive from the middle and from the end") } },
+      { key: [["--accent", t("drive from the middle")], ["--muted", t("drive from the end")], ["--fg", t("now")], ["--l5", t("witness marks on the crank")]] },
+      { readouts: [{ id: "tw", label: t("Twist, crank half to gear"), unit: t("deg, model") }, { id: "res", label: t("Resonance"), unit: t("rpm") }, { id: "prop", label: t("Propeller-shaft torque swing"), unit: t("% of mean torque") }] },
+      { slider: { id: "damp", label: t("Damping (%)"), min: p.torsion.damping.min, max: p.torsion.damping.max, step: 1, value: zeta * 100, onInput: v => { zeta = v / 100; recalc(); } }, detail: true },
+      { text: t("Twist drawn {0}× larger. Stiffness, inertias, damping and the firing ripple are illustrative.", EXAG), detail: true },
+    ] }]);
+    const svg = tor.el("tplot"), lo = p.torsion.rpm.min, hi = p.torsion.rpm.max, el = (tag, a) => { const e = document.createElementNS(NS, tag); for (const [k, x] of Object.entries(a)) e.setAttribute(k, x); svg.append(e); return e; };
+    const curves = { centre: [], end: [] };
+    for (const k of Object.keys(curves)) for (let v = lo; v <= hi; v += 50) curves[k].push([v, k]);
+    const lines = { centre: el("polyline", { fill: "none", stroke: "var(--accent)", "stroke-width": 1.6 }), end: el("polyline", { fill: "none", stroke: "var(--muted)", "stroke-width": 1.6 }) };
+    const now = el("line", { stroke: "var(--fg)", "stroke-dasharray": "2 3", y1: 5, y2: 110 });
+    el("line", { x1: 0, x2: 280, y1: 110, y2: 110, stroke: "var(--rule)" });
+    const Xp = v => ((v - lo) / (hi - lo) * 280).toFixed(1);
+    function plot() {
+      const tw = k => curves[k].map(([v]) => torsionResponse(k, v, zeta).twist), all = { centre: tw("centre"), end: tw("end") }, top = Math.max(...all.end, ...all.centre);
+      for (const k of Object.keys(lines)) lines[k].setAttribute("points", curves[k].map(([v], i) => `${Xp(v)},${(110 - all[k][i] / top * 100).toFixed(1)}`).join(" "));
+      now.setAttribute("x1", Xp(trpm)); now.setAttribute("x2", Xp(trpm));
+    }
+    recalc();
+    each.push(() => {
+      const ph = 4 * theta, nodeRel = sh => { const q = resp.nodes.find(nd => !nd.load && Math.abs(nd.x - sh) < 1e-9); return q.rel[0] * Math.cos(ph) - q.rel[1] * Math.sin(ph); };
+      [0.25, take === "centre" ? 0.5 : 1, 0.75].forEach((sh, i) => { marks[i].position.set(sx(sh), 0, crankZ); marks[i].quaternion.setFromAxisAngle(X1, theta + EXAG * nodeRel(sh)); });
+      gearG.rotation.x = theta;
+    });
+  }
   pose();
 
   return {
@@ -270,6 +364,7 @@ export function create(ctx, p) {
       pose();
       ui.set("crank", ((theta * 180 / Math.PI) % 720).toFixed(0));
       if (shaft) ui.set("cam", ((theta * 90 / Math.PI) % 360).toFixed(0));
+      for (const f of each) f();
     },
   };
 }

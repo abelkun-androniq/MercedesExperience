@@ -28,6 +28,9 @@ export default {
   components: [
     {
       id: "engine", label: "Engine", subsystem: "inline-engine",
+      prompt: "Can you still pick out the single power strokes at the crank? Watch the torque trace as each cylinder lights up.",
+      answer: "Only just: four power strokes per turn overlap, so the push on the crank never drops far. An even-firing six, with three per turn, swings much further at the same mean torque.",
+      more: "Engine timing",
       view: { pos: [1.3, 1.9, 1.7], target: [-0.3, 0, 0.75] },
       ghost: { fill: 0.04, edge: 0.35 },
       params: {
@@ -36,10 +39,12 @@ export default {
         xs: [250, 135, 20, -95, -210, -325, -440, -555], crankZ: 480, lean: 0,          // positions illustrative
         valvetrain: "ohv", ignition: "spark", plugs: 2, fuel: "carb", crankcase: "open",
         speed: { min: 5, max: 60, value: 18 }, realRpm: 2800,
+        pulses: { compare: [1, 5, 3, 6, 2, 4], rpm: 3000 },                             // torque curve illustrative
       },
       talk: [
         "The 770 was the largest Mercedes-Benz of its day, built in small numbers for heads of state, royalty and the very wealthy. This Cabriolet F was made for the former Kaiser Wilhelm II, then living in exile in the Netherlands.",
         "Eight cylinders in a row, 95 mm across and 135 mm stroke: 7.7 litres. In a straight-eight, one cylinder fires every quarter turn, so the drive is smooth and even.",
+        "At 3,000 rpm an even-firing six gives 150 power strokes a second, an eight 200. The trace shows the torque the gas pressure puts on the crank, at the same mean torque for both.",
         "Each cylinder has two spark plugs. One set is fired by a magneto, the other by a battery and coil. Lit at two points, the mixture burns through in about half the time, and if either system fails, the engine keeps running on the other.",
       ],
     },
@@ -67,6 +72,7 @@ export default {
   unverified: [
     "Engine position in the car and conrod length",
     "Valve gear drawn as overhead valves with pushrods",
+    "Torque trace: an illustrative gas-pressure curve, the same for every cylinder",
     "Supercharger gearing, engagement and boost (the 150 and 200 hp are quoted)",
     "Ghost-body outline (sketched from the data-sheet sizes, not yet traced from the photo)",
     "Room: Legend 3",

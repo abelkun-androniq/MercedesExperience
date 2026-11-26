@@ -1,0 +1,55 @@
+{
+ "part": "evo-arch",
+ "generated": "node tools/cfd/part.mjs evo-arch export",
+ "model": "3-D lattice Boltzmann (tools/cfd/lbm3d.mjs): D3Q19, Smagorinsky 0.16, half car mirrored at y = 0, moving road, still tyres cut 48 mm above it, free-slip top and side, uniform inflow, zero-gradient outlet",
+ "geometry": "tools/cfd/corner.mjs",
+ "U": 0.08,
+ "Re": "10000 on the 680 mm tyre diameter",
+ "plane": 344,
+ "station": -600,
+ "runs": {
+  "fitted-24": {
+   "nx": 157,
+   "ny": 75,
+   "nz": 67,
+   "nu": 0.00022666666666666666,
+   "steps": 14000,
+   "settle": 4000,
+   "window": 2000,
+   "windows": [
+    {
+     "y": 1147,
+     "shift": 367
+    },
+    {
+     "y": 1154,
+     "shift": 374
+    },
+    {
+     "y": 1157,
+     "shift": 377
+    },
+    {
+     "y": 1153,
+     "shift": 373
+    },
+    {
+     "y": 1153,
+     "shift": 373
+    }
+   ]
+  }
+ },
+ "preview": "one grid only (24)",
+ "repeat": {
+  "24": {
+   "d": 372.8,
+   "lo": 368.283,
+   "hi": 377.317
+  }
+ },
+ "display": {
+  "y": 1153,
+  "shift": 373
+ }
+}

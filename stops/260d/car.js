@@ -39,6 +39,12 @@ export default {
         compression: { value: 20.5, min: 6, max: 24 },                   // 20.5 : 1 illustrative (not confirmed)
         speed: { min: 5, max: 60, value: 20 }, realRpm: 3000,
       },
+      real: {   // the part in real life (not this car)
+        src: "parts/prechamber-ganz.jpg", w: 800, h: 837,
+        alt: "Sectioned cylinder head of a 1934 Ganz–Jendrassik diesel engine, painted red at the cuts, with the small combustion chamber beside the cylinder",
+        caption: "A 1934 Ganz–Jendrassik diesel head, cut open: the Hungarian engine also has a small chamber beside the cylinder, joined to it by a narrow outlet. Where does the fuel first burn in the OM 138? The shapes differ between engines.",
+        credit: { author: "Gwafton", license: "CC BY-SA 3.0", url: "https://commons.wikimedia.org/wiki/File:Ganz-Jendrassik_combustion_chamber.JPG" },
+      },
       talk: [
         "Shown at the Berlin motor show in February 1936: the first diesel car built in series, often used as a taxi.",
         "The OM 138 engine: four cylinders, 90 × 100 mm, 2,545 cm³, 45 PS at 3,000 rpm. Few petrol cars went further on a tank.",

@@ -61,6 +61,12 @@ export default {
         rpm: { min: 2000, max: 9500, value: 5000 },
         origin: [-0.4, 0, 0.35],
       },
+      real: {   // the part in real life (not this car)
+        src: "parts/desmo-ducati.jpg", w: 800, h: 600,
+        alt: "Close-up through the inspection opening of a Ducati motorcycle engine: an upper rocker on the valve tip and a forked rocker under the collar on the stem",
+        caption: "On this Ducati engine, the forked rocker pulls the valve shut by the collar on its stem; the upper rocker opens it. Which rocker pulls the valve shut in the Mercedes model? The rocker layouts differ; the idea, closing by force, is the same.",
+        credit: { author: "Gérard Delafond", license: "CC BY-SA 3.0", url: "https://commons.wikimedia.org/wiki/File:Desmo_photo.jpg" },
+      },
       talk: [
         "At high revs a valve spring can no longer pull the valve back fast enough: the valve floats off the cam and can hit the piston. Raise the speed and watch the spring valve's line leave the dashed cam line.",
         "Mercedes's desmodromic gear has no closing spring. A second cam and a rocker pull the valve shut, so the valve follows the cam exactly at any speed.",

@@ -10,6 +10,10 @@ export default {
     {
       label: "Motor",
       params: { label: "Négyhengeres dízel · gyújtási sorrend 1-3-4-2" },
+      real: {
+        alt: "Egy 1934-es Ganz–Jendrassik dízelmotor felvágott hengerfeje, a vágási felületeken pirosra festve, a henger melletti kis égéstérrel",
+        caption: "Egy 1934-es Ganz–Jendrassik dízelmotor felvágott hengerfeje: a magyar motornak is van egy kis kamrája a henger mellett, amelyet szűk nyílás köt össze vele. Hol gyullad meg először a gázolaj az OM 138-ban? A kamrák alakja motoronként eltér.",
+      },
       talk: [
         "1936 februárjában mutatták be a berlini autókiállításon: az első sorozatban gyártott dízelautó, gyakran taxiként használták.",
         "Az OM 138 motor: négy henger, 90 × 100 mm, 2545 cm³, 45 LE 3000/min fordulaton. Kevés benzines autó jutott messzebb egy tankkal.",

@@ -1,0 +1,77 @@
+{
+ "part": "splitter",
+ "generated": "node tools/cfd/part.mjs splitter export",
+ "model": "2-D lattice Boltzmann (lib/model/flow.js): D2Q9, Smagorinsky 0.16, moving road, free-slip top, zero-gradient outlet",
+ "Re": "undefined on undefined mm",
+ "faces": {
+  "upper": {
+   "x": [
+    940,
+    970
+   ],
+   "z": [
+    146,
+    162
+   ]
+  },
+  "lower": {
+   "x": [
+    940,
+    970
+   ],
+   "z": [
+    100,
+    118
+   ]
+  }
+ },
+ "runs": {
+  "in-5": {
+   "nx": 520,
+   "nz": 500,
+   "nu": 0.002,
+   "steps": 31200,
+   "windows": [
+    {
+     "upper": 1.16,
+     "lower": 0.72,
+     "across": 0.441
+    },
+    {
+     "upper": 1.196,
+     "lower": 0.802,
+     "across": 0.394
+    },
+    {
+     "upper": 1.208,
+     "lower": 0.855,
+     "across": 0.353
+    }
+   ]
+  },
+  "forward-5": {
+   "nx": 520,
+   "nz": 500,
+   "nu": 0.002,
+   "steps": 31200,
+   "windows": [
+    {
+     "upper": 1.272,
+     "lower": -0.159,
+     "across": 1.431
+    },
+    {
+     "upper": 1.262,
+     "lower": 0.02,
+     "across": 1.243
+    },
+    {
+     "upper": 1.281,
+     "lower": 0.183,
+     "across": 1.097
+    }
+   ]
+  }
+ },
+ "claim": "none: the picture shows how the lip divides the air; the face samples lie ahead of the retracted lip, so no lip load sign is made"
+}

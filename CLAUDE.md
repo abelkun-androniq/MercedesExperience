@@ -14,13 +14,14 @@ iPhone/iPad Safari (iOS 16.4+, import maps). No bundler: native ES modules; `too
   `stops/<slug>/car.js` pure data (+ photo.jpg) · `parts/` real-life photos of mechanisms the exhibits hide (component `real`; shared
   between stops)
 - `lib/model/` pure maths, Node-tested: linkage (multi-link closure), quarter-car (ride), engine (N-cylinder slider-crank,
-  timing, diesel), blower, valvetrain (spring float, desmo), steering (double-pivot trapezoid, centre pivot, twin steered
+  timing, diesel, shaking forces, gas-torque pulses), torsion (crankshaft twist: centre or end take-off), blower, valvetrain (spring float, desmo), steering (double-pivot trapezoid, centre pivot, twin steered
   axles), differential (one axle; traction4: four-wheel drive with locks or brake traction control), gearbox (sliding
   gears), aero (drag, top speed), truss (space frame twist), crash, air-spring (levelling: air, or a motor-wound torsion
   bar), wankel, cooling, belt (two-speed flat-belt drive, hill climbing), hoist (car-transporter deck: cylinder, pulley
   block, cables), flow (2-D lattice-Boltzmann wind tunnel: D2Q9 + Smagorinsky, moving road, drag split), abs (tyre slip
   curves, braking with and without ABS), rollover (tip angle, rolling pendulum, roll-bar timing), hydraulics (gas
-  accumulator, pump, cylinders), climate (cabin heat balance), portal (portal-axle clearance), roof (folding hardtop)
+  accumulator, pump, cylinders), climate (cabin heat balance), portal (portal-axle clearance), roof (folding hardtop), part-field (component airflow files:
+  one plane grid per part, cases with paths and guides)
 - `lib/scene/` stage (renderer, cameras, lights, theme tokens, loop), helpers, ghost-body, road, wind-tunnel (CFD view of
   `flow` on the centre plane: speed/pressure/swirl field, body section, smoke streaklines; `--cfd-*` tokens)
 - `lib/app/` shell, teaser, story (scroll stories: shared by shell and teaser), viewer (one car's stage, subsystems,
@@ -33,17 +34,21 @@ iPhone/iPad Safari (iOS 16.4+, import maps). No bundler: native ES modules; `too
 - `subsystems/<id>.js` one mechanism each (params documented in each file's header): linkage-suspension, inline-engine,
   roots-blower, desmo-valvetrain, steering, differential, gearbox, radiator, aero, space-frame, crumple-zone,
   air-suspension, wankel, belt-drive, hoist, abs, rollover, comfort-hydraulics, cabin-climate, portal-axle,
-  four-wheel-drive, twin-steer, vario-roof, race-aero (a 3-D wind tunnel computed offline by tools/cfd: slices, streamlines,
-  arrows for the change in drag and axle loads per case). inline-engine also draws V engines (`leans`: one bank per lean angle,
+  four-wheel-drive, twin-steer, vario-roof, race-aero (one part's airflow computed offline by tools/cfd/part.mjs: a field slice through the part,
+  mean-flow paths with arrowheads and the guides of its lesson per case; case buttons, Follow the air, Pause airflow). inline-engine also draws V engines (`leans`: one bank per lean angle,
   opposite cylinders sharing a crankpin) and twin ignition (`plugs: 2`), four valves (`valves: 4`), rocker arms (`rockers`), a side exhaust valve on a tappet
-  (`sideExhaust`) and a time-to-fill card (`breathe`); crumple-zone can carry an engine block that
+  (`sideExhaust`), a time-to-fill card (`breathe`), shaking-force arrows (`balance`), a crank-torque trace (`pulses`) and a
+  crankshaft-twist card (`torsion`); radiator runs every cooling type side by side from one start (`start`, `load`); crumple-zone can carry an engine block that
   slides under the floor (`engine`)
 - `tools/` build, vendor-three, camera (shared pinhole maths), fit-photo-camera (+ photo-fits/*.json), trace-profile
   (+ profile-traces/*.json: side-photo pixels → mm profile), photo-grid (crop + pixel grid + projected profile overlay, PNG
-  via Playwright; `--bright` for dark cars), stop-shot (stage screenshot + fps + page errors; needs `npm run serve`), cfd/ (offline 3-D
-  lattice-Boltzmann tunnel for the Evo II: mesh → geometry (cases) → lbm3d (D3Q19, worker threads) → run → export into
-  stops/190e-evo2/cfd/; `tools/cfd/all.sh` runs every case on two grids, about 70 min; the Sketchfab mesh evo2.glb is CC BY-NC
-  and stays local, git-ignored) · `docs/TOUR-POC.md` (model maths §6), `docs/research.md`
+  via Playwright; `--bright` for dark cars), stop-shot (stage screenshot + fps + page errors; needs `npm run serve`), cfd/ (offline
+  lattice-Boltzmann tunnels. Whole-car Evo II: mesh → geometry (cases) → lbm3d (D3Q19, worker threads) → run; `all.sh` runs
+  every case on two grids, about 70 min; export.mjs summarises them into the ignored out/whole-car/. Component close-ups:
+  `node tools/cfd/part.mjs <wing|splitter|w196-wheel|evo-arch> <reference|solve|export>` (wing: crop of the whole-car runs;
+  splitter: 2-D nose section; front corners: 3-D, solids in corner.mjs) → stops/<slug>/cfd/<part>/, run records in
+  tools/cfd/results/ (checked in); volume.mjs reads raw runs. The Sketchfab mesh evo2.glb is CC BY-NC and stays local,
+  git-ignored) · `docs/TOUR-POC.md` (model maths §6), `docs/research.md`
 - `vendor/three/` is generated by `npm run vendor -- <version>`: never read or edit it.
 
 ## Conventions
@@ -131,16 +136,20 @@ true speed · Web Inspector over USB shows no errors. LAN (`http://<mac-ip>:8765
   Flickr photos only). The Ponton stop shows a 1955 180 (research names the 220); the R 129 of Legend 6 is told with Princess
   Diana's 500 SL; the 540 K Streamliner is the existing 540k stop. Illustrative throughout: LP 333 axle spacings, Unimog
   portal sizes, O 302 heat balance, 600 hydraulic sizes, ABS and rollover parameters (each car.js `unverified`).
-- Wind-tunnel sections: Blitzen-Benz and 190 E Evo II are traced (the Evo II from its stop photo, a side view; rear wing
-  left out). Approximate: W 196 R, 540 K Cabriolet B and Blue Wonder (ghost outlines plus a few centre-line points on 3/4
-  photos); sketched: the 540 K Streamliner, the racing car on the Blue Wonder's deck and the boxy truck. A side photo per
-  the recipe would firm them up.
-- Evo II 3-D wind tunnel (race-aero, tools/cfd): for understanding, not engineering. Simplified voxel model (game mesh as
-  28 mm blocks, half car mirrored, flat floor, still wheels, Reynolds number ~3 × 10⁴ vs 10⁷), forces from mean surface
-  pressure only (no friction). The stop shows the mean of the 28 and 40 mm grids, and only changes with the same sign on both
-  whose mean clears the pooled scatter: the flap's drag, lift and rear load are settled (front load is not); nothing of the lip is
-  (both grids: a little less downforce, no clear front gain); the arch trim is finer than a cell, its solid equals the
-  baseline's, and export.mjs leaves it out. A finer grid or longer averaging would be needed to say more.
+- Wind-tunnel sections: Blitzen-Benz is traced. Approximate: 540 K Cabriolet B and Blue Wonder (ghost outlines plus a few
+  centre-line points on 3/4 photos); sketched: the 540 K Streamliner, the racing car on the Blue Wonder's deck and the boxy
+  truck. A side photo per the recipe would firm them up.
+- Airflow close-ups (race-aero; Evo II wing, splitter, wheel arch; W 196 R front wheel): for understanding, not engineering.
+  An expert review (research_notes/Museum airflow claim review/) set the rules: claim a sign only when, per grid, the 95 %
+  interval over one-flow-through batches lies on one side of zero, the same side on both grids, and a larger tunnel moves
+  it less than the effect (`gate` in part.mjs; records in tools/cfd/results/). Wing: a crop of the archived whole-car runs;
+  only the change is claimed (the flap tips the air up by about 13° and 8° on the two grids; the angles themselves depend
+  on the box). Splitter: display only. Its face samples sit ahead of the retracted lip, and the short 2-D tunnel (body
+  through the outlet, ~25 % blockage, inlet fixing ρ and u) has a floating pressure level and a slowly filling underbody
+  channel; a load sign needs a velocity inlet with free density, a pressure outlet, a sponge, a finite section whose flows
+  rejoin, and force summed on the wetted faces (open). Corners: still tyres 48 mm above the road. W 196 R: the claim is the
+  wake behind the bare tyre; the streamliner's body fills that patch, and the air beside the car does not settle (the
+  enclosed body runs out through the outlet). Evo arch: one state, a path of the mean flow, not attributed to the flare.
 - Not added from docs/research.md: the Vision R 320 CDI (its exhibition has ended) and the Vision Mercedes-Maybach 6
   (never shown at the museum).
 - The original single-file PoC pages are in git history at commit 468cc29 (`museum-tour-poc/`).

@@ -81,9 +81,35 @@ export default {
         "The engine leans 45° to the left so that the bonnet could sit low. A dry sump, with the oil in a separate tank, keeps the crankcase shallow.",
       ],
     },
+    {
+      id: "balance", label: "Engine balance", subsystem: "inline-engine",
+      prompt: "How can six moving pistons leave the engine balanced? Press “Step 30°” and follow the arrows: pistons 1 and 6 move together.",
+      answer: "The cylinders work in mirror pairs, 1 and 6, 2 and 5, 3 and 4, a third of a turn apart: their pushes cancel, once per turn and twice per turn, and so does the rocking about the middle. An inline four's twice-per-turn pushes add up instead.",
+      more: "Engine timing",
+      view: { pos: [0.75, -1.25, 1.35], target: [-0.35, 0.1, 0.5] },
+      ghost: { fill: 0.02, edge: 0.2 },
+      params: {
+        label: "Straight-six · shaking forces",
+        order: [1, 5, 3, 6, 2, 4], bore: 85, stroke: 88, rod: 145,      // rod illustrative
+        xs: [-100, -200, -300, -400, -500, -600], crankZ: 330,           // positions illustrative
+        lean: -45, valvetrain: "ohc", ignition: "spark", fuel: "direct", crankcase: "open",
+        speed: { min: 5, max: 60, value: 10 }, realRpm: 5800, balance: true,
+      },
+      real: {   // the part in real life (not this car)
+        src: "parts/i6-crankshaft.jpg", w: 760, h: 470,
+        alt: "A bare six-cylinder engine block on a pallet, with its crankshaft laid out in front of it",
+        caption: "A six-cylinder block and its crankshaft, from an unnamed engine. Trace the first and last crank throws: they point the same way, so pistons 1 and 6 rise together.",
+        credit: { author: "Dana60Cummins", license: "CC BY-SA 3.0", url: "https://commons.wikimedia.org/wiki/File:I6_Block_and_crankshaft.jpg" },
+      },
+      talk: [
+        "The pistons speed up and slow down twice every turn, and push and pull on the block as they do: once per turn from their own up-and-down, twice per turn from the conrod's swing, which makes a piston move faster near the top than near the bottom.",
+        "In the straight-six the forces and the rocking about the middle of the block cancel. The 190 E's four cancels the once-per-turn pushes, but its twice-per-turn ones all point the same way: a four buzzes at high revs, a six runs smooth.",
+        "Balanced is not the same as steady: the crank still gets a power stroke every third of a turn, at different places along its length, and the driveline carries those torque pulses.",
+      ],
+    },
   ],
   note: "1,400 coupés were built from 1954 to 1957. The idea for a road version came from the American importer Max Hoffman.",
-  unverified: ["Frame node positions and tube section; the threefold stiffness loss is this model's result, not a measurement", "Conrod length and engine position", "Ghost-body outline"],
+  unverified: ["Frame node positions and tube section; the threefold stiffness loss is this model's result, not a measurement", "Conrod length and engine position", "Shaking forces: equal piston masses and an evenly spaced, symmetric crank", "Ghost-body outline"],
   sources: [
     { label: "Mercedes-Benz public archive: 300 SL (W 198 I)", url: "https://mercedes-benz-publicarchive.com/marsClassic/en/instance/ko/300-SL--W-198-I-1954---1957.xhtml?oid=4699" },
     { label: "Wikipedia: Mercedes-Benz 300 SL", url: "https://en.wikipedia.org/wiki/Mercedes-Benz_300_SL" },
