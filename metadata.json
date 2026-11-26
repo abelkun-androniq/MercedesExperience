@@ -3,7 +3,7 @@
   "checkpoint_id": "01M8ATW8FGGZY3TZ7S6GM0JES4",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 17,
+  "checkpoints_count": 19,
   "files_touched": [
     "CLAUDE.md",
     "docs/bilingual-copy-and-ux-proposals.md",
@@ -108,14 +108,21 @@
       "compact_transcript": "/3/transcript.jsonl",
       "content_hash": "/3/content_hash.txt",
       "prompt": "/3/prompt.txt"
+    },
+    {
+      "metadata": "/4/metadata.json",
+      "transcript": "/4/full.jsonl",
+      "compact_transcript": "/4/transcript.jsonl",
+      "content_hash": "/4/content_hash.txt",
+      "prompt": "/4/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 162227,
-    "cache_creation_tokens": 603469,
-    "cache_read_tokens": 49381817,
-    "output_tokens": 268762,
-    "api_call_count": 267,
+    "input_tokens": 162383,
+    "cache_creation_tokens": 791404,
+    "cache_read_tokens": 65025992,
+    "output_tokens": 345753,
+    "api_call_count": 344,
     "subagent_tokens": {
       "input_tokens": 176565,
       "cache_creation_tokens": 10116,
@@ -125,14 +132,14 @@
     }
   },
   "redaction": {
-    "replacements": 153,
+    "replacements": 168,
     "layers": {
       "betterleaks": 0,
       "connection_string": 0,
       "credential_key": 0,
-      "credential_value": 2,
+      "credential_value": 5,
       "credentialed_uri": 0,
-      "entropy": 165,
+      "entropy": 177,
       "key_context": 0,
       "provider_token": 0,
       "shell_stdin": 0

@@ -1,0 +1,1 @@
+Check the .md - there are new proposals! Handle them! When done, open a local dev view so I can validate the work visually.
