@@ -1,0 +1,1 @@
+Review the mercedes experience page again. Document findings into an .md file. Focus: UX, tour coverage of the actual museum content, engineering depth and explainability and tech easter eggs, eye candies, wow factor.
