@@ -1,11 +1,10 @@
-// Translations: the UI catalog holds exactly the keys the code uses, with matching {n} placeholders; subsystem text goes
-// through t(); every stop's stops/<slug>/hu.js covers exactly the text fields of its car.js.
+// Translations, for every language in LANGS: the UI catalog holds exactly the keys the code uses, with matching {n}
+// placeholders; subsystem text goes through t(); every stop's stops/<slug>/<lang>.js covers exactly the text fields of its car.js.
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync } from "node:fs";
 import { tour, loadCars, leaves, isText } from "./helpers.mjs";
-import { merge } from "../../lib/app/i18n.js";
-import hu from "../../lib/app/i18n/hu.js";
+import { merge, LANGS } from "../../lib/app/i18n.js";
 
 const root = new URL("../../", import.meta.url);
 const read = p => readFileSync(new URL(p, root), "utf8");
@@ -18,18 +17,15 @@ for (const [, s] of sources) for (const m of s.matchAll(/\bt\(\s*"((?:[^"\\]|\\.
 for (const f of readdirSync(root).filter(f => f.endsWith(".html"))) for (const m of read(f).matchAll(/data-i18n[^>]*>([^<]*)</g)) used.add(m[1].trim().replace(/\s+/g, " "));
 for (const s of tour) used.add(s.room);   // shown with t(stop.room)
 
-test("every text the code shows has a Hungarian translation", () => {
-  assert.deepEqual([...used].filter(k => !(k in hu)), []);
+test("data-i18n text is plain characters", () => {
   assert.deepEqual([...used].filter(k => k.includes("&")), [], "data-i18n text is read as textContent: write characters, not entities");
 });
 
-test("the Hungarian catalog has no unused keys", () => {
-  assert.deepEqual(Object.keys(hu).filter(k => !used.has(k)), []);
-});
-
-test("translations keep their {n} placeholders", () => {
-  const marks = s => [...s.matchAll(/\{\d\}/g)].map(m => m[0]).sort().join();
-  assert.deepEqual(Object.entries(hu).filter(([k, v]) => marks(k) !== marks(v)).map(([k]) => k), []);
+test("lang.js and every language switch offer the languages of i18n.js", () => {
+  assert.equal(read("lib/app/lang.js").match(/var LANGS = (\[[^\]]*\])/)[1], JSON.stringify(LANGS).replace(/,/g, ", "));
+  for (const f of readdirSync(root).filter(f => f.endsWith(".html") && read(f).includes('class="langs"'))) {
+    assert.deepEqual([...read(f).matchAll(/data-lang="([a-z]+)"/g)].map(m => m[1]), LANGS, `${f}: switch buttons`);
+  }
 });
 
 test("t() is called with a literal, so the tests can find every key", () => {
@@ -50,14 +46,31 @@ test("subsystem labels, units and legends go through t()", () => {
 });
 
 const cars = await loadCars();
-for (const [i, s] of tour.entries()) {
-  test(`${s.slug}: hu.js translates every text field of car.js and nothing else`, async () => {
-    const car = cars[i], over = (await import(`../../stops/${s.slug}/hu.js`)).default;
-    const text = new Map(leaves(car).filter(([p]) => isText(p))), got = new Map(leaves(over));
-    assert.deepEqual([...text.keys()].filter(p => !got.get(p)?.trim()), [], "untranslated");
-    assert.deepEqual([...got.keys()].filter(p => !text.has(p)), [], "not a text field of car.js");
-    assert.deepEqual(leaves(merge(car, over)).filter(([p]) => !isText(p)), leaves(car).filter(([p]) => !isText(p)));
-    // Hungarian writes a decimal comma; model names such as "300 SEL 6.3" or "190 E 2.5-16" keep their point.
-    assert.deepEqual([...got.values()].filter(v => /\d\.\d/.test(v.replace(/SEL 6\.3|SLC 5\.0|\b2\.[35]-16/g, ""))), [], "decimal point");
+for (const lang of LANGS.filter(l => l !== "en")) {
+  const catalog = (await import(`../../lib/app/i18n/${lang}.js`)).default;
+
+  test(`${lang}: every text the code shows has a translation`, () => {
+    assert.deepEqual([...used].filter(k => !(k in catalog)), []);
   });
+
+  test(`${lang}: the catalog has no unused keys`, () => {
+    assert.deepEqual(Object.keys(catalog).filter(k => !used.has(k)), []);
+  });
+
+  test(`${lang}: translations keep their {n} placeholders`, () => {
+    const marks = s => [...s.matchAll(/\{\d\}/g)].map(m => m[0]).sort().join();
+    assert.deepEqual(Object.entries(catalog).filter(([k, v]) => marks(k) !== marks(v)).map(([k]) => k), []);
+  });
+
+  for (const [i, s] of tour.entries()) {
+    test(`${s.slug}: ${lang}.js translates every text field of car.js and nothing else`, async () => {
+      const car = cars[i], over = (await import(`../../stops/${s.slug}/${lang}.js`)).default;
+      const text = new Map(leaves(car).filter(([p]) => isText(p))), got = new Map(leaves(over));
+      assert.deepEqual([...text.keys()].filter(p => !got.get(p)?.trim()), [], "untranslated");
+      assert.deepEqual([...got.keys()].filter(p => !text.has(p)), [], "not a text field of car.js");
+      assert.deepEqual(leaves(merge(car, over)).filter(([p]) => !isText(p)), leaves(car).filter(([p]) => !isText(p)));
+      // Both write a decimal comma; model names such as "300 SEL 6.3" or "190 E 2.5-16" keep their point.
+      assert.deepEqual([...got.values()].filter(v => /\d\.\d/.test(v.replace(/SEL 6\.3|SLC 5\.0|\b2\.[35]-16/g, ""))), [], "decimal point");
+    });
+  }
 }

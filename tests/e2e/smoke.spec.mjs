@@ -75,7 +75,12 @@ test("index: “Find your room” and a fresh ./#jump both bring the room picker
   expect(errors).toEqual([]);
 });
 
-for (const lang of ["en", "hu"]) {
+const roofSteps = {
+  en: [["Unlatch", "Boot lid up", "Roof folds back", "Boot lid down"], ["Boot lid up", "Roof folds forward", "Boot lid down", "Latch"]],
+  hu: [["Reteszoldás", "Fedél nyílik", "A tető hátrahajlik", "Fedél zárul"], ["Fedél nyílik", "A tető előrehajlik", "Fedél zárul", "Reteszelés"]],
+  de: [["Entriegeln", "Deckel auf", "Dach klappt nach hinten", "Deckel zu"], ["Deckel auf", "Dach klappt nach vorn", "Deckel zu", "Verriegeln"]],
+};
+for (const lang of Object.keys(roofSteps)) {
   test(`SLK roof steps (${lang}): every label fits its cell and names the movement in either direction`, async ({ page }) => {
     const errors = watchErrors(page);
     await page.addInitScript(l => localStorage.setItem("tour-lang", l), lang);
@@ -89,10 +94,10 @@ for (const lang of ["en", "hu"]) {
     const overflowing = () => cells.evaluateAll(cs => cs.filter(c => c.scrollWidth > c.clientWidth).map(c => c.firstChild.textContent));
     const buttons = step.locator(".row").first().locator("button");
     await buttons.nth(0).click();   // Open the roof
-    expect(await labels()).toEqual(lang === "en" ? ["Unlatch", "Boot lid up", "Roof folds back", "Boot lid down"] : ["Reteszoldás", "Fedél nyílik", "A tető hátrahajlik", "Fedél zárul"]);
+    expect(await labels()).toEqual(roofSteps[lang][0]);
     expect(await overflowing()).toEqual([]);
     await buttons.nth(1).click();   // Close the roof
-    await expect.poll(labels).toEqual(lang === "en" ? ["Boot lid up", "Roof folds forward", "Boot lid down", "Latch"] : ["Fedél nyílik", "A tető előrehajlik", "Fedél zárul", "Reteszelés"]);
+    await expect.poll(labels).toEqual(roofSteps[lang][1]);
     expect(await overflowing()).toEqual([]);
     expect(errors).toEqual([]);
   });

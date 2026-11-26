@@ -29,8 +29,9 @@ iPhone/iPad Safari (iOS 16.4+, import maps). No bundler: native ES modules; `too
   (declarative widgets, API in its header; `detail: true` on a card or widget moves it under the step's disclosure when
   the component has `more`), dom (`h`, `link`), offline, index, theme.css (look after
   mercedes-benz.com: black bar/hero, white page, condensed serif, black photo cards, pills), fonts/ (Instrument Serif, OFL;
-  latin + latin-ext for ő/ű), lang.js (head script: saved EN/HU choice or browser language → `<html lang>`), i18n.js
-  (`t`, `num`, `loadCar`, `localizePage`), i18n/hu.js (UI catalog keyed by the English text)
+  latin + latin-ext for ő/ű), lang.js (head script: saved EN/HU/DE choice or browser language → `<html lang>`), i18n.js
+  (`t`, `num`, `loadCar`, `localizePage`, `LANGS`), i18n/hu.js and i18n/de.js (UI catalogs keyed by the English text; German
+  rooms use the museum's names, Mythos 1–7 and Collection 1–4)
 - `subsystems/<id>.js` one mechanism each (params documented in each file's header): linkage-suspension, inline-engine,
   roots-blower, desmo-valvetrain, steering, differential, gearbox, radiator, aero, space-frame, crumple-zone,
   air-suspension, wankel, belt-drive, hoist, abs, rollover, comfort-hydraulics, cabin-climate, portal-axle,
@@ -59,10 +60,11 @@ iPhone/iPad Safari (iOS 16.4+, import maps). No bundler: native ES modules; `too
   `--band`/`--card` are the fixed-black areas (header bar, index hero, stop cards) and stay dark in both themes.
 - Illustrative numbers get a comment in car.js and a line in `unverified` (the page shows it). Sources go in `sources`.
 - Panel DOM is built with textContent only; widget ids must be unique within a component.
-- English is the source; Hungarian is complete and tested. UI text: `t("English literal", ...args)` with `{0}` placeholders
+- English is the source; Hungarian and German are complete and tested (a new language: `LANGS` in i18n.js and lang.js, a
+  button in each page's `.langs`, i18n/<lang>.js, stops/<slug>/<lang>.js; tests take it from `LANGS`). UI text: `t("English literal", ...args)` with `{0}` placeholders
   (never a variable or template as the key; whole phrases, as Hungarian case endings differ), static HTML: `data-i18n`.
   Logic never compares displayed text: keep English keys/ids and map them to `t(...)` for display. Readout numbers pass
-  through `num` (decimal comma). Car text: `stops/<slug>/hu.js`, car.js's shape with only the text fields (list in
+  through `num` (decimal comma). Car text: `stops/<slug>/hu.js` and `de.js`, car.js's shape with only the text fields (list in
   tests/unit/helpers.mjs `TEXT`), null keeps the original; sources and credits stay untranslated.
 
 ## Contracts
@@ -83,7 +85,8 @@ iPhone/iPad Safari (iOS 16.4+, import maps). No bundler: native ES modules; `too
   wide, CC licence with credit, camera fitted with `node tools/fit-photo-camera.mjs tools/photo-fits/<slug>.json` (wheel
   centres and tyre bottoms first; `focalPrior` when the points are nearly flat). Trace `body.ghost` from the photo so Car
   outline lines up. Subsystems fade their own opaque wheels and keep the body still when `onPhoto`. Tests find it via tour.js.
-  Add `stops/<slug>/hu.js` (npm test lists missing text fields) and, for a new room, its name in `lib/app/i18n/hu.js`.
+  Add `stops/<slug>/hu.js` and `de.js` (npm test lists missing text fields) and, for a new room, its name in both
+  `lib/app/i18n/` catalogs.
 - Add a mechanism: `lib/model/<x>.js` + `tests/unit/<x>.test.mjs` first, then `subsystems/<x>.js`.
 - Wind tunnel for an aero stop (every aero stop has one; Blitzen-Benz is the worked example; a shape may carry its own `profile`):
   find a near-square side photo (Commons) → `tools/photo-fits/<slug>-side.json` (wheel hubs, tyre tops/bottoms/fronts/rears;
@@ -95,13 +98,13 @@ iPhone/iPad Safari (iOS 16.4+, import maps). No bundler: native ES modules; `too
 - Upgrade three.js: `npm run vendor -- <version>` (a release at least two weeks old), then `npm test && npm run e2e`.
 
 ## Commands
-- `npm test` unit tests (models, configs, translations) · `npm run e2e` Playwright: WebKit iPhone/iPad × 4 (Hungarian pass on
-  iPhone only) and Chromium offline (builds first)
+- `npm test` unit tests (models, configs, translations) · `npm run e2e` Playwright: WebKit iPhone/iPad × 4 (Hungarian and German
+  passes on iPhone only) and Chromium offline (builds first)
 - `npm run serve` dev server on :8765 (service worker off on localhost unless `?sw=1`) · `?debug` exposes `window.__tour`
 - `npm run build` → `_site/` · deploy: push to main; `.github/workflows/pages.yml` tests, then deploys.
 
 ## Real-device checklist (iPhone and iPad Safari, from the Pages URL)
-Portrait and landscape · light and dark · EN/HU switch · stop pages and teaser: each stage stays pinned while its steps scroll · orbit, pinch, sliders · photo overlay lines up with Car outline on · airplane mode
+Portrait and landscape · light and dark · EN/HU/DE switch · stop pages and teaser: each stage stays pinned while its steps scroll · orbit, pinch, sliders · photo overlay lines up with Car outline on · airplane mode
 after one visit: index → every stop · Add to Home Screen, launch offline · iPad Split View · Low Power Mode still animates at
 true speed · Web Inspector over USB shows no errors. LAN (`http://<mac-ip>:8765`) checks layout only: service workers need HTTPS.
 
