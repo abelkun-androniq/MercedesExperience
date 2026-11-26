@@ -1,0 +1,13 @@
+I still have issues with the 190 evo and the w 196 R CFDs. The evo: the second CFD over the whole chassis is not needed. The first is quite good but other than the rear wing, the interactive animation doesnt really show. Instead, it could be a close-up of the part - the splitter, the wheel arch, the wing. Airflow simulated only on that component, showing the different modes or the effect itself. For the open-closed wheel of the w196 - the same. Show a close up, the entire chassis is not needed neccessarily. Make sure to show the effect. Give a proposal in this regard. Check the CFD tooling to find its limitations. Propose UX to facilitate the changes.
+
+---
+
+Continue
+
+---
+
+Generate a new proposal .md with these findings.
+
+---
+
+Generate a new proposal .md with these findings. Also, detail/plan the implementation in more detail so a lower model can execute the work (Sonnet high level/Opus mid)

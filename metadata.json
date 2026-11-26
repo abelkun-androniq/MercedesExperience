@@ -3,9 +3,34 @@
   "checkpoint_id": "01M8ATW8FGGZY3TZ7S6GM0JES4",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 6,
+  "checkpoints_count": 8,
   "files_touched": [
-    "docs/bilingual-copy-and-ux-proposals.md"
+    "CLAUDE.md",
+    "docs/bilingual-copy-and-ux-proposals.md",
+    "docs/component-cfd-implementation-proposal.md",
+    "docs/component-cfd-proposal.md",
+    "lib/app/i18n/hu.js",
+    "lib/model/engine.js",
+    "stops/260d/car.js",
+    "stops/260d/hu.js",
+    "stops/300sl/car.js",
+    "stops/300sl/hu.js",
+    "stops/300slr/car.js",
+    "stops/300slr/hu.js",
+    "stops/600/car.js",
+    "stops/600/hu.js",
+    "stops/770/car.js",
+    "stops/770/hu.js",
+    "stops/daimler-van/car.js",
+    "stops/daimler-van/hu.js",
+    "stops/slk/car.js",
+    "stops/slk/hu.js",
+    "stops/velo/car.js",
+    "stops/velo/hu.js",
+    "stops/w196r/car.js",
+    "stops/w196r/hu.js",
+    "subsystems/inline-engine.js",
+    "subsystems/radiator.js"
   ],
   "sessions": [
     {
@@ -14,17 +39,31 @@
       "compact_transcript": "/0/transcript.jsonl",
       "content_hash": "/0/content_hash.txt",
       "prompt": "/0/prompt.txt"
+    },
+    {
+      "metadata": "/1/metadata.json",
+      "transcript": "/1/full.jsonl",
+      "compact_transcript": "/1/transcript.jsonl",
+      "content_hash": "/1/content_hash.txt",
+      "prompt": "/1/prompt.txt"
     }
   ],
+  "token_usage": {
+    "input_tokens": 126279,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 3537152,
+    "output_tokens": 26282,
+    "api_call_count": 34
+  },
   "redaction": {
-    "replacements": 114,
+    "replacements": 133,
     "layers": {
       "betterleaks": 0,
       "connection_string": 0,
       "credential_key": 0,
       "credential_value": 2,
       "credentialed_uri": 0,
-      "entropy": 121,
+      "entropy": 145,
       "key_context": 0,
       "provider_token": 0,
       "shell_stdin": 0
