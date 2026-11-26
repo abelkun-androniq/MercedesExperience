@@ -9,7 +9,12 @@ async function open(page, slug, id) {
   await page.goto(`stop.html?s=${slug}&debug`);
   await page.waitForFunction(() => window.__tour?.stories[0].frames() > 5, null, { timeout: 20_000 });
   const step = page.locator(".step").nth(k);
-  await step.evaluate(s => s.scrollIntoView({ block: "center" }));
+  // Bring the step's top just clear of the pinned stage (as a visitor reads it), so its controls are not under the stage:
+  // reaching a covered button would scroll back and hand the stage to the step before.
+  await step.evaluate(s => {
+    const pane = document.querySelector(".story-stage").getBoundingClientRect(), beside = s.getBoundingClientRect().left >= pane.right;
+    scrollBy(0, s.getBoundingClientRect().top - (beside ? 16 : pane.bottom + 16));
+  });
   await expect.poll(() => shown(page)).toMatchObject({ step: k, state: { comp: id, view: "model" } });
   const comp = car.components[k - 1], panel = step.locator(`.panel[data-comp="${id}"]`).first();
   return { comp, step, panel, say: panel.locator("p.note[aria-live]").first(), k };
