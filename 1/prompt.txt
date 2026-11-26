@@ -1,0 +1,13 @@
+Previous redeploy did not succeed. Check it.
+
+---
+
+Good! Now make a german language version of the entire page. Add it to the swicth options.
+
+---
+
+german translation review.md contains review points. Address them.
+
+---
+
+yes, commit push and redeploy
