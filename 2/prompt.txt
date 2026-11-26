@@ -1,0 +1,63 @@
+Brief: lattice-Boltzmann close-ups for a museum explainer. Is the setup well-posed, and what can we claim?
+
+Context. This is a static website for the Mercedes-Benz Museum. Four exhibits get a precomputed airflow close-up, each showing two cases:
+- 190 E Evo II rear-wing flap, down vs raised
+- Evo II front splitter lip, in vs 40 mm forward
+- Evo II front wheel arch (one state only)
+- W 196 R front wheel, enclosed vs exposed
+
+The claims are deliberately small: only the sign of a change, and only if it repeats on two grids. Computing is offline on one 10-core Mac, with our own Node.js solvers: about 16 M cell-updates/s in 2-D and about 30 M/s in 3-D. A fine-grid run takes 1–3 hours.
+
+Numerics, common to both solvers
+- BGK collision with Smagorinsky eddy viscosity (C_s = 0.16).
+- Half-way bounce-back on the body. The road is a moving wall at u = U, in the car's frame.
+- Free-slip top (3-D also free-slip side, and a mirror plane at the centreline).
+- Inlet: equilibrium populations at ρ = 1, u = U, imposed every step, so density and velocity are both fixed.
+- Outlet: zero-gradient (copies the last interior column).
+- Reynolds number is held at a nominal value across grids by scaling ν with the cell size. Statistics: settle for several flow-throughs, then three averaging windows of one flow-through each.
+
+Problem 1 (main): 2-D splitter section (D2Q9)
+- Geometry: the centre-plane nose profile, traced from a photo. The body top is at 744 mm and the floor (ride height) at 120 mm; the lip is 25 mm thick. The body runs from the nose through the outlet, so it is effectively semi-infinite.
+- Domain: 1.0 m ahead of the bumper face, 1.6 m behind it, 2.5 m tall. The body blocks about 30 % of the height, and the under-floor gap is a 120 mm channel driven by the moving road.
+- Parameters: U = 0.1 (Ma ≈ 0.17); Re = 10⁴ on 1 m.
+  - 5 mm cells: ν = 0.002, τ = 0.506.
+  - 2.5 mm cells: ν = 0.004, τ = 0.512.
+- Observations:
+  - Pressure level: the interior sits 2–4 q∞ above the inlet density. Three cells behind the inlet there is already a vertical gradient of about 0.9 q∞. Referenced to the mean density at that inlet column (what our live tunnel uses), the lip's upper face reads cp ≈ 1.2 (not physically ≤ 1). So absolute cp is unusable.
+  - Drift: the lower-face pressure keeps rising monotonically in every window. Lip in: 0.72 → 0.80 → 0.86. Lip forward: −0.16 → 0.02 → 0.18. The difference across the lip (upper minus lower, which needs no reference) is larger with the lip forward in every window, but that excess shrinks: 0.99 → 0.85 → 0.74. This was after 3 flow-throughs of settling.
+  - Failed variant: ending the floor 0.5 m behind the bumper (a step up to 560 mm, open underneath) made the run diverge (NaN) within about 3 flow-throughs.
+- Questions:
+  a. Is the drift physical (the under-floor channel filling or emptying on a long time scale), or an artefact of the inlet fixing both ρ and u while the outlet pressure floats? Would a velocity inlet with free density (Zou–He), a pressure outlet, or a sponge zone fix the reference and the drift?
+  b. What is the minimal well-posed 2-D section for a lip study?
+     - Full-length car section with a closed tail and wake, versus a truncated body?
+     - How far upstream should the inlet be, and how tall the domain, to keep blockage effects below the case-to-case difference?
+  c. Is "upper minus lower face pressure, averaged over a fixed chord interval" a sound proxy for lip load? And is "sign agrees on both grids, and the change beats the drift between first and last window" a defensible stationarity test? If not, what is (a time scale estimate, a batch-means method)?
+
+Problem 2: 3-D front-corner tunnels (D3Q19, half car mirrored)
+- Setup:
+  - U = 0.08, Re = 10⁴ on the 680 mm tyre diameter.
+  - Cells of 24 mm (τ ≈ 0.5007) and 16 mm (τ ≈ 0.501), so the closure does essentially all the dissipation.
+  - The tyre is still and lifted 48 mm above the road, so there is no contact-patch staircase; it is only 6–9 cells wide.
+  - Domains are about 4.4 × 1.8 × 1.4 m (half width), so blockage is substantial; larger-domain runs are under way.
+- Metric: width of the band where the time-mean |u| < 0.8U, on a fixed line at hub height 0.7 m behind the axle.
+- Results:
+  - W 196 R exposed: 574–806 mm (24 mm grid).
+  - W 196 R enclosed: 830–870 mm (24 mm) and 826–858 mm (16 mm).
+  - Evo arch: a path seeded in line with the tyre is shifted 377 mm outward at the station (24 mm grid); the three windows read 367–377 mm.
+- Questions:
+  d. At τ → 0.5 with this resolution, is a two-grid check at fixed nominal Re meaningful? The filter width scales with h, so the effective Re differs. What should be held fixed instead?
+  e. Is the wake-width metric robust to blockage and to the still, lifted tyre? Would you pick a different observable for "enclosed vs exposed wheel"?
+
+Problem 3: what to compare
+6. Evo arch: the mesh's flared arch already sits at the tyre's outer face, and a narrower arch would expose the tyre, so there is no physical second case. Is there a meaningful variant at this resolution (for example, an open versus closed wheelhouse face), or is a single traced path the honest lesson?
+7. Wing: the wing view is a crop of an earlier whole-car run (28 and 40 mm grids). The mean flow direction above the trailing edge goes from −8.6° to +4.0° on the 28 mm grid and from −2.3° to +5.7° on the 40 mm grid: the sign agrees, the size does not. Is a local wing solve with an inlet sampled from the whole-car field worth it, or is the sign the most this geometry (a game mesh) can support anyway?
+
+What we need back: boundary-condition and domain changes for the 2-D section that remove the drift and fix the pressure reference; a defensible stationarity and grid criterion within a budget of a few CPU-hours per part; and a yes or no on whether each claimed sign is supportable.
+
+---
+
+Be more token efficient!
+
+---
+
+Also, only give a reply plan to be executed by lower capable models!

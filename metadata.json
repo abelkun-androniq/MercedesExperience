@@ -3,14 +3,26 @@
   "checkpoint_id": "01M8ATW8FGGZY3TZ7S6GM0JES4",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 8,
+  "checkpoints_count": 9,
   "files_touched": [
     "CLAUDE.md",
     "docs/bilingual-copy-and-ux-proposals.md",
     "docs/component-cfd-implementation-proposal.md",
     "docs/component-cfd-proposal.md",
     "lib/app/i18n/hu.js",
+    "lib/app/story.js",
+    "lib/app/viewer.js",
     "lib/model/engine.js",
+    "reports/Museum airflow claim review.md",
+    "research_notes/Museum airflow claim review/parts.md",
+    "research_notes/Museum airflow claim review/section.md",
+    "research_notes/Museum airflow claim review/statistics.md",
+    "stops/190e-evo2/car.js",
+    "stops/190e-evo2/cfd/base.bin",
+    "stops/190e-evo2/cfd/cfd.json",
+    "stops/190e-evo2/cfd/flap.bin",
+    "stops/190e-evo2/cfd/lip.bin",
+    "stops/190e-evo2/hu.js",
     "stops/260d/car.js",
     "stops/260d/hu.js",
     "stops/300sl/car.js",
@@ -30,7 +42,12 @@
     "stops/w196r/car.js",
     "stops/w196r/hu.js",
     "subsystems/inline-engine.js",
-    "subsystems/radiator.js"
+    "subsystems/race-aero.js",
+    "subsystems/radiator.js",
+    "tests/e2e/helpers.mjs",
+    "tests/e2e/offline.spec.mjs",
+    "tests/e2e/smoke.spec.mjs",
+    "tools/cfd/export.mjs"
   ],
   "sessions": [
     {
@@ -46,24 +63,38 @@
       "compact_transcript": "/1/transcript.jsonl",
       "content_hash": "/1/content_hash.txt",
       "prompt": "/1/prompt.txt"
+    },
+    {
+      "metadata": "/2/metadata.json",
+      "transcript": "/2/full.jsonl",
+      "compact_transcript": "/2/transcript.jsonl",
+      "content_hash": "/2/content_hash.txt",
+      "prompt": "/2/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 126279,
+    "input_tokens": 161813,
     "cache_creation_tokens": 0,
-    "cache_read_tokens": 3537152,
-    "output_tokens": 26282,
-    "api_call_count": 34
+    "cache_read_tokens": 4784128,
+    "output_tokens": 31913,
+    "api_call_count": 66,
+    "subagent_tokens": {
+      "input_tokens": 176561,
+      "cache_creation_tokens": 0,
+      "cache_read_tokens": 3671168,
+      "output_tokens": 25069,
+      "api_call_count": 52
+    }
   },
   "redaction": {
-    "replacements": 133,
+    "replacements": 141,
     "layers": {
       "betterleaks": 0,
       "connection_string": 0,
       "credential_key": 0,
       "credential_value": 2,
       "credentialed_uri": 0,
-      "entropy": 145,
+      "entropy": 153,
       "key_context": 0,
       "provider_token": 0,
       "shell_stdin": 0

@@ -1,0 +1,17 @@
+{
+  "tool_use_id": "01a214e5-f5de-7cf2-979d-b4eed2865351",
+  "agent_id": "01a214e5-f5de-7cf2-979d-b4eed2865351",
+  "subagent_type": "default",
+  "files": [
+    "research_notes/Museum airflow claim review/section.md"
+  ],
+  "token_usage": {
+    "input_tokens": 50488,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 962176,
+    "output_tokens": 6776,
+    "api_call_count": 14
+  },
+  "started_at": "2026-11-25T23:49:06.239547+01:00",
+  "completed_at": "2026-11-25T23:55:07.656015+01:00"
+}

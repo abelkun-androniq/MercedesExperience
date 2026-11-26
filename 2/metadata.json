@@ -1,0 +1,103 @@
+{
+  "cli_version": "0.13.4",
+  "checkpoint_id": "01M8ATW8FGGZY3TZ7S6GM0JES4",
+  "session_id": "01a214e5-5a98-7103-b085-1d04f52347dc",
+  "strategy": "manual-commit",
+  "created_at": "2026-11-26T02:27:44.893528Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [
+    "CLAUDE.md",
+    "lib/app/i18n/hu.js",
+    "lib/app/story.js",
+    "lib/app/viewer.js",
+    "lib/model/engine.js",
+    "reports/Museum airflow claim review.md",
+    "research_notes/Museum airflow claim review/parts.md",
+    "research_notes/Museum airflow claim review/section.md",
+    "research_notes/Museum airflow claim review/statistics.md",
+    "stops/190e-evo2/car.js",
+    "stops/190e-evo2/cfd/base.bin",
+    "stops/190e-evo2/cfd/cfd.json",
+    "stops/190e-evo2/cfd/flap.bin",
+    "stops/190e-evo2/cfd/lip.bin",
+    "stops/190e-evo2/hu.js",
+    "stops/260d/car.js",
+    "stops/260d/hu.js",
+    "stops/300sl/car.js",
+    "stops/300sl/hu.js",
+    "stops/300slr/car.js",
+    "stops/300slr/hu.js",
+    "stops/600/car.js",
+    "stops/600/hu.js",
+    "stops/770/car.js",
+    "stops/770/hu.js",
+    "stops/daimler-van/car.js",
+    "stops/daimler-van/hu.js",
+    "stops/slk/car.js",
+    "stops/slk/hu.js",
+    "stops/velo/car.js",
+    "stops/velo/hu.js",
+    "stops/w196r/car.js",
+    "stops/w196r/hu.js",
+    "subsystems/inline-engine.js",
+    "subsystems/race-aero.js",
+    "subsystems/radiator.js",
+    "tests/e2e/helpers.mjs",
+    "tests/e2e/offline.spec.mjs",
+    "tests/e2e/smoke.spec.mjs",
+    "tools/cfd/export.mjs"
+  ],
+  "agent": "Codex",
+  "model": "gpt-6.2-astra",
+  "turn_id": "60140c298477",
+  "compact_transcript_start": 0,
+  "token_usage": {
+    "input_tokens": 35534,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 1246976,
+    "output_tokens": 5631,
+    "api_call_count": 32,
+    "subagent_tokens": {
+      "input_tokens": 176561,
+      "cache_creation_tokens": 0,
+      "cache_read_tokens": 3671168,
+      "output_tokens": 25069,
+      "api_call_count": 52
+    },
+    "subagent_tokens_complete": true
+  },
+  "session_token_usage": {
+    "input_tokens": 35534,
+    "cache_creation_tokens": 0,
+    "cache_read_tokens": 1246976,
+    "output_tokens": 5631,
+    "api_call_count": 32,
+    "subagent_tokens": {
+      "input_tokens": 176561,
+      "cache_creation_tokens": 0,
+      "cache_read_tokens": 3671168,
+      "output_tokens": 25069,
+      "api_call_count": 52
+    },
+    "subagent_tokens_complete": true
+  },
+  "redaction": {
+    "replacements": 8,
+    "layers": {
+      "betterleaks": 0,
+      "connection_string": 0,
+      "credential_key": 0,
+      "credential_value": 0,
+      "credentialed_uri": 0,
+      "entropy": 8,
+      "key_context": 0,
+      "provider_token": 0,
+      "shell_stdin": 0
+    }
+  },
+  "session_metrics": {
+    "turn_count": 1
+  }
+}
