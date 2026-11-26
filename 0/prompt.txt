@@ -1,0 +1,25 @@
+Review the current museum tour page. Focus on wording - both in english and hungarian. Hungarian had some phrases that were not so intuitive. Also, review from UX perspective.
+
+---
+
+Make an .md file with the proposals.
+
+---
+
+Review feedbacks from my side. Analyze them and formulate proposals for their address/upgrades. 1. the E190 EVO CFD is nothing special like this. Focus on the aero elements: wings, splitter, fenders. Show on the CFD what are their effects on the car/in motorsport and center the CFD around that. Also, the E190 had a 2.5 high revving racing engine. Propose how that could be presented - if it is worth it. Also, there are places where there is no camshaft in the car but the text indicates that valves are operated by a camshaft.
+
+---
+
+I will keep writing findings - you formulate them into the proposal doc. Next: W138 has a wrong-fitted bounding box.
+
+---
+
+W 196 R shows no CFD difference with free wheels and covered ones. Many cars here have inline 6 or 8 engines - primary and secondary forces on the driveshaft and engine resonance could be a nice engineering addition since these configurations are difficulkt because of that. Propose additions to these animations/cars so that this can be a discussion point.
+
+---
+
+The motorised business vehicle cooling system animation is not informative like this (the difference between tank and cooler).
+
+---
+
+Are there more subsystems that can be paired with a real-world close-up image like the roots compressor? It does not have to be the same part - it can be the same technology from a different vehicle. the goal is to give materials for understanding.
