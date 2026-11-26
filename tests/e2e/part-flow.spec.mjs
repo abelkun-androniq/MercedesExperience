@@ -25,16 +25,19 @@ for (const [slug, id, point] of [["190e-evo2", "wing", [-4060, 238, 1340]], ["w1
     await button(panel, "Pause airflow").click();
     await expect(button(panel, "Pause airflow")).toHaveAttribute("aria-pressed", "true");
     const at = () => page.evaluate(p => window.__tour.stories[0].project(p).map(Math.round), point);
-    const [x, y] = await at(), stage = await page.locator(".story-stage .stage").boundingBox();
+    // The camera eases into the step's view; slow GPUs (CI) are still moving after the panel is ready.
+    let x, y;
+    await expect(async () => { const p = await at(); await page.waitForTimeout(300); expect(await at()).toEqual(p); [x, y] = p; }).toPass({ timeout: 15_000 });
+    const stage = await page.locator(".story-stage .stage").boundingBox();
     expect(x > stage.x + 8 && x < stage.x + stage.width - 8 && y > stage.y + 8 && y < stage.y + stage.height - 8, "the patch is on the stage").toBe(true);
     const clip = { x: x - 6, y: y - 6, width: 12, height: 12 };
     await page.waitForTimeout(200);
     const before = await page.screenshot({ clip });
     await button(panel, b.label).click();
     await expect(say).toHaveText(b.say);
-    await page.waitForTimeout(200);
     expect(await at(), "camera unchanged").toEqual([x, y]);
-    expect((await page.screenshot({ clip })).equals(before), "the air in the patch looks different").toBe(false);
+    await expect.poll(async () => (await page.screenshot({ clip })).equals(before), { message: "the air in the patch looks different", timeout: 5_000 }).toBe(false);
+    expect(await at(), "camera still unchanged").toEqual([x, y]);
     expect(errors).toEqual([]);
   });
 }
