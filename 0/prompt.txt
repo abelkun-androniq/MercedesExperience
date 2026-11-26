@@ -1,0 +1,1 @@
+Check the german translation and review it. If you have any proposal for better phrasing, record it in an .md file.
