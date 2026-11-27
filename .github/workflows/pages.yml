@@ -25,12 +25,12 @@ jobs:
         if: failure()
         with: { name: playwright-report, path: playwright-report/, retention-days: 7 }
 
-  deploy:
+  # Build and deploy are separate jobs, as in GitHub's Pages templates: deploy-pages run in the same job as the upload can
+  # look for the artifact before it is listed and fail with "No artifacts named github-pages".
+  build:
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     needs: test
     runs-on: ubuntu-latest
-    permissions: { pages: write, id-token: write }
-    environment: { name: github-pages, url: "${{ steps.deploy.outputs.page_url }}" }
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
@@ -39,5 +39,12 @@ jobs:
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5
         with: { path: _site }
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions: { pages: write, id-token: write, actions: read }
+    environment: { name: github-pages, url: "${{ steps.deploy.outputs.page_url }}" }
+    steps:
       - id: deploy
         uses: actions/deploy-pages@v5
