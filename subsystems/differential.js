@@ -3,7 +3,10 @@
 // line under the controls says what the gears are doing, and "Hold the left wheel" shows the other side running at twice
 // the carrier's speed. mode "grip": one wheel on a slippery patch; open, it spins and the car stays put; a dog collar
 // (lock) joins the left side gear to the carrier, or a pack of friction plates (limited-slip) resists the two sides
-// turning apart.
+// turning apart. With a crown wheel, a propeller shaft and pinion bring the drive in from ahead; in mode "grip" arrows
+// stream in along it and out along each half-shaft, sized by the torque each side carries, and "Step by step" follows the
+// drive part by part (propeller shaft and pinion, crown wheel and carrier, spider gears, side gears out to the wheels),
+// lighting the parts in play and saying what each drives in the chosen case.
 // Params (mm, ground at z = 0): label, mode, halfTrack, wheelR, axleX, wheel "wire" | "tyre", tyreW?, ringR,
 // drive "crown" | "belt", counter? { x, z, half } (differential on a countershaft, chains to the wheels: Benz 1886),
 // drop? (portal axle: the carrier and half-shafts sit this far above the wheel centres; a hub drop gear joins them),
@@ -18,12 +21,15 @@ const SLOW = 0.3, SIDE = 0.05, PIN = 0.045, Z_SIDE = 16, Z_SPIDER = 10;   // sho
 
 export function create(ctx, p) {
   const { stage, carRoot, t } = ctx, m = v => v / 1000;
-  const SURFACE = { ice: { on: t("Left wheel, on ice"), under: t("ice under the left wheel") },   // whole phrases: case endings differ
-    mud: { on: t("Left wheel, in mud"), under: t("mud under the left wheel") } };
+  const SURFACE = {   // whole phrases: case endings differ
+    ice: { on: t("Left wheel, on ice"), under: t("ice under the left wheel"),
+      open: t("4 · Out, open: the left wheel is on ice, so its side gear gives way. The spider gears turn on their pin and roll round the right side gear, which the dry wheel holds still: all the motion goes to the spinning left wheel, and the dry wheel gets only as little torque as the ice can take.") },
+    mud: { on: t("Left wheel, in mud"), under: t("mud under the left wheel"),
+      open: t("4 · Out, open: the left wheel is in mud, so its side gear gives way. The spider gears turn on their pin and roll round the right side gear, which the wheel on firm ground holds still: all the motion goes to the spinning left wheel, and the other wheel gets only as little torque as the mud can take.") } };
   const h = m(p.halfTrack), R = m(p.wheelR), ax = m(p.axleX);
   const group = new THREE.Group(); carRoot.add(group);
   const iron = mat(0x5a626b, { metalness: 0.5 }), tyreMat = mat(0x2a2d31, { roughness: 0.9 }), dark = mat(0x343b42);
-  const rimMat = mat(0x5a626b, { metalness: 0.5 }), wheelMats = [tyreMat, rimMat];   // faded over the museum photo
+  const rimMat = mat(0x5a626b, { metalness: 0.5 }), wheelMarkMat = stage.tokenMat("--metal"), wheelMats = [tyreMat, rimMat, wheelMarkMat];   // faded over the museum photo
   const sideMat = stage.tokenMat("--l1"), spiderMat = stage.tokenMat("--l2"), carrierMat = stage.tokenMat("--metal"), shaftMat = stage.tokenMat("--l4");
   const K = p.counter ? 0.22 / 0.07 : 1;   // half-shaft turns per wheel turn (chain sprockets on the countershaft)
   const cx = p.counter ? m(p.counter.x) : ax, cz = p.counter ? m(p.counter.z) : R + m(p.drop ?? 0), half = p.counter ? m(p.counter.half) : h - (p.drop ? 0.12 : 0);
@@ -39,7 +45,7 @@ export function create(ctx, p) {
     const g = new THREE.Group();
     if (p.wheel === "wire") { const spokes = line(0x9aa4ad, 0.85); spokes.userData.solid = rimMat; wheelMats.push(spokes); g.add(wireWheel(tyreMat, spokes, R - 0.02, 0.02, R - 0.05, 28)); }
     else { const tw = m(p.tyreW ?? 110); g.add(tyre(tyreMat, R - tw, tw)); g.add(new THREE.Mesh(new THREE.CylinderGeometry(R - 1.8 * tw, R - 1.8 * tw, 0.14, 32), rimMat)); }
-    const mk = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.15, 0.45 * R), carrierMat); mk.position.z = 0.4 * R; g.add(mk);
+    const mk = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.15, 0.45 * R), wheelMarkMat); mk.position.z = 0.4 * R; g.add(mk);
     return spinner(V(ax, s * h, R), g);
   });
 
@@ -87,6 +93,39 @@ export function create(ctx, p) {
   const plates = new THREE.Group();
   for (let i = 0; i < 5; i++) { const d = new THREE.Mesh(new THREE.CylinderGeometry(0.036, 0.036, 0.003, 28), plateMat); d.position.y = i * 0.006; plates.add(d); }
   const plateSpin = spinner(V(cx, SIDE + 0.026, cz), plates); plateSpin.visible = false;
+  // Drive in (crown wheel only): the propeller shaft comes from the gearbox ahead and turns a bevel pinion on the crown
+  // wheel's inner face. Local y of `pinion` runs forward along the shaft.
+  const powerMat = stage.tokenMat("--power"), PIN_X = 0.75 * m(p.ringR), PIN_R = 0.03, PROP = 1.1, yP = -SIDE - 0.01 + PIN_R;
+  const pinion = new THREE.Group(), pinionSpin = new THREE.Group();
+  if (p.drive === "crown") {
+    pinion.position.set(cx + PIN_X, yP, cz); pinion.rotation.z = -Math.PI / 2; group.add(pinion); pinion.add(pinionSpin);
+    const head = marked(new THREE.CylinderGeometry(PIN_R + 0.008, PIN_R - 0.012, 0.035, 16), powerMat, [0.012, 0.037, 0.012, 0]);
+    head.children[1].position.set(PIN_R, 0, 0); pinionSpin.add(head);
+    pinionSpin.add(place(rod(powerMat, 0.016), V(0, 0.017, 0), V(0, PROP, 0)));
+    const flange = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.02, 0.02), dark); flange.position.set(0, PROP * 0.6, 0); pinionSpin.add(flange);   // shows the shaft turning
+  }
+
+  // Drive flowing through: arrows stream in along the propeller shaft and out along each half-shaft to its wheel, sized by
+  // the torque each carries (grip mode).
+  const flows = [], arrowMat = stage.tokenMat("--power");
+  const flow = pts => {   // arrows travelling along a polyline
+    const segs = pts.slice(1).map((b, i) => ({ a: pts[i], b, len: pts[i].distanceTo(b) })), len = segs.reduce((s, x) => s + x.len, 0);
+    const arrows = Array.from({ length: Math.max(2, Math.round(len / 0.14)) }, () => { const c = new THREE.Mesh(new THREE.ConeGeometry(0.045, 0.09, 14), arrowMat); group.add(c); return c; });
+    const f = { segs, len, arrows, size: 0, phase: 0 }; flows.push(f); return f;
+  };
+  const UP = V(0, 1, 0), dir = new THREE.Vector3();
+  function drawFlow(f, dt) {
+    f.phase = (f.phase + dt * 0.35 / f.len) % 1;
+    f.arrows.forEach((c, i) => {
+      let d = ((i / f.arrows.length + f.phase) % 1) * f.len, s = f.segs[0];
+      for (s of f.segs) { if (d <= s.len) break; d -= s.len; }
+      c.visible = f.size > 0; c.scale.setScalar(f.size);
+      c.position.lerpVectors(s.a, s.b, Math.min(1, d / s.len)); c.quaternion.setFromUnitVectors(UP, dir.subVectors(s.b, s.a).normalize());
+    });
+  }
+  const flowIn = p.mode === "grip" && p.drive === "crown" ? flow([V(cx + PIN_X + PROP, yP, cz), V(cx + PIN_X + 0.05, yP, cz)]) : null;
+  const flowOut = p.mode === "grip" ? [1, -1].map(s => flow([V(cx, s * (SIDE + 0.06), cz), V(cx, s * half, cz), ...(p.drop ? [V(cx, s * half, R)] : []), V(ax, s * (h - 0.02), R)])) : [];
+
   const housing = new THREE.Mesh(new THREE.SphereGeometry(0.11, 24, 16), new THREE.MeshStandardMaterial({ color: 0x8fa3b3, transparent: true, opacity: 0.12, depthWrite: false }));
   housing.position.copy(C); if (p.drive !== "belt") group.add(housing);
 
@@ -98,6 +137,8 @@ export function create(ctx, p) {
 
   // ---------- state + panel ----------
   const D = 180 / Math.PI;
+  const STEP = 3.5;   // s per step when following the drive
+  let follow = p.mode === "grip", step = 0, stepT = 0, onPhoto = false;
   let auto = !ctx.reducedMotion, clock = 0, curve = 0.6, kind = "open", held = false, angL = 0, angR = 0, angC = 0, said = "";   // half-shaft and carrier angles
   const ui = p.mode === "corner" ? ctx.panel([{ label: p.label, items: [
     { slider: { id: "curve", label: t("Steering: right ← straight → left"), min: -1, max: 1, step: 0.05, value: curve, onInput: v => { auto = false; ui.toggle("auto").set(false); curve = v; } } },
@@ -115,13 +156,18 @@ export function create(ctx, p) {
       { readouts: [{ id: "fL", label: SURFACE[p.grip.surface].on, unit: t("N of push") }, { id: "fR", label: t("Right wheel, dry"), unit: t("N of push") },
         { id: "total", label: t("Total drive"), unit: t("N, needs {0} to move", p.grip.resist) }, { id: "spin", label: t("Left wheel"), unit: t("rpm") }] },
       { text: { id: "how", value: "" } },
-      { buttons: [{ id: "auto", toggle: [t("Auto demo on"), t("Auto demo off")], pressed: auto, onClick: v => (auto = v) }] },
-      { key: [["--l4", SURFACE[p.grip.surface].under]] },
-    ] }, { label: t("Parts"), items: [{ legend: [["--l1", t("Side gears (one per half-shaft)")], ["--l2", t("Spider gears")], ["--metal", t("Carrier and crown wheel")], ["--l4", t("Half-shafts")],
+      { buttons: [{ id: "follow", toggle: [t("Step by step: on"), t("Step by step: off")], pressed: follow, onClick: v => { follow = v; step = 0; stepT = 0; } },
+        { id: "auto", toggle: [t("Auto demo on"), t("Auto demo off")], pressed: auto, onClick: v => (auto = v) }] },
+      { key: [["--power", t("drive from the engine; arrow size: torque")], ["--l4", SURFACE[p.grip.surface].under]] },
+    ] }, { label: t("Parts"), items: [{ legend: [...(p.drive === "crown" ? [["--power", t("Propeller shaft and pinion: the engine's drive comes in here")]] : []), ["--l1", t("Side gears (one per half-shaft)")], ["--l2", t("Spider gears")], ["--metal", t("Carrier and crown wheel")], ["--l4", t("Half-shafts")],
       ...(p.grip.locks ? [["--l5", t("Dog collar of the lock")]] : []), ...(p.grip.bias ? [["--l3", t("Friction plates of the limited-slip differential")]] : [])] }] }]);
   const kinds = ["open", ...(p.grip?.bias ? ["lsd"] : []), ...(p.grip?.locks ? ["lock"] : [])];
   function setKind(k) { kind = k; for (const x of kinds) ui.toggle(x).set(x === k); }
-  function choose(k) { if (auto) { auto = false; ui.toggle("auto").set(false); } setKind(k); }   // the visitor's choice stops the demo
+  function choose(k) { if (auto) { auto = false; ui.toggle("auto").set(false); } setKind(k); step = 3; stepT = 0; }   // the visitor's choice stops the demo and shows its outcome
+  // Following the drive: the parts each step lights (the rest fade), in order from the engine to the wheels.
+  const tokenMats = [powerMat, carrierMat, spiderMat, sideMat, shaftMat, lockMat, plateMat];
+  for (const mt of tokenMats) { mt.transparent = true; mt.userData.opacity = 1; }
+  const LIT = [[powerMat], [powerMat, carrierMat], [carrierMat, spiderMat, sideMat], [spiderMat, sideMat, shaftMat, lockMat, plateMat, ...wheelMats]];
 
   const rpm = w => (w * 60 / (2 * Math.PI)).toFixed(0);
   function corner(dt) {
@@ -151,7 +197,10 @@ export function create(ctx, p) {
   }
   function explain(text) { if (text !== said) { said = text; ui.set("how", text); } }
   function grip(dt) {
-    if (auto) { clock += dt; const k = kinds[Math.floor(clock / 5) % kinds.length]; if (k !== kind) setKind(k); }
+    if (follow) {   // one pass along the chain per case; the demo then moves to the next case
+      stepT += dt;
+      if (stepT > STEP) { stepT = 0; step = (step + 1) % 4; if (step === 0 && auto) setKind(kinds[(kinds.indexOf(kind) + 1) % kinds.length]); }
+    } else if (auto) { clock += dt; const k = kinds[Math.floor(clock / 5) % kinds.length]; if (k !== kind) setKind(k); }
     const g = p.grip, locked = kind === "lock";
     const r = traction({ torque: g.torque, wheelR: R, normal: g.normal, muL: g.muLow, muR: g.muHigh, locked, bias: kind === "lsd" ? g.bias : 1, resist: g.resist });
     const wC = 1.2 / R;   // carrier speed from the engine: walking pace, as on a slippery start
@@ -160,27 +209,41 @@ export function create(ctx, p) {
     const [wL, wR] = locked ? [wC, wC] : !r.spinL ? (r.moves ? [wC, wC] : [0, 0]) : r.moves ? [1.4 * wC, 0.6 * wC] : [2 * wC, 0];
     collarSpin.visible = !!g.locks; plateSpin.visible = kind === "lsd";
     collarSpin.position.y = DOG + (locked ? 0.024 : 0.05);   // slid onto the carrier's dogs, or clear of them
-    explain(kind === "lock" ? t("Locked: the dog collar on the left half-shaft has slid onto the carrier. That side gear must now turn with the carrier, so the spider gears cannot turn and both wheels turn together: each pushes as hard as its own grip allows.")
+    if (follow) explain(step === 0 ? t("1 · In: the engine turns the propeller shaft, and the small pinion at its end turns the big crown wheel.")
+      : step === 1 ? t("2 · The crown wheel is bolted to the carrier, so the whole carrier turns and carries the cross pin round with it.")
+      : step === 2 ? t("3 · The cross pin pushes the two spider gears round, and each spider gear pushes on both side gears equally: by itself the differential gives both wheels the same torque.")
+      : kind === "lock" ? t("4 · Out, locked: the dog collar ties the left half-shaft to the carrier. Both side gears must now turn with the carrier, the spider gears stand still on their pin, and each wheel pushes as hard as its own grip allows.")
+      : kind === "lsd" ? (r.moves ? t("4 · Out, limited-slip: friction plates drag the left side gear along with the carrier, so the dry wheel can take {0} times the slipping wheel's torque: enough here, and the car moves off.", g.bias)
+        : t("4 · Out, limited-slip: friction plates drag the left side gear along with the carrier, so the dry wheel can take {0} times the slipping wheel's torque: not enough here, and the left wheel still spins.", g.bias))
+      : SURFACE[g.surface].open);
+    else explain(kind === "lock" ? t("Locked: the dog collar on the left half-shaft has slid onto the carrier. That side gear must now turn with the carrier, so the spider gears cannot turn and both wheels turn together: each pushes as hard as its own grip allows.")
       : kind === "lsd" ? t("Limited-slip: friction plates between the left side gear and the carrier resist the two sides turning apart. The wheel with grip can take a few times the slipping wheel's torque, here {0} times, without the axle ever going solid.", g.bias)
       : t("Open: the spider gears share the torque equally between the side gears. The slipping wheel can take only a little, so its partner gets just as little, and the spider gears let the slipping wheel spin."));
     angL += wL * K * SLOW * dt; angR += wR * K * SLOW * dt; angC += (wL + wR) / 2 * K * SLOW * dt;
+    const full = g.torque / R, size = f => f < 1 ? 0 : 0.45 + 0.55 * Math.min(1, f / full);   // arrow size by the torque carried
+    const shownIn = !follow || step < 3, shownOut = !follow || step === 3;   // following: the drive goes in, then out
+    if (flowIn) flowIn.size = shownIn ? size(r.total) : 0;
+    flowOut[0].size = shownOut ? size(r.fL) : 0; flowOut[1].size = shownOut ? size(r.fR) : 0;
     ui.set("fL", r.fL.toFixed(0)); ui.set("fR", r.fR.toFixed(0)); ui.set("total", r.total.toFixed(0)); ui.set("spin", rpm(wL));
     ui.badge("moves").set(r.moves ? t("Car moves off") : t("Stuck: left wheel spins"), r.moves);
   }
 
   return {
-    layout({ active, onPhoto }) {
-      group.visible = active;
-      for (const w of wheelMats) w.opacity = onPhoto ? 0.12 : w.userData.opacity;   // the real wheels show through
-    },
+    layout({ active, onPhoto: photo }) { group.visible = active; onPhoto = photo; },
     update(dt) {
       (p.mode === "corner" ? corner : grip)(dt);
+      for (const mt of [...tokenMats, ...wheelMats]) {   // the real wheels show through on the photo; following, parts not in play fade
+        const lit = !follow || LIT[step].includes(mt), base = onPhoto && wheelMats.includes(mt) ? 0.12 : mt.userData.opacity;
+        mt.opacity = base * (lit ? 1 : 0.15); mt.depthWrite = lit;
+      }
       wheels[0].rotation.y = angL / K; wheels[1].rotation.y = angR / K;
       sides[0].rotation.y = angL; sides[1].rotation.y = angR;
       carrier.rotation.y = angC;
       const rel = (angL - angC) * Z_SIDE / Z_SPIDER;
       spiders[0].rotation.z = rel; spiders[1].rotation.z = -rel;
       chainLinks.forEach((c, i) => (c.rotation.y = (i < 2 ? angL : angR) / (i % 2 ? K : 1)));   // [left small, left big, right small, right big]
+      pinionSpin.rotation.y = -angC * PIN_X / PIN_R;
+      for (const f of flows) drawFlow(f, dt);
       collarSpin.rotation.y = angL; plateSpin.rotation.y = (angL + angC) / 2;
     },
   };

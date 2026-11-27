@@ -2,9 +2,9 @@
 export default {
   title: "Unter dem Blech des 190",
   name: "Mercedes-Benz 190 E (W201) „Baby-Benz“",
-  summary: "Wie reagiert die Raumlenker-Hinterachse auf eine Bodenwelle und ein Schlagloch? Am Vierzylinder M102 sehen Sie anschließend, in welcher Reihenfolge die Zylinder zünden.",
+  summary: "Wie reagiert die Raumlenker-Hinterachse auf eine Bodenwelle und ein Schlagloch, und was machen eine Starr- und eine Pendelachse daraus? Am Vierzylinder M102 sehen Sie anschließend, in welcher Reihenfolge die Zylinder zünden.",
   eyebrow: "Mercedes-Benz 190 E (W201), 1984",
-  lede: "Zwei Mechanismen desselben Autos, jeder in Aktion: die Raumlenker-Hinterachse über einer Bodenwelle und einem Schlagloch, und der Vierzylinder M102 im Viertakt. Scrollen Sie weiter: Das Museumsfoto zeigt dann die Achse an ihrem Platz am echten Fahrzeug.",
+  lede: "Zwei Mechanismen desselben Autos, jeder in Aktion: die Raumlenker-Hinterachse über einer Bodenwelle und einem Schlagloch, dann neben den einfacheren Achsen, die sie ablöste, und der Vierzylinder M102 im Viertakt. Scrollen Sie weiter: Das Museumsfoto zeigt dann die Achse an ihrem Platz am echten Fahrzeug.",
   photo: {
     alt: "Weißer Mercedes-Benz 190 E von 1984 im Mercedes-Benz Museum, von vorn links gesehen",
   },
@@ -27,6 +27,18 @@ export default {
       ],
     },
     {
+      label: "Warum die Achse zählt",
+      prompt: "Achten Sie auf die blauen Linien, die Ebene jedes Rads, gegenüber den grauen Senkrechten. Welche Achse hält ihre Reifen aufrecht und in ihrer Spur, über einer Bodenwelle und in einer Kurve?",
+      answer: "Keine einfache Achse schafft beides. Die Starrachse bleibt in der Kurve aufrecht, kippt aber beide Räder, wenn eines über eine Bodenwelle fährt; die Pendelachse nimmt eine Bodenwelle mit einem Rad allein, kippt es dabei aber und zieht seinen Reifen seitlich, und in einer scharfen Kurve hebt sie die Karosserie an und lässt die Räder einknicken. Die Raumlenkerachse hält jedes Rad nahezu aufrecht und in seiner Spur und dreht das äußere Rad leicht nach innen: der Grund, warum der 190 eine bekam.",
+      params: { label: "Die Hinterachse von hinten · 30 km/h auf der holprigen Straße, 4× langsamer gezeigt" },
+      talk: [
+        "Eine Radaufhängung hat zwei Aufgaben, die gegeneinander ziehen: die Karosserie ruhig halten und jeden Reifen flach auf die Straße drücken, möglichst wenig geneigt und in seiner Spur. Die Haftung kommt aus dieser Aufstandsfläche.",
+        "Einfache Achsen scheitern an einer davon. Eine Starrachse verbindet die beiden Räder; eine Pendelachse, die Hinterachse von Mercedes von 1931 bis in die 1960er-Jahre, kippt jedes Rad mit seiner Halbwelle und zieht den Reifen seitlich, und in einer scharfen Kurve können die Räder einknicken.",
+        "Die Raumlenkerachse gibt jedem Rad seine eigene, sorgfältig gewählte Bahn: fünf Stäbe, jeder dort angesetzt, wo die Ingenieure das Rad führen wollten. Der 190 von 1982 war das erste Serienauto damit.",
+        "Den Rest bestimmen Federn und Dämpfer: weiche Federn für den Komfort, harte gegen die Seitenneigung; Dämpfer gerade stark genug, um das Nachschwingen zu stoppen.",
+      ],
+    },
+    {
       label: "Motor M102",
       params: {
         label: "Viertakt · Zündfolge 1-3-4-2",
@@ -41,6 +53,7 @@ export default {
   note: "Die Geometrie ist veranschaulichend: Anlenkpunkte der Lenker, Motormaße und Fahrwerksraten sind plausible Werte, keine Werksangaben.",
   unverified: [
     "Alle Anlenkpunkte der Aufhängung sowie Feder-, Dämpfer- und Reifenraten",
+    "Achsvergleich: Aufbau der Pendel- und der Starrachse, ungefederte Massen, Schwerpunkt, Stabilisator, Vorspur unter Seitenkraft und die schmaler werdende Aufstandsfläche des geneigten Rads",
     "Pleuellänge des M102 und 15° Blockneigung",
     "Umriss der Karosserie",
   ],

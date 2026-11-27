@@ -17,7 +17,7 @@ export function create(ctx, p) {
   const group = new THREE.Group(); carRoot.add(group);
   const tyreMat = stage.tokenMat("--fg", { roughness: 0.9, transparent: true }), armMat = stage.tokenMat("--l2"), rackMat = stage.tokenMat("--l1", { metalness: 0.4 });
   const edgeMat = new THREE.LineBasicMaterial({ transparent: true, opacity: 0.9 }); stage.bind(edgeMat.color, "--accent");
-  const geo = { arm: m(p.arm), toe0: p.toe0 * D, gain: p.gain };
+  const geo = { arm: p.arm, toe0: p.toe0 * D, gain: p.gain };   // dualAxis works in mm: gain · pull is the inner ends' travel
   // Each front wheel on its kingpin, with a line along its plane (to see the toe) and a steering arm pointing back.
   const wheels = [1, -1].map(s => {
     const g = new THREE.Group(); g.position.set(0, s * k, R); group.add(g);

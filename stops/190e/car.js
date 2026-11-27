@@ -1,13 +1,22 @@
 // Mercedes-Benz 190 E (W201), 1984. Frame: mm, x forward, y left, z up; origin = rear axle centre at wheel-centre height.
 // Hardpoints, rates and engine dimensions are illustrative (tuned for the right sign and size of the effect).
+// The five links' body (b) and carrier (c) points, left wheel; shared by the axle and the axle comparison.
+const LINKS = [
+  { b: [-80, 330, 150], c: [-50, 640, 150] },
+  { b: [230, 380, 170], c: [50, 640, 140] },
+  { b: [280, 350, -60], c: [70, 655, -95] },
+  { b: [-30, 300, -90], c: [-20, 665, -115] },
+  { b: [-280, 240, -25], c: [-160, 650, -35] },
+];
+
 export default {
   slug: "190e",
   title: "Under the skin of the 190",
   name: "Mercedes-Benz 190 E (W201) “Baby-Benz”",
   year: 1984,
-  summary: "Five-link rear axle meeting a bump and a pothole, and the M102 four-cylinder turning over.",
+  summary: "Five-link rear axle meeting a bump and a pothole, compared with a rigid and a swing axle, and the M102 four-cylinder turning over.",
   eyebrow: "Mercedes-Benz 190 E (W201), 1984",
-  lede: "Two mechanisms of the same car, each shown working: the five-link rear axle meeting a bump and a pothole, and the M102 four-cylinder turning over. Scroll on: the museum photo then shows the axle in place on the real car.",
+  lede: "Two mechanisms of the same car, each shown working: the five-link rear axle meeting a bump and a pothole, then side by side with the simpler axles it replaced, and the M102 four-cylinder turning over. Scroll on: the museum photo then shows the axle in place on the real car.",
   frame: { origin: "rear", wheelbase: 2665, wheelR: 292, halfTrackFront: 714, halfTrackRear: 708 },
   ride: { ms: 300, mu: 40, ks: 24000, cs: 1700, kt: 190000 },
   orbit: { min: 1.2, max: 14 },
@@ -38,11 +47,11 @@ export default {
         readouts: ["travel", "load", "camber", "toe"],
         W0: [0, 720, 0],
         links: [
-          { name: "Camber strut", tok: "--l1", b: [-80, 330, 150], c: [-50, 640, 150] },
-          { name: "Pull strut", tok: "--l2", b: [230, 380, 170], c: [50, 640, 140] },
-          { name: "Push strut", tok: "--l3", b: [280, 350, -60], c: [70, 655, -95] },
-          { name: "Spring link", tok: "--l4", b: [-30, 300, -90], c: [-20, 665, -115] },
-          { name: "Track rod", tok: "--l5", b: [-280, 240, -25], c: [-160, 650, -35] },
+          { name: "Camber strut", tok: "--l1", ...LINKS[0] },
+          { name: "Pull strut", tok: "--l2", ...LINKS[1] },
+          { name: "Push strut", tok: "--l3", ...LINKS[2] },
+          { name: "Spring link", tok: "--l4", ...LINKS[3] },
+          { name: "Track rod", tok: "--l5", ...LINKS[4] },
         ],
         legendTitle: "The five links",
         frame: [[[300, 300, 40], [-300, 300, 40], 18]],
@@ -67,6 +76,28 @@ export default {
       ],
     },
     {
+      id: "axles", label: "Why the axle matters", subsystem: "axle-compare",
+      prompt: "Watch the blue lines, each wheel's plane, against the grey uprights. Which axle keeps its tyres upright and in their tracks, over a bump and in a bend?",
+      answer: "No simple axle manages both. The rigid axle stays upright in a bend but tilts both wheels when one meets a bump; the swing axle takes a bump on one wheel alone but tilts it and drags its tyre sideways, and in a hard bend it lifts the body and tucks its wheels under. The five-link keeps each wheel nearly upright and in its track and turns the outer wheel slightly in: the reason the 190 got one.",
+      view: { pos: [-3.9, 0.3, 0.55], target: [0, 0, 0.2] },
+      ghost: { fill: 0.04, edge: 0.4 },
+      params: {
+        label: "The rear axle from behind · 30 km/h on the bumpy road, shown 4× slower",
+        halfTrack: 720, wheelR: 292, tyre: [235, 57], wheelY: 50,
+        pivot: 130, beamSprings: 500,                                                            // illustrative swing and rigid axles
+        links: LINKS, spring: { link: 3, at: 0.62, topOffset: [0, -20, 290] },
+        bend: { m: 600, g: 0.6, hcg: 520, hrcRigid: 300, bar: 2.4e7, compliance: 0.1 },        // illustrative
+        unsprung: { rigid: 70, swing: 45, multilink: 40 },                                       // illustrative, kg per wheel
+        springs: [12, 45, 24], dampers: [400, 4000, 1700], kmh: 30,
+      },
+      talk: [
+        "A suspension has two jobs that pull against each other: keep the body calm, and keep each tyre pressed flat on the road, leaning as little as possible and staying in its track. Grip comes from that footprint.",
+        "Simple axles fail at one of them. A rigid axle ties the two wheels together; a swing axle, Mercedes' rear axle from 1931 to the 1960s, lets each wheel tilt with its half-shaft and drags the tyre sideways, and in a hard bend it can tuck its wheels under.",
+        "The five-link gives each wheel its own carefully chosen path: five rods, each set where the engineers wanted the wheel to go. The 190 of 1982 was the first series car with one.",
+        "The springs and dampers set the rest: soft springs for comfort, firm ones against roll; dampers just strong enough to stop the bouncing.",
+      ],
+    },
+    {
       id: "engine", label: "M102 engine", subsystem: "inline-engine",
       view: { pos: [3.75, 1.25, 0.7], target: [2.7, 0.0, 0.12] },
       ghost: { fill: 0.05, edge: 0.55 },
@@ -87,6 +118,7 @@ export default {
     },
   ],
   note: "Geometry is illustrative: link hardpoints, engine dimensions and suspension rates are plausible values, not factory data.",
-  unverified: ["All suspension hardpoints and spring, damper and tyre rates", "M102 conrod length and 15° block lean", "Ghost-body outline"],
+  unverified: ["All suspension hardpoints and spring, damper and tyre rates",
+    "Axle comparison: the swing and rigid axles' layout, unsprung masses, centre of gravity, anti-roll bar, side-force toe-in and the tyre footprint narrowing as the wheel leans", "M102 conrod length and 15° block lean", "Ghost-body outline"],
   sources: [],
 };

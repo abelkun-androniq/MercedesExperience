@@ -2,9 +2,9 @@
 export default {
   title: "A 190-es karosszériája alatt",
   name: "Mercedes-Benz 190 E (W201) „Baby-Benz”",
-  summary: "Az ötlengőkaros hátsó tengely egy bukkanón és egy kátyún, és a forgó M102 négyhengeres.",
+  summary: "Az ötlengőkaros hátsó tengely egy bukkanón és egy kátyún, összevetve egy merev és egy lengőtengellyel, és a forgó M102 négyhengeres.",
   eyebrow: "Mercedes-Benz 190 E (W201), 1984",
-  lede: "Ugyanannak az autónak két szerkezete, mindkettő működés közben: az ötlengőkaros hátsó tengely egy bukkanón és egy kátyún, és a forgó M102 négyhengeres. Görgessen tovább: a múzeumi fotón a tengelyt a valódi autón, a helyén is láthatja.",
+  lede: "Ugyanannak az autónak két szerkezete, mindkettő működés közben: az ötlengőkaros hátsó tengely egy bukkanón és egy kátyún, majd az általa leváltott egyszerűbb tengelyek mellett, és a forgó M102 négyhengeres. Görgessen tovább: a múzeumi fotón a tengelyt a valódi autón, a helyén is láthatja.",
   photo: { alt: "Fehér, 1984-es Mercedes-Benz 190 E a Mercedes-Benz Múzeumban, balról elölről nézve" },
   components: [
     {
@@ -25,6 +25,18 @@ export default {
       ],
     },
     {
+      label: "Miért számít a tengely?",
+      prompt: "Figyelje a kék vonalakat, a kerekek síkját, a szürke függőlegesekhez képest. Melyik tengely tartja egyenesen és a nyomvonalukon a kerekeit egy bukkanón és egy kanyarban?",
+      answer: "Egyszerű tengely egyiket sem tudja egyszerre. A merev tengely kanyarban egyenesen tartja a kerekeket, de ha az egyik bukkanóra fut, mindkettőt megdönti; a lengőtengely egyedül viszi át a bukkanón a kereket, de megdönti és oldalra húzza a gumiját, éles kanyarban pedig megemeli a karosszériát és bebillenti a kerekeit. Az ötlengőkaros tengely mindkét kereket közel függőlegesen és a nyomvonalán tartja, a külső kereket pedig kissé befelé fordítja: ezért kapott ilyet a 190-es.",
+      params: { label: "A hátsó tengely hátulról · 30 km/h a hepehupás úton, 4× lassítva" },
+      talk: [
+        "A felfüggesztésnek két, egymásnak feszülő feladata van: nyugodtan tartani a karosszériát, és minden gumit laposan az útra szorítani, minél kevésbé megdőlve és a nyomvonalán maradva. A tapadás ebből a felfekvő felületből származik.",
+        "Az egyszerű tengelyek az egyikben elbuknak. A merev tengely összeköti a két kereket; a lengőtengely, a Mercedes hátsó tengelye 1931-től az 1960-as évekig, a féltengelyével együtt dönti a kereket és oldalra húzza a gumit, éles kanyarban pedig be is billentheti a kerekeit.",
+        "Az ötlengőkaros tengely minden keréknek saját, gondosan megválasztott pályát ad: öt rúd, mindegyik oda téve, ahová a mérnökök a kereket vezetni akarták. Az 1982-es 190-es volt az első sorozatautó ilyennel.",
+        "A többit a rugók és a lengéscsillapítók döntik el: puha rugó a kényelemért, kemény a dőlés ellen; a csillapítás épp annyira erős, hogy megállítsa a pattogást.",
+      ],
+    },
+    {
       label: "M102 motor",
       params: { label: "Négyütemű körfolyamat · gyújtási sorrend 1-3-4-2" },
       talk: [
@@ -37,6 +49,7 @@ export default {
   note: "A geometria szemléltető: a lengőkarok csuklópontjai, a motor méretei és a felfüggesztés merevségei valószerű értékek, nem gyári adatok.",
   unverified: [
     "A felfüggesztés összes csuklópontja, valamint a rugók, a lengéscsillapítók és az abroncsok merevsége",
+    "A tengelyek összevetése: a lengő- és a merev tengely elrendezése, a rugózatlan tömegek, a súlypont, a stabilizátor, az oldalerő okozta összetartás és a megdőlő kerék keskenyedő felfekvése",
     "Az M102 hajtórúdhossza és a blokk 15°-os dőlése",
     "A jármű körvonala",
   ],

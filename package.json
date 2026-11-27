@@ -7,7 +7,7 @@
     "test": "node --test \"tests/unit/*.test.mjs\"",
     "e2e": "playwright test",
     "build": "node tools/build.mjs",
-    "serve": "python3 -m http.server 8765",
+    "serve": "python3 tools/serve.py",
     "vendor": "node tools/vendor-three.mjs"
   },
   "devDependencies": {

@@ -27,7 +27,7 @@ export default {
   components: [
     {
       id: "diff", label: "Differential lock", subsystem: "differential",
-      view: { pos: [-5.4, -2.0, 1.7], target: [-2.85, 0, 0.35] },
+      view: { pos: [-4.6, 1.4, 1.2], target: [-2.85, 0, 0.3] },
       ghost: { fill: 0.05, edge: 0.4 },
       params: {
         label: "Rear axle, one wheel on ice", mode: "grip",

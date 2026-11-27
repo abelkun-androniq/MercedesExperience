@@ -20,7 +20,7 @@
   --accent: #0078d6; --stage: #ececec;
   --band: #000000; --band-fg: #ffffff; --band-muted: #bbbbbb; --band-edge: #696969; --card: #000000;
   --l1: #d9480f; --l2: #e8a317; --l3: #2b8a3e; --l4: #1c64c4; --l5: #8e44ad;
-  --metal: #8a96a1; --warn: #c92a2a;
+  --metal: #8a96a1; --warn: #c92a2a; --power: #c2255c;   /* drive flowing through a drivetrain */
   --cfd-1: #2b3fa0; --cfd-2: #2c9be0; --cfd-3: #5fd068; --cfd-4: #f2c230; --cfd-5: #d8341e;   /* wind-tunnel colour field, both themes */
   --display: "Instrument Serif", ui-serif, Georgia, "Times New Roman", serif;
   --body: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
@@ -32,14 +32,14 @@
   :root:not([data-theme="light"]) {
     --bg: #000000; --panel: #161616; --fg: #ffffff; --muted: #a3a3a3; --rule: #333333; --edge: #696969;
     --stage: #111111; --card: #161616;
-    --l1: #ff7a45; --l2: #f5c242; --l3: #5cc46f; --l4: #5b9bf0; --l5: #b77fd6; --metal: #6f7c87; --warn: #ff6b6b;
+    --l1: #ff7a45; --l2: #f5c242; --l3: #5cc46f; --l4: #5b9bf0; --l5: #b77fd6; --metal: #6f7c87; --warn: #ff6b6b; --power: #f06595;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #000000; --panel: #161616; --fg: #ffffff; --muted: #a3a3a3; --rule: #333333; --edge: #696969;
   --stage: #111111; --card: #161616;
-  --l1: #ff7a45; --l2: #f5c242; --l3: #5cc46f; --l4: #5b9bf0; --l5: #b77fd6; --metal: #6f7c87; --warn: #ff6b6b;
+  --l1: #ff7a45; --l2: #f5c242; --l3: #5cc46f; --l4: #5b9bf0; --l5: #b77fd6; --metal: #6f7c87; --warn: #ff6b6b; --power: #f06595;
   color-scheme: dark;
 }
 [hidden] { display: none !important; }

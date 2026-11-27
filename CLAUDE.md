@@ -22,7 +22,8 @@ iPhone/iPad Safari (iOS 16.4+, import maps). No bundler: native ES modules; `too
   curves, braking with and without ABS), rollover (tip angle, rolling pendulum, roll-bar timing), hydraulics (gas
   accumulator, pump, cylinders), climate (cabin heat balance), portal (portal-axle clearance), roof (folding hardtop), pitstop (wheel-change phases, a stuck nut), ev (torque vectoring in a bend; energy
   battery → wheels, regen limit), turbo (boost → air, power, shaft work and speed), fuelcell (cell voltage curve, stack and
-  auxiliary power, hydrogen and water), part-field (component airflow files:
+  auxiliary power, hydrogen and water), axles (rigid and swing axle kinematics, roll centre, roll and jacking in a bend, a rough
+  road), part-field (component airflow files:
   one plane grid per part, cases with paths and guides)
 - `lib/scene/` stage (renderer, cameras, lights, theme tokens, loop), helpers, ghost-body, road, wind-tunnel (CFD view of
   `flow` on the centre plane: speed/pressure/swirl field, body section, smoke streaklines; `--cfd-*` tokens)
@@ -39,7 +40,8 @@ iPhone/iPad Safari (iOS 16.4+, import maps). No bundler: native ES modules; `too
   air-suspension, wankel, belt-drive, hoist, abs, rollover, comfort-hydraulics, cabin-climate, portal-axle,
   four-wheel-drive, twin-steer, vario-roof, pit-stop, electric-drive (`mode`: bend or energy), turbo (`presets` of boost),
   fuel-cell, ice-cooling, dual-axis-steering (DAS toe from above), measuring-car (quarter-car over a bump, signal down a cable to a
-  recorder), race-aero (one part's airflow computed offline by tools/cfd/part.mjs: a field slice through the part,
+  recorder), axle-compare (rigid, swing and the car's own multi-link from behind: bump, bend, rough road; springs and
+  dampers), differential ("Step by step" follows the drive from the propeller shaft to the wheels), race-aero (one part's airflow computed offline by tools/cfd/part.mjs: a field slice through the part,
   mean-flow paths with arrowheads and the guides of its lesson per case; case buttons, Follow the air, Pause airflow). inline-engine also draws V engines (`leans`: one bank per lean angle,
   opposite cylinders sharing a crankpin) and twin ignition (`plugs: 2`), four valves (`valves: 4`), rocker arms (`rockers`), a side exhaust valve on a tappet
   (`sideExhaust`), a time-to-fill card (`breathe`), shaking-force arrows (`balance`), a crank-torque trace (`pulses`) and a
@@ -104,7 +106,8 @@ iPhone/iPad Safari (iOS 16.4+, import maps). No bundler: native ES modules; `too
 ## Commands
 - `npm test` unit tests (models, configs, translations) · `npm run e2e` Playwright: WebKit iPhone/iPad × 4 (Hungarian and German
   passes on iPhone only) and Chromium offline (builds first)
-- `npm run serve` dev server on :8765 (service worker off on localhost unless `?sw=1`) · `?debug` exposes `window.__tour`
+- `npm run serve` dev server on :8765 (tools/serve.py: Cache-Control no-cache, so edits show on a plain reload; service
+  worker off on localhost unless `?sw=1`) · `?debug` exposes `window.__tour`
 - `npm run build` → `_site/` · deploy: push to main; `.github/workflows/pages.yml` tests, then deploys.
 
 ## Real-device checklist (iPhone and iPad Safari, from the Pages URL)
