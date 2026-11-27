@@ -1,0 +1,7 @@
+<task-notification>
+<task-id>bpxmxhov8</task-id>
+<tool-use-id>toolu_01CKajXv2MwTzkmD5usBDCi4</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-kunabel-workspace-MercedesExperience/e01a3517-ccd0-4282-af04-8d07c795c5fc/tasks/bpxmxhov8.output</output-file>
+<status>completed</status>
+<summary>Background command "gh run watch 46068423672 --exit-status --interval 30 &gt; /dev/null 2&gt;&amp;1; gh run view 46068423672 --json conclusion,jobs --jq '{conclusion, jobs: [.jobs[] | {name, conclusion}]}'" completed (exit code 0)</summary>
+</task-notification>
