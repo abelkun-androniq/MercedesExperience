@@ -1,0 +1,21 @@
+Animation on the W11 EQ F1 car is not good - the tires spin multiple times before the correcto position is fixed.
+
+---
+
+Animation on the W11 EQ F1 car is not good - the tires spin multiple times before the correcto position is fixed. Also, in the open differential and locked differential animations - show clearly where the power is coming from.
+
+---
+
+Show it in a local devview
+
+---
+
+It is still not fixed - both the wheel is still spinning around and the direction of the driveshaft into the differential is still not shown
+
+---
+
+The differential still looks confusing - what drives what in which circumstances? Also, add a complete animation on why the suspension is important on one of the car cards - how suspensions setting influences the ride, camber, toe, why a simple suspension is bad, why a more complex suspension is better. When done, put them on the dev view
+
+---
+
+Commit push and redeploy
